@@ -9,5 +9,5 @@ composer require drupal/outline
 composer require cweagans/composer-patches
 
 # Setup lando/docker.
-lando init --recipe drupal8 --webroot=. --name="drupal-lando-git"
+lando init --recipe drupal8 --webroot=web --name="drupal-lando-git"
 
