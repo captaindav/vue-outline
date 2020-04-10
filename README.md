@@ -1,4 +1,10 @@
-# outline
+# vue-outline
+# Requres the following to be globally installed:
+# node
+# npm
+# vue
+# composer
+# lando/docker
 
 ## Project setup
 ```
@@ -20,5 +26,6 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Create Docker development environoment for Drupal
+lando start
+

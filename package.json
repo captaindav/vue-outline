@@ -1,5 +1,5 @@
 {
-  "name": "outline",
+  "name": "vue-outline",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "graphql": "^15.0.0",
     "vue": "^2.6.11",
     "vuex": "^3.1.3"
   },
