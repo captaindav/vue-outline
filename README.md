@@ -31,7 +31,7 @@ npm run lint
 composer create-project drupal/recommended-project drupal
 cd drupal
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/core drupal/ctools drupal/dynamic_entity_reference drupal/graphql drupal/outline
-COMPOSER_MEMORY_LIMIT=-1 composer require --dev devel
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev drupal/devel
 
 lando init --recipe drupal8 --webroot=web --name="drupal-lando-git"
 lando start
