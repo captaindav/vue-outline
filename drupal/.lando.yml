@@ -1,4 +1,4 @@
-name: drupal_outline
+name: drupal-outline
 recipe: drupal8
 services:
   appserver:
