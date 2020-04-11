@@ -26,21 +26,21 @@ npm run lint
 #### Clone the outline app
 ```
 git clone git@github.com:captaindav/vue-outline
-cd vue-outline
 ```
 
 #### Install Drupal code using composer:
 ```
+cd vue-outline
 composer create-project drupal/recommended-project drupal
 cd drupal
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/core drupal/ctools drupal/dynamic_entity_reference drupal/graphql drupal/outline
-COMPOSER_MEMORY_LIMIT=-1 composer require --dev drupal/devel
+COMPOSER_MEMORY_LIMIT=-1 composer require --dev drush/drush drupal/devel
 ```
 
 #### Create settings.php file
 ```
-cp sites/default/default.settings.php sites/default/settings.php
-vi sites/default/settings.php
+cp web/sites/default/default.settings.php web/sites/default/settings.php
+vi web/sites/default/settings.php
 ```
 Replace line 91 with:
 ```
@@ -53,6 +53,7 @@ Replace line 91 with:
     'driver' => 'mysql',
     'prefix' => '',
     'collation' => 'utf8mb4_general_ci',
+    'unix-socket' => '/opt/bitnami/mysql/tmp/mysql.sock’,
   ];
 ```
 
