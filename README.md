@@ -1,4 +1,4 @@
-### Must be globally installed:
+### These must be globally installed:
 ##### node, npm, vue, composer, lando/docker
 
 ### Project setup
@@ -21,13 +21,46 @@ npm run build
 npm run lint
 ```
 
-#### Execute these commands to create a Lando/Docker development environment for Drupal with the Outline module:
+### Installation Instructions
+
+#### Clone the outline app
+```
+git clone git@github.com:captaindav/vue-outline
+cd vue-outline
+```
+
+#### Install Drupal code using composer:
 ```
 composer create-project drupal/recommended-project drupal
 cd drupal
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/core drupal/ctools drupal/dynamic_entity_reference drupal/graphql drupal/outline
 COMPOSER_MEMORY_LIMIT=-1 composer require --dev drupal/devel
+```
 
+#### Create settings.php file
+```
+cp sites/default/default.settings.php sites/default/settings.php
+vi sites/default/settings.php
+```
+Replace line 91 with:
+```
+  $databases['default']['default'] = [
+    'database' => 'drupal8',
+    'username' => 'drupal8',
+    'password' => 'drupal8',
+    'host' => 'localhost',
+    'port' => '3306',
+    'driver' => 'mysql',
+    'prefix' => '',
+    'collation' => 'utf8mb4_general_ci',
+  ];
+```
+
+On line 277 enter a hash_salt value.
+
+#### Initialize Lando/Docker
+ For the first step, when asked, pick 'current working directory' as codebase location.
+```
 lando init --recipe drupal8 --webroot=web --name="drupal-outline"
 lando start
 lando drush site:install demo_umami -y
