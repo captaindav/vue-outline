@@ -58,6 +58,11 @@ Replace line 91 with:
 
 On line 277 enter a hash_salt value.
 
+Append this line to the end of the settings.php file:
+```
+$settings['trusted_host_patterns'][] = '\.lndo\.site$';
+```
+
 #### Initialize Lando/Docker
  For the first step, when asked, pick 'current working directory' as codebase location.
 ```
@@ -66,10 +71,4 @@ lando start
 lando drush site:install demo_umami -y
 lando drush en -y admin_toolbar ctools devel dynamic_entity_reference graphql outline
  ```
-
-### Add this line to ../drupal/web/sites/default/settings.php
-```
-$settings['trusted_host_patterns'][] = '\.lndo\.site$';
-```
-
 
