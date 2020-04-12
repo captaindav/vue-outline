@@ -53,7 +53,6 @@ Replace line 91 with:
     'driver' => 'mysql',
     'prefix' => '',
     'collation' => 'utf8mb4_general_ci',
-    'unix-socket' => '/opt/bitnami/mysql/tmp/mysql.sock’,
   ];
 ```
 
