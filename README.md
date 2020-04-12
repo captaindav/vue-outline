@@ -21,7 +21,7 @@ npm run build
 npm run lint
 ```
 
-### Installation Instructions
+### Installation Steps
 
 #### Clone the outline app
 ```
