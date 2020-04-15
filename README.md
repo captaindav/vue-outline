@@ -28,7 +28,7 @@ lando start
 
 #### Install Drupal and enable Drupal contrib modules.
 ```
-lando drush site-install demo_umami --notify global  --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8'
+lando drush site-install demo_umami --notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
 lando drush upwd admin admin
 lando drush en -y admin_toolbar ctools devel dynamic_entity_reference graphql outline
 ```
