@@ -33,6 +33,16 @@ lando drush upwd admin admin
 lando drush en -y admin_toolbar ctools devel dynamic_entity_reference graphql outline
 ```
 
+To view the site status:
+```
+lando drush status
+```
+
+You may login to the site as user "admin" with password "admin" at http://drupal-outline.lndo.site/user.
+
+
+
+
 ### Vue app commands
 
 #### Compiles and hot-reloads for development
