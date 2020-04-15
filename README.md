@@ -25,7 +25,7 @@ lando init --source cwd --recipe drupal8 --webroot=web --name="drupal-outline"
 lando start
 ```
 
-#### Install Drupal and enable Drupal contrib modules.
+#### Install Drupal, set admin password, and enable Drupal contrib modules.
 ```
 lando drush site-install demo_umami --notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
 lando drush upwd admin admin
