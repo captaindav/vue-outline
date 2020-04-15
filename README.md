@@ -11,7 +11,7 @@ npm install
 
 #### Fetch the latest Drupal 8 code
 ```
-composer create-project drupal/recommended-project drupal
+COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project drupal
 cd drupal
 COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/core drupal/ctools drupal/dynamic_entity_reference drupal/graphql drupal/outline
 COMPOSER_MEMORY_LIMIT=-1 composer require --dev drush/drush drupal/devel
