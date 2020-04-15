@@ -19,10 +19,9 @@ COMPOSER_MEMORY_LIMIT=-1 composer require --dev drush/drush drupal/devel
 
 #### Initialize Lando
 
-For the second step (lando init) pick 'current working directory' when asked.
 ```
 lando poweroff
-lando init --recipe drupal8 --webroot=web --name="drupal-outline"
+lando init --source cwd --recipe drupal8 --webroot=web --name="drupal-outline"
 lando start
 ```
 
