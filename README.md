@@ -1,7 +1,7 @@
 
 ### Project setup
 
-These must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
+Must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
 
 #### Clone and install project
 ```
@@ -41,10 +41,14 @@ lando drush status
 You may login to the site as user "admin" with password "admin" at http://drupal-outline.lndo.site/user.
 
 
+### Rebuild or Reinitialize Lando / Reinstall Drupal
 
-#### Re-initialize Lando and Re-install Drupal
+If Lando/Drupal are not working / broken in some way try a Lando rebuild:
+```
+lando rebuild
+```
 
-If Lando/Drupal are not working or are broken in some way you can re-install using these commands:
+To reinitialize Lando and reinstall Drupal:
 ```
 lando destroy
 lando drush site-install demo_umami --notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
