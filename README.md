@@ -1,8 +1,9 @@
 
 ### Project setup
 
+These must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
+
 #### Clone and install project
-These must be installed globally: git, node, npm, vue, composer, lando/docker.
 ```
 git clone git@github.com:captaindav/vue-outline
 cd vue-outline
@@ -41,6 +42,15 @@ You may login to the site as user "admin" with password "admin" at http://drupal
 
 
 
+#### Re-initialize Lando and Re-install Drupal
+
+If Lando/Drupal are not working or are broken in some way you can re-install using these commands:
+```
+lando destroy
+lando drush site-install demo_umami --notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
+lando drush upwd admin admin
+lando drush en -y admin_toolbar ctools devel dynamic_entity_reference graphql graphql_core outline
+```
 
 ### Vue app commands
 
