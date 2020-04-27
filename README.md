@@ -14,7 +14,7 @@ npm install
 ```
 COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project drupal
 cd drupal
-COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/core drupal/ctools drupal/dynamic_entity_reference drupal/graphql:"4.x-dev" drupal/outline
+COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/ctools drupal/dynamic_entity_reference drupal/graphql:"4.x-dev" drupal/outline
 COMPOSER_MEMORY_LIMIT=-1 composer require --dev drush/drush drupal/devel
 ```
 
@@ -30,7 +30,7 @@ lando start
 ```
 lando drush site-install demo_umami --notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
 lando drush upwd admin admin
-lando drush en -y admin_toolbar ctools devel dynamic_entity_reference graphql graphql_core outline
+lando drush en -y admin_toolbar ctools devel dynamic_entity_reference kint graphql graphql_core outline
 ```
 
 To view the site status:
