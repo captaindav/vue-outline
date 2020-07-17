@@ -38,19 +38,19 @@
     </v-app-bar>
 
     <v-content>
-      <Outline/>
+      <HelloWorld/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Outline from './components/Outline';
+import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
 
   components: {
-    Outline,
+    HelloWorld,
   },
 
   data: () => ({
