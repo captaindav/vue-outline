@@ -1,14 +1,7 @@
 <template>
-  <div class="apollo-example">
-    <!-- Cute tiny form -->
-    <div class="form">
-      <label for="field-name" class="label">Name</label>
-      <input
-        v-model="name"
-        placeholder="Type a name"
-        class="input"
-        id="field-name"
-      >
+  <div class="outline">
+    <div>
+      Outline here
     </div>
 
     <!-- Apollo watched Graphql query -->
