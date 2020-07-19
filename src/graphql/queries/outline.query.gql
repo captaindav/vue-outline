@@ -1,0 +1,15 @@
+query Outline {
+  outline(oid: "outline_two") {
+    name
+    oid
+    rootEntry {
+      name
+      eid
+      children {
+        name
+        eid
+	content
+      }
+    }
+  }
+}

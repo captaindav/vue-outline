@@ -1,0 +1,8 @@
+query Outlines {
+  outlines {
+    results {
+      name
+      oid
+    }
+  }
+}
