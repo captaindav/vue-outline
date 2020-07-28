@@ -14,18 +14,6 @@ new Vue({
   setup () {
     provide(DefaultApolloClient, apolloClient)
   },
-  // apolloProvider: createProvider(),
   vuetify,
   render: h => h(App)
 }).$mount('#app')
-
-
-//import { createProvider } from './vue-apollo'
-
-// GRAPHQL STUFF
-// import VueCompositionApi, { provide } from '@vue/composition-api'
-// import ApolloClient from 'apollo-boost'
-// const apolloClient = new ApolloClient({
-//   connectToDevTools: true,
-//   uri: "http://drupal-outline.lndo.site/outline-graphql"
-// })

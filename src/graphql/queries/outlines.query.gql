@@ -1,8 +1,16 @@
 query Outlines {
   outlines {
-    results {
-      name
-      oid
+    outlines {
+      rootEntry {
+        children {
+          content
+          name
+          eid
+        }
+        name
+        eid
+        content
+      }
     }
   }
 }
