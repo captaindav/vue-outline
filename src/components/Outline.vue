@@ -1,11 +1,36 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-<!--        <div v-for="outline in outlines" :key="outline.oid">-->
-<!--            {{ outlines}}-->
-<!--        </div>-->
-        <v-treeview :items="computedOutlines" item-key="eid" item-text="name" item-children="children"></v-treeview>
+  <v-container fluid class="py-0 fill-height">
+    <v-row class="fill-height">
+      <v-col style="border-right: 2px solid #CCC" cols="3">
+        <v-treeview
+            activatable
+            :items="treeViewItems"
+            item-key="eid"
+            item-text="name"
+            item-children="children"
+        >
+          <template v-slot:label="{ item, open }">
+            <div @click="treeViewLabelClick(item)">
+              <v-icon v-if="!item.file">
+                {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+              </v-icon>
+              <v-icon v-else>
+                {{ files[item.file] }}
+              </v-icon>
+              <span>{{item.name}}</span>
+            </div>
+          </template>
+        </v-treeview>
+      </v-col>
+      <v-col cols="9">
+        <v-row  class="fill-height">
+          <v-col v-if="false" style="border-bottom: 2px solid #CCC; height: 50%" cols="12">
+            Entries
+          </v-col>
+          <v-col style="height: 100%" cols="12">
+            <span v-html="renderedContent.content"></span>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -14,6 +39,7 @@
 <script>
   import { useQuery, useResult } from '@vue/apollo-composable';  //useMutation
   import outlinesQuery from '../graphql/queries/outlines.query.gql';
+  import { computed, reactive } from '@vue/composition-api';
 
   export default {
     setup() {
@@ -22,20 +48,22 @@
               outlinesResult,
               null,
               data => data.outlines.outlines
-      )
-      return { loading, outlines };
+      const treeViewItems = computed(() =>  {
+        const getOutlines = [];
+        if (outlines && outlines.value) {
+          for (const i of outlines.value) {
+            getOutlines.push(i.rootEntry);
+          }
+        }
+        return getOutlines;
+      });
+      let renderedContent = reactive({content: ""});
+      const treeViewLabelClick = (item) => {
+        renderedContent.content = item.rendered;
+        console.log(renderedContent, item.rendered)
+      }
+      return { loading, outlines, treeViewItems, renderedContent, treeViewLabelClick };
     },
     name: 'Outline',
-    data: () => ({
-    }),
-    computed: {
-      computedOutlines () {
-        const outlines = []
-        for (const i of this.outlines) {
-          outlines.push(i.rootEntry);
-        }
-        return outlines;
-      }
-    }
   }
 </script>
