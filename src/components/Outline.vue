@@ -1,5 +1,22 @@
 <template>
   <v-container fluid class="py-0 fill-height">
+    <v-menu
+      v-model="menu.show"
+      :position-x="menu.x"
+      :position-y="menu.y"
+      absolute
+      offset-y
+    >
+      <v-list>
+        <v-list-item @click="selectNode">
+          <v-list-item-title>Select</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="deleteNode">
+          <v-list-item-title>Delete</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
     <v-row class="fill-height">
       <v-col style="border-right: 2px solid #CCC" cols="3">
         <v-treeview
@@ -10,7 +27,10 @@
             item-children="children"
         >
           <template v-slot:label="{ item, open }">
-            <div @click="treeViewLabelClick(item)">
+            <div
+              @click="treeViewLabelClick(item)"
+              @contextmenu="openMenu($event, item)"
+            >
               <v-icon v-if="['Outline 1', 'Outline 2'].includes(item.name)">
                 $outline
               </v-icon>
@@ -52,6 +72,7 @@
               outlinesResult,
               null,
               data => data.outlines.outlines);
+
       const treeViewItems = computed(() =>  {
         const rootEntries = [];
         if (outlines && outlines.value) {
@@ -62,12 +83,48 @@
         return rootEntries;
       });
 
+
       let renderedContent = reactive({content: ""});
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
-        console.log(renderedContent, item.rendered)
       }
-      return { loading, outlines, treeViewItems, renderedContent, treeViewLabelClick };
+
+      const menu = reactive({
+        show: false,
+        x: 0,
+        y: 0,
+        menuItem: {}
+      })
+
+      const openMenu = (event, item) => {
+        event.preventDefault()
+        menu.show = false
+        menu.x = event.clientX
+        menu.y = event.clientY
+        menu.menuItem = item
+        menu.show = true
+      }
+
+      const deleteNode = () => {
+        console.log('deleting', menu.menuItem.eid)
+      }
+
+      const selectNode = () => {
+        console.log('Selecting')
+        treeViewLabelClick(menu.menuItem)
+      }
+
+      return {
+        loading,
+        outlines,
+        treeViewItems,
+        renderedContent,
+        treeViewLabelClick,
+        menu,
+        openMenu,
+        deleteNode,
+        selectNode
+      };
     },
     name: 'Outline',
   }
