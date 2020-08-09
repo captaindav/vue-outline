@@ -21,6 +21,7 @@
                 {{ files[item.file] }}
               </v-icon>
               <span>{{item.name}}</span>
+              {{item.expanded}}
             </div>
           </template>
         </v-treeview>
@@ -60,6 +61,7 @@
         }
         return rootEntries;
       });
+
       let renderedContent = reactive({content: ""});
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;

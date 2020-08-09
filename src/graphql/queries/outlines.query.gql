@@ -8,6 +8,13 @@ query Outlines {
           eid
           expanded
           rendered
+          children {
+            content
+            name
+            eid
+            expanded
+            rendered
+          }
         }
         name
         eid
