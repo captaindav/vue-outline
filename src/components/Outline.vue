@@ -47,7 +47,7 @@
       const outlines = useResult(
               outlinesResult,
               null,
-              data => data.outlines.outlines
+              data => data.outlines.outlines);
       const treeViewItems = computed(() =>  {
         const getOutlines = [];
         if (outlines && outlines.value) {
