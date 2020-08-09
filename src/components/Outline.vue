@@ -49,13 +49,13 @@
               null,
               data => data.outlines.outlines);
       const treeViewItems = computed(() =>  {
-        const getOutlines = [];
+        const rootEntries = [];
         if (outlines && outlines.value) {
-          for (const i of outlines.value) {
-            getOutlines.push(i.rootEntry);
+          for (const outline of outlines.value) {
+            rootEntries.push(outline.rootEntry);
           }
         }
-        return getOutlines;
+        return rootEntries;
       });
       let renderedContent = reactive({content: ""});
       const treeViewLabelClick = (item) => {
