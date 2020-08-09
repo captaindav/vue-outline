@@ -11,7 +11,10 @@
         >
           <template v-slot:label="{ item, open }">
             <div @click="treeViewLabelClick(item)">
-              <v-icon v-if="!item.file">
+              <v-icon v-if="['Outline 1', 'Outline 2'].includes(item.name)">
+                $outline
+              </v-icon>
+              <v-icon v-else-if="!item.file">
                 {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
               </v-icon>
               <v-icon v-else>
