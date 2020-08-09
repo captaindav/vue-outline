@@ -6,10 +6,12 @@ query Outlines {
           content
           name
           eid
+          expanded
           rendered
         }
         name
         eid
+        expanded
         content
       }
     }
