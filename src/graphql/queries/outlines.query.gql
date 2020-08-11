@@ -2,24 +2,27 @@ query Outlines {
   outlines {
     outlines {
       rootEntry {
+        eid
+        name
+        expanded
+        content
+        rendered
         children {
-          content
-          name
           eid
+          parentEid
+          name
           expanded
+          content
           rendered
           children {
-            content
-            name
             eid
+            parentEid
+            name
             expanded
+            content
             rendered
           }
         }
-        name
-        eid
-        expanded
-        content
       }
     }
   }

@@ -15,6 +15,7 @@
           <v-list-item-title>Delete</v-list-item-title>
         </v-list-item>
       </v-list>
+
     </v-menu>
 
     <v-row class="fill-height">
@@ -31,17 +32,13 @@
               @click="treeViewLabelClick(item)"
               @contextmenu="openMenu($event, item)"
             >
-              <v-icon v-if="['Outline 1', 'Outline 2'].includes(item.name)">
-                $outline
-              </v-icon>
-              <v-icon v-else-if="!item.file">
+              <v-icon v-if="item.parentEid">
                 {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
               </v-icon>
               <v-icon v-else>
-                {{ files[item.file] }}
+                $outline
               </v-icon>
               <span>{{item.name}}</span>
-              {{item.expanded}}
             </div>
           </template>
         </v-treeview>

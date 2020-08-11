@@ -17,7 +17,7 @@
         </template>
         <v-list>
           <v-list-item target="_blank" href="https://github.com/captaindav/outline">
-            <v-list-item-title>Outline on Github</v-list-item-title>
+            <v-list-item-title>Outline Project on Github</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>

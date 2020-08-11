@@ -3,12 +3,18 @@ query Outline {
     name
     oid
     rootEntry {
-      name
       eid
+      name
+      expanded
+      content
+      rendered
       children {
-        name
         eid
-	content
+        parentEid
+        name
+        expanded
+        content
+        rendered
       }
     }
   }
