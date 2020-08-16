@@ -17,8 +17,17 @@
         </template>
         <v-list>
           <v-list-item target="_blank" href="https://github.com/captaindav/outline">
-            <v-list-item-title>Outline Project on Github</v-list-item-title>
+            <v-list-item-title>Open</v-list-item-title>
           </v-list-item>
+
+          <v-list-item target="_blank" href="https://github.com/captaindav/outline">
+            <v-list-item-title>Close</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item target="_blank" href="https://github.com/captaindav/outline">
+            <v-list-item-title>About</v-list-item-title>
+          </v-list-item>
+
         </v-list>
       </v-menu>
     </v-app-bar>

@@ -8,12 +8,22 @@
       offset-y
     >
       <v-list>
-        <v-list-item @click="selectNode">
-          <v-list-item-title>Select</v-list-item-title>
+
+        <!--v-list-item @click="addEntry">
+          <v-list-item-title>Add</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="deleteNode">
+
+        <v-list-item @click="editEntry">
+          <v-list-item-title>Edit</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="renameEntry">
+          <v-list-item-title>Rename</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="deleteEntry">
           <v-list-item-title>Delete</v-list-item-title>
-        </v-list-item>
+        </v-list-item-->
       </v-list>
 
     </v-menu>
