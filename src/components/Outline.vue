@@ -9,7 +9,7 @@
     >
       <v-list>
 
-        <!--v-list-item @click="addEntry">
+        <v-list-item @click="addEntry">
           <v-list-item-title>Add</v-list-item-title>
         </v-list-item>
 
@@ -23,7 +23,7 @@
 
         <v-list-item @click="deleteEntry">
           <v-list-item-title>Delete</v-list-item-title>
-        </v-list-item-->
+        </v-list-item>
       </v-list>
 
     </v-menu>
@@ -68,8 +68,9 @@
 </template>
 
 <script>
-  import { useQuery, useResult } from '@vue/apollo-composable';  //useMutation
+  import { useQuery, useMutation, useResult } from '@vue/apollo-composable';  //useMutation
   import outlinesQuery from '../graphql/queries/outlines.query.gql';
+  import addEntryMutation from '../graphql/mutations/addEntry.mutation.gql';
   import { computed, reactive } from '@vue/composition-api';
 
   export default {
@@ -112,14 +113,40 @@
         menu.show = true
       }
 
-      const deleteNode = () => {
-        console.log('deleting', menu.menuItem.eid)
-      }
-
       const selectNode = () => {
         console.log('Selecting')
         treeViewLabelClick(menu.menuItem)
       }
+
+      const { mutate: addNewEntry } = useMutation(addEntryMutation)
+
+      const active = reactive([])
+
+      const addEntry = () => {
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Adding', eid)
+          // failing for some reason
+          // addNewEntry({ parentEid: eid })
+
+          // refresh data
+          // open newly created node
+        }
+      }
+
+      const editEntry = () => {
+        console.log('Editing', menu.menuItem)
+      }
+
+      const renameEntry = () => {
+        console.log('Renaming', menu.menuItem)
+      }
+
+      const deleteEntry = () => {
+        console.log('Deleting', menu.menuItem)
+      }
+
+
 
       return {
         loading,
@@ -128,9 +155,14 @@
         renderedContent,
         treeViewLabelClick,
         menu,
+        active,
         openMenu,
-        deleteNode,
-        selectNode
+        selectNode,
+        addEntry,
+        editEntry,
+        renameEntry,
+        deleteEntry,
+        addNewEntry
       };
     },
     name: 'Outline',
