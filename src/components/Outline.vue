@@ -9,21 +9,34 @@
     >
       <v-list>
 
-        <v-list-item @click="addEntry">
+        <v-list-item @click="addEntryCommand">
           <v-list-item-title>Add</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="editEntry">
+        <v-list-item @click="editEntryCommand">
           <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="renameEntry">
+        <v-list-item @click="renameEntryCommand">
           <v-list-item-title>Rename</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="deleteEntry">
+        <v-list-item @click="deleteEntryCommand">
           <v-list-item-title>Delete</v-list-item-title>
         </v-list-item>
+
+        <v-list-item @click="cutEntryCommand">
+          <v-list-item-title>Cut</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="copyEntryCommand">
+          <v-list-item-title>Copy</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="pasteEntryCommand">
+          <v-list-item-title>Paste</v-list-item-title>
+        </v-list-item>
+
       </v-list>
 
     </v-menu>
@@ -68,9 +81,9 @@
 </template>
 
 <script>
-  import { useQuery, useMutation, useResult } from '@vue/apollo-composable';  //useMutation
+  import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
   import outlinesQuery from '../graphql/queries/outlines.query.gql';
-  import addEntryMutation from '../graphql/mutations/addEntry.mutation.gql';
+  import { addEntry as addEntryMutation } from '../graphql/mutations/addEntry.mutation.gql';
   import { computed, reactive } from '@vue/composition-api';
 
   export default {
@@ -91,10 +104,12 @@
         return rootEntries;
       });
 
+      //let selectedEntry = null;
 
       let renderedContent = reactive({content: ""});
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
+        //selectedEntry = item;
       }
 
       const menu = reactive({
@@ -118,51 +133,64 @@
         treeViewLabelClick(menu.menuItem)
       }
 
-      const { mutate: addNewEntry } = useMutation(addEntryMutation)
+      const { mutate: addEntry } = useMutation(addEntryMutation)
 
       const active = reactive([])
 
-      const addEntry = () => {
+      const addEntryCommand = () => {
         const { eid } = menu.menuItem
         if (eid) {
-          console.log('Adding', eid)
+          console.log('Adding', eid);
           // failing for some reason
-          // addNewEntry({ parentEid: eid })
+          addEntry({ parentEid: eid })
 
           // refresh data
+
           // open newly created node
         }
       }
 
-      const editEntry = () => {
+      const editEntryCommand = () => {
         console.log('Editing', menu.menuItem)
       }
 
-      const renameEntry = () => {
+      const renameEntryCommand = () => {
         console.log('Renaming', menu.menuItem)
       }
 
-      const deleteEntry = () => {
+      const deleteEntryCommand = () => {
         console.log('Deleting', menu.menuItem)
       }
 
+      const cutEntryCommand = () => {
+        console.log('Cut', menu.menuItem)
+      }
 
+      const copyEntryCommand = () => {
+        console.log('Copy', menu.menuItem)
+      }
+
+      const pasteEntryCommand = () => {
+        console.log('Paste', menu.menuItem)
+      }
 
       return {
-        loading,
-        outlines,
-        treeViewItems,
-        renderedContent,
-        treeViewLabelClick,
-        menu,
         active,
+        loading,
+        menu,
         openMenu,
+        outlines,
+        renderedContent,
         selectNode,
-        addEntry,
-        editEntry,
-        renameEntry,
-        deleteEntry,
-        addNewEntry
+        treeViewItems,
+        treeViewLabelClick,
+        addEntryCommand,
+        editEntryCommand,
+        renameEntryCommand,
+        deleteEntryCommand,
+        cutEntryCommand,
+        copyEntryCommand,
+        pasteEntryCommand
       };
     },
     name: 'Outline',

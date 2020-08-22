@@ -6,7 +6,7 @@
       dark
     >
       <v-toolbar-title>
-        <h1>Outlines</h1>
+        <h1>Drupal Outliner</h1>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
