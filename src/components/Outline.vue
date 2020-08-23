@@ -84,6 +84,8 @@
   import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
   import outlinesQuery from '../graphql/queries/outlines.query.gql';
   import { addEntry as addEntryMutation } from '../graphql/mutations/addEntry.mutation.gql';
+  import { deleteEntry as deleteEntryMutation } from '../graphql/mutations/deleteEntry.mutation.gql';
+  import { renameEntry as renameEntryMutation } from '../graphql/mutations/renameEntry.mutation.gql';
   import { computed, reactive } from '@vue/composition-api';
 
   export default {
@@ -133,15 +135,14 @@
         treeViewLabelClick(menu.menuItem)
       }
 
-      const { mutate: addEntry } = useMutation(addEntryMutation)
-
       const active = reactive([])
 
+      // Add entry.
+      const { mutate: addEntry } = useMutation(addEntryMutation)
       const addEntryCommand = () => {
         const { eid } = menu.menuItem
         if (eid) {
           console.log('Adding', eid);
-          // failing for some reason
           addEntry({ parentEid: eid })
 
           // refresh data
@@ -150,16 +151,37 @@
         }
       }
 
+      // Edit entry
       const editEntryCommand = () => {
-        console.log('Editing', menu.menuItem)
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Editing', eid);
+          // edit the entry
+        }
       }
 
+      // Rename entry
+      const { mutate: renameEntry } = useMutation(renameEntryMutation)
       const renameEntryCommand = () => {
-        console.log('Renaming', menu.menuItem)
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Adding', eid);
+          renameEntry({ parentEid: eid })
+
+        }
       }
 
+      // Delete entry.
+      const { mutate: deleteEntry } = useMutation(deleteEntryMutation)
       const deleteEntryCommand = () => {
-        console.log('Deleting', menu.menuItem)
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Adding', eid);
+          deleteEntry({ parentEid: eid })
+
+          // refresh data
+
+        }
       }
 
       const cutEntryCommand = () => {
