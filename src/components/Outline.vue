@@ -90,7 +90,8 @@
 
   export default {
     setup() {
-      const {result: outlinesResult, loading } = useQuery(outlinesQuery);
+      const { result: outlinesResult, loading } = useQuery(outlinesQuery)
+
       const outlines = useResult(
               outlinesResult,
               null,
@@ -118,7 +119,8 @@
         show: false,
         x: 0,
         y: 0,
-        menuItem: {}
+        menuItem: {},
+        cutItem:{}
       })
 
       const openMenu = (event, item) => {
@@ -155,8 +157,8 @@
       const editEntryCommand = () => {
         const { eid } = menu.menuItem
         if (eid) {
-          console.log('Editing', eid);
-          // edit the entry
+          const url = 'http://drupal-outline.lndo.site'
+          window.open(`${url}/outline/entry/${menu.menuItem.eid}/edit`, '_blank')
         }
       }
 
@@ -177,15 +179,13 @@
         const { eid } = menu.menuItem
         if (eid) {
           console.log('Adding', eid);
-          deleteEntry({ parentEid: eid })
-
-          // refresh data
-
+          deleteEntry({ eid })
         }
       }
 
       const cutEntryCommand = () => {
         console.log('Cut', menu.menuItem)
+        menu.cutItem = menu.menuItem
       }
 
       const copyEntryCommand = () => {
