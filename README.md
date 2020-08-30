@@ -5,9 +5,9 @@
 ## Hierarchical Data Display
 
 One of the advantages of organizing data in a hierarchy is the ability to collapse portions of the data so 
-that initially only those entries contained within an expanded entry are displayed in the outline tree.
+that initially only entries contained within an expanded entry display in the outline tree.
 Once the visible entries are loaded, then a background task fetches the hidden entries, so they may be 
-displayed using cached data rather than making a trip to the server if their parent becomes expanded.
+quickly displayed using cached data rather than making a trip to the server if their parent becomes expanded.
 
 
 ## Project setup
