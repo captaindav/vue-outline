@@ -82,7 +82,7 @@
 
 <script>
   import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
-  import outlinesQuery from '../graphql/queries/outlines.query.gql';
+  import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
   import { addEntry as addEntryMutation } from '../graphql/entry/mutations/addEntry.mutation.gql';
   import { deleteEntry as deleteEntryMutation } from '../graphql/entry/mutations/deleteEntry.mutation.gql';
   import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
