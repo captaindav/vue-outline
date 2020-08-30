@@ -44,6 +44,7 @@ const defaultOptions = {
 
   // Client local data (see apollo-link-state)
   // clientState: { resolvers: { ... }, defaults: { ... } }
+
 }
 
 // Call this in the Vue app file

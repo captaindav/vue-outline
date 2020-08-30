@@ -83,9 +83,11 @@
 <script>
   import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
   import outlinesQuery from '../graphql/queries/outlines.query.gql';
-  import { addEntry as addEntryMutation } from '../graphql/mutations/addEntry.mutation.gql';
-  import { deleteEntry as deleteEntryMutation } from '../graphql/mutations/deleteEntry.mutation.gql';
-  import { renameEntry as renameEntryMutation } from '../graphql/mutations/renameEntry.mutation.gql';
+  import { addEntry as addEntryMutation } from '../graphql/entry/mutations/addEntry.mutation.gql';
+  import { deleteEntry as deleteEntryMutation } from '../graphql/entry/mutations/deleteEntry.mutation.gql';
+  import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
+  import { expand as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
+  import { collapse as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
   import { computed, reactive } from '@vue/composition-api';
 
   export default {
@@ -183,6 +185,26 @@
         }
       }
 
+      // Expand entry.
+      const { mutate: expandEntry } = useMutation(expandMutation)
+      const expandEntryCommand = () => {
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Adding', eid);
+          expandEntry({ eid })
+        }
+      }
+
+      // Collapse entry.
+      const { mutate: collapseEntry } = useMutation(collapseMutation)
+      const collapseEntryCommand = () => {
+        const { eid } = menu.menuItem
+        if (eid) {
+          console.log('Adding', eid);
+          collapseEntry({ eid })
+        }
+      }
+
       const cutEntryCommand = () => {
         console.log('Cut', menu.menuItem)
         menu.cutItem = menu.menuItem
@@ -210,6 +232,8 @@
         editEntryCommand,
         renameEntryCommand,
         deleteEntryCommand,
+        expandEntryCommand,
+        collapseEntryCommand,
         cutEntryCommand,
         copyEntryCommand,
         pasteEntryCommand
