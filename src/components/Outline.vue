@@ -45,10 +45,12 @@
       <v-col style="border-right: 2px solid #CCC" cols="3">
         <v-treeview
             activatable
+            open-on-click
             :items="treeViewItems"
             item-key="eid"
             item-text="name"
             item-children="children"
+            @update:open="onOpen"
         >
           <template v-slot:label="{ item, open }">
             <div
@@ -73,6 +75,7 @@
           </v-col>
           <v-col style="height: 100%" cols="12">
             <span v-html="renderedContent.content"></span>
+            <span>{{treeViewItems}}</span>
           </v-col>
         </v-row>
       </v-col>
@@ -83,10 +86,11 @@
 <script>
   import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
   import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
+  import entryQuery from '../graphql/outline/queries/entry.query.gql';
   import { addEntry as addEntryMutation } from '../graphql/entry/mutations/addEntry.mutation.gql';
   import { deleteEntry as deleteEntryMutation } from '../graphql/entry/mutations/deleteEntry.mutation.gql';
   import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
-  import { expand as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
+  import { expandEntry as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
   import { collapse as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
   import { computed, reactive } from '@vue/composition-api';
 
@@ -109,7 +113,7 @@
         return rootEntries;
       });
 
-      //let selectedEntry = null;
+      const { refetch } = useQuery(entryQuery)
 
       let renderedContent = reactive({content: ""});
       const treeViewLabelClick = (item) => {
@@ -187,22 +191,16 @@
 
       // Expand entry.
       const { mutate: expandEntry } = useMutation(expandMutation)
-      const expandEntryCommand = () => {
-        const { eid } = menu.menuItem
-        if (eid) {
-          console.log('Adding', eid);
-          expandEntry({ eid })
-        }
+      const expandEntryCommand = (eid) => {
+        console.log('expanding', eid);
+        expandEntry({ eid })
       }
 
       // Collapse entry.
       const { mutate: collapseEntry } = useMutation(collapseMutation)
-      const collapseEntryCommand = () => {
-        const { eid } = menu.menuItem
-        if (eid) {
-          console.log('Adding', eid);
-          collapseEntry({ eid })
-        }
+      const collapseEntryCommand = (eid) => {
+        console.log('Adding', eid);
+        collapseEntry({ eid })
       }
 
       const cutEntryCommand = () => {
@@ -218,7 +216,31 @@
         console.log('Paste', menu.menuItem)
       }
 
+      const onOpen = async (ids) => {
+        const opened = ids.pop()
+        console.log('opened', opened)
+
+        if (opened) {
+          console.log('fetching', opened)
+          expandEntryCommand(opened)
+          const entry = await Promise.all([refetch({eid: opened})])
+          if (entry[0] && !entry[0].errors) {
+            const entryData = entry[0].data.entry
+            if (entryData.children) {
+              for ( const child of entryData.children) {
+                //if has children
+                child.children = [{}]
+              }
+            }
+            console.log(entryData)
+          }
+        }
+        console.log(opened)
+
+      }
+
       return {
+        onOpen,
         active,
         loading,
         menu,

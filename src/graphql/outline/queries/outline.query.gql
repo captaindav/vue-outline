@@ -1,5 +1,5 @@
-query Outline {
-  outline(oid: "outline_two") {
+query Outline ($oid: Int!) {
+  outline(oid: $oid) {
     name
     oid
     rootEntry {
