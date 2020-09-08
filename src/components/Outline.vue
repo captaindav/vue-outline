@@ -44,13 +44,14 @@
     <v-row class="fill-height">
       <v-col style="border-right: 2px solid #CCC" cols="3">
         <v-treeview
-            activatable
-            open-on-click
             :items="treeViewItems"
+            :load-children="fetchEntries"
+            activatable
+            :open.sync="opened"
             item-key="eid"
             item-text="name"
             item-children="children"
-            @update:open="onOpen"
+            open-on-click
         >
           <template v-slot:label="{ item, open }">
             <div
@@ -96,26 +97,28 @@
 
   export default {
     setup() {
+      // get initial outlines query and extract root entries
+      const opened = reactive([])
       const { result: outlinesResult, loading } = useQuery(outlinesQuery)
-
       const outlines = useResult(
-              outlinesResult,
-              null,
-              data => data.outlines.outlines);
+        outlinesResult,
+        null,
+        data => data.outlines.outlines.reduce(
+          (acc, outline) => {
+            const { rootEntry } = outline
+            rootEntry.children = []
+            acc.push(rootEntry)
+            console.log(acc)
+            return acc
+          }, []
+        )
+      )
+      const treeViewItems = computed(() => outlines.value || [])
 
-      const treeViewItems = computed(() =>  {
-        const rootEntries = [];
-        if (outlines && outlines.value) {
-          for (const outline of outlines.value) {
-            rootEntries.push(outline.rootEntry);
-          }
-        }
-        return rootEntries;
-      });
-
+      // get entry query
       const { refetch } = useQuery(entryQuery)
 
-      let renderedContent = reactive({content: ""});
+      let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
         //selectedEntry = item;
@@ -216,7 +219,7 @@
         console.log('Paste', menu.menuItem)
       }
 
-      const onOpen = async (ids) => {
+      /* const onOpen = async (ids) => {
         const opened = ids.pop()
         console.log('opened', opened)
 
@@ -236,29 +239,43 @@
           }
         }
         console.log(opened)
+      }*/
 
+      const fetchEntries = async (entry) => {
+        console.log(entry)
+        const entries = await Promise.all([refetch({ eid: entry.eid })])
+
+        if (!entries[0] || entries[0].errors) return []
+          const children = entries[0].data.entry.children || []
+          for ( const child of children) {
+            child.children = []
+            entry.children.push(child)
+            console.log(child)
+          }
       }
 
       return {
-        onOpen,
         active,
+        addEntryCommand,
+        collapseEntryCommand,
+        copyEntryCommand,
+        cutEntryCommand,
+        deleteEntryCommand,
+        editEntryCommand,
+        expandEntryCommand,
+        fetchEntries,
         loading,
         menu,
+        // onOpen,
+        opened,
         openMenu,
         outlines,
+        pasteEntryCommand,
+        renameEntryCommand,
         renderedContent,
         selectNode,
         treeViewItems,
         treeViewLabelClick,
-        addEntryCommand,
-        editEntryCommand,
-        renameEntryCommand,
-        deleteEntryCommand,
-        expandEntryCommand,
-        collapseEntryCommand,
-        cutEntryCommand,
-        copyEntryCommand,
-        pasteEntryCommand
       };
     },
     name: 'Outline',

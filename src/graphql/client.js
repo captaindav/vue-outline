@@ -9,7 +9,7 @@ const httpLink = createHttpLink({
 const cache = new InMemoryCache();
 const resolvers = {};
 
-//cache.writeData({ data: { favoriteCharacters: [] } });
+// cache.writeData({ data: { outlines: [] } });
 
 export const apolloClient = new ApolloClient({
   link: httpLink,

@@ -7,14 +7,6 @@ query Outlines {
         expanded
         content
         rendered
-        children {
-          eid
-          parentEid
-          name
-          expanded
-          content
-          rendered
-        }
       }
     }
   }
