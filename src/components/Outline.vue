@@ -45,7 +45,7 @@
       <v-col style="border-right: 2px solid #CCC" cols="3">
         <v-treeview
             :items="treeViewItems"
-            :load-children="fetchEntries"
+            :load-children="getChildren"
             activatable
             :open.sync="opened"
             item-key="eid"
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import { useQuery, useMutation, useResult } from '@vue/apollo-composable';
+  import { useQuery, useMutation } from '@vue/apollo-composable';
   import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
   import entryQuery from '../graphql/outline/queries/entry.query.gql';
   import { addEntry as addEntryMutation } from '../graphql/entry/mutations/addEntry.mutation.gql';
@@ -93,30 +93,36 @@
   import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
   import { expandEntry as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
   import { collapse as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
-  import { computed, reactive } from '@vue/composition-api';
+  import { reactive } from '@vue/composition-api';
 
   export default {
     setup() {
+      const treeViewItems = reactive([])
       // get initial outlines query and extract root entries
       const opened = reactive([])
-      const { result: outlinesResult, loading } = useQuery(outlinesQuery)
-      const outlines = useResult(
-        outlinesResult,
-        null,
-        data => data.outlines.outlines.reduce(
-          (acc, outline) => {
-            const { rootEntry } = outline
-            rootEntry.children = []
-            acc.push(rootEntry)
-            console.log(acc)
-            return acc
-          }, []
-        )
-      )
-      const treeViewItems = computed(() => outlines.value || [])
+      const { loading, onResult } = useQuery(outlinesQuery)
+      onResult(result => {
+        const { data: { outlines: { outlines } } } = result
+        for (const outline of outlines) {
+          treeViewItems.push({ ...outline.rootEntry, children: [] })
+        }
+      })
 
-      // get entry query
+      // get children entry query
       const { refetch } = useQuery(entryQuery)
+      const getChildren = async (entry) => {
+        console.log(entry)
+        const entries = await Promise.all([refetch({ eid: entry.eid })])
+
+        if (!entries[0] || entries[0].errors) return []
+          const children = entries[0].data.entry.children || []
+          if (children.length) {
+            for ( const child of children) {
+              entry.children.push({ ...child, children: [] })
+            }
+          }
+          else entry.children = []
+      }
 
       let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
@@ -149,16 +155,16 @@
       const active = reactive([])
 
       // Add entry.
-      const { mutate: addEntry } = useMutation(addEntryMutation)
-      const addEntryCommand = () => {
+      const { mutate: mutateAdd } = useMutation(addEntryMutation)
+      const addEntryCommand = async () => {
         const { eid } = menu.menuItem
         if (eid) {
           console.log('Adding', eid);
-          addEntry({ parentEid: eid })
+          const { data: { addEntry } } = await mutateAdd({ parentEid: eid })
+          console.log(addEntry)
+          // break out children gathering
+          // -> refetch id -> add it to menu
 
-          // refresh data
-
-          // open newly created node
         }
       }
 
@@ -176,7 +182,7 @@
       const renameEntryCommand = () => {
         const { eid } = menu.menuItem
         if (eid) {
-          console.log('Adding', eid);
+          console.log('Rename', eid);
           renameEntry({ parentEid: eid })
 
         }
@@ -187,7 +193,7 @@
       const deleteEntryCommand = () => {
         const { eid } = menu.menuItem
         if (eid) {
-          console.log('Adding', eid);
+          console.log('Delete', eid);
           deleteEntry({ eid })
         }
       }
@@ -195,14 +201,14 @@
       // Expand entry.
       const { mutate: expandEntry } = useMutation(expandMutation)
       const expandEntryCommand = (eid) => {
-        console.log('expanding', eid);
+        console.log('Expand', eid);
         expandEntry({ eid })
       }
 
       // Collapse entry.
       const { mutate: collapseEntry } = useMutation(collapseMutation)
       const collapseEntryCommand = (eid) => {
-        console.log('Adding', eid);
+        console.log('Collapse', eid);
         collapseEntry({ eid })
       }
 
@@ -219,40 +225,7 @@
         console.log('Paste', menu.menuItem)
       }
 
-      /* const onOpen = async (ids) => {
-        const opened = ids.pop()
-        console.log('opened', opened)
 
-        if (opened) {
-          console.log('fetching', opened)
-          expandEntryCommand(opened)
-          const entry = await Promise.all([refetch({eid: opened})])
-          if (entry[0] && !entry[0].errors) {
-            const entryData = entry[0].data.entry
-            if (entryData.children) {
-              for ( const child of entryData.children) {
-                //if has children
-                child.children = [{}]
-              }
-            }
-            console.log(entryData)
-          }
-        }
-        console.log(opened)
-      }*/
-
-      const fetchEntries = async (entry) => {
-        console.log(entry)
-        const entries = await Promise.all([refetch({ eid: entry.eid })])
-
-        if (!entries[0] || entries[0].errors) return []
-          const children = entries[0].data.entry.children || []
-          for ( const child of children) {
-            child.children = []
-            entry.children.push(child)
-            console.log(child)
-          }
-      }
 
       return {
         active,
@@ -263,13 +236,11 @@
         deleteEntryCommand,
         editEntryCommand,
         expandEntryCommand,
-        fetchEntries,
+        getChildren,
         loading,
         menu,
-        // onOpen,
         opened,
         openMenu,
-        outlines,
         pasteEntryCommand,
         renameEntryCommand,
         renderedContent,
