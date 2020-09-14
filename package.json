@@ -29,6 +29,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "graphql-tag": "^2.9.0",
+    "lodash": "^4.17.20",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-apollo": "~0.22.2",

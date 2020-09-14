@@ -43,15 +43,22 @@
 
     <v-row class="fill-height">
       <v-col style="border-right: 2px solid #CCC" cols="3">
+        <v-progress-linear
+          :active="loading.children || loading.init"
+          indeterminate
+        />
+        {{opened}} {{open}}
         <v-treeview
             :items="treeViewItems"
             :load-children="getChildren"
+            :open="open"
             activatable
-            :open.sync="opened"
             item-key="eid"
             item-text="name"
             item-children="children"
             open-on-click
+            transition
+            @update:open="setExpand"
         >
           <template v-slot:label="{ item, open }">
             <div
@@ -94,34 +101,59 @@
   import { expandEntry as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
   import { collapse as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
   import { reactive } from '@vue/composition-api';
+  import { difference } from 'lodash';
 
   export default {
     setup() {
       const treeViewItems = reactive([])
       // get initial outlines query and extract root entries
       const opened = reactive([])
-      const { loading, onResult } = useQuery(outlinesQuery)
-      onResult(result => {
+      let open = reactive([])
+
+      let genResults = false
+      const { loading: init, onResult } = useQuery(outlinesQuery)
+      const loading = reactive({
+        children: false,
+        init
+      })
+
+      onResult(async result => {
         const { data: { outlines: { outlines } } } = result
+        const items = []
+        loading.children = true
         for (const outline of outlines) {
-          treeViewItems.push({ ...outline.rootEntry, children: [] })
+          const { rootEntry } = outline
+          const children = await getChildren({ ...rootEntry, children: [] }, false)
+          console.log(children)
+          items.push({ ...rootEntry, children })
         }
+        treeViewItems.push(...items)
+        loading.children = false
+        open.push(...opened)
       })
 
       // get children entry query
       const { refetch } = useQuery(entryQuery)
-      const getChildren = async (entry) => {
-        console.log(entry)
-        const entries = await Promise.all([refetch({ eid: entry.eid })])
+      const getChildren = async (entry, single = true) => {
+        console.log('fetching children for:', entry.eid)
 
+        if (!entry.expanded && !single) return []
+        if (entry.expanded) {
+          opened.push(entry.eid)
+        }
+
+        const entries = await Promise.all([refetch({ eid: entry.eid })])
         if (!entries[0] || entries[0].errors) return []
-          const children = entries[0].data.entry.children || []
-          if (children.length) {
-            for ( const child of children) {
-              entry.children.push({ ...child, children: [] })
-            }
+
+        const children = entries[0].data.entry.children || []
+        if (children.length) {
+          for ( const child of children) {
+            const subChildren = await getChildren({ ...child, children: [] }, single)
+            entry.children.push({ ...child, children: subChildren })
           }
-          else entry.children = []
+        }
+        else entry.children = undefined
+        return entry.children
       }
 
       let renderedContent = reactive({ content: "" });
@@ -225,6 +257,15 @@
         console.log('Paste', menu.menuItem)
       }
 
+      const setExpand = (val) => {
+        const diff = difference(open, val)
+        if (val.length === opened.length && !diff.length) return
+        const expanded = val.length > open.length
+        open.value = val
+        expandEntryCommand(diff[0])
+        console.log('Expand', diff, expanded)
+      }
+
 
 
       return {
@@ -236,15 +277,18 @@
         deleteEntryCommand,
         editEntryCommand,
         expandEntryCommand,
+        genResults,
         getChildren,
         loading,
         menu,
+        open,
         opened,
         openMenu,
         pasteEntryCommand,
         renameEntryCommand,
         renderedContent,
         selectNode,
+        setExpand,
         treeViewItems,
         treeViewLabelClick,
       };
