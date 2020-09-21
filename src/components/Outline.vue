@@ -17,7 +17,7 @@
           <v-list-item-title>Edit</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="renameEntryCommand">
+        <v-list-item disabled @click="renameEntryCommand">
           <v-list-item-title>Rename</v-list-item-title>
         </v-list-item>
 
@@ -29,11 +29,14 @@
           <v-list-item-title>Cut</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="copyEntryCommand">
+        <v-list-item disabled @click="copyEntryCommand">
           <v-list-item-title>Copy</v-list-item-title>
         </v-list-item>
 
-        <v-list-item @click="pasteEntryCommand">
+        <v-list-item
+          :disabled="!menu.cutItem"
+          @click="pasteEntryCommand"
+        >
           <v-list-item-title>Paste</v-list-item-title>
         </v-list-item>
 
@@ -47,10 +50,10 @@
           :active="loading.children || loading.init"
           indeterminate
         />
-        {{opened}} {{open}}
+        {{open}}
         <v-treeview
             :items="treeViewItems"
-            :load-children="getChildren"
+            :load-children="loadChildren"
             :open="open"
             activatable
             item-key="eid"
@@ -58,7 +61,7 @@
             item-children="children"
             open-on-click
             transition
-            @update:open="setExpand"
+            @update:open="setExpanded"
         >
           <template v-slot:label="{ item, open }">
             <div
@@ -99,16 +102,16 @@
   import { deleteEntry as deleteEntryMutation } from '../graphql/entry/mutations/deleteEntry.mutation.gql';
   import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
   import { expandEntry as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
-  import { collapse as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
+  import { collapseEntry as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
+  import { setParentEntry as setParentMutation } from '../graphql/entry/mutations/setParentEntry.mutation.gql';
   import { reactive } from '@vue/composition-api';
-  import { difference } from 'lodash';
+  import { difference, indexOf } from 'lodash';
 
   export default {
     setup() {
       const treeViewItems = reactive([])
       // get initial outlines query and extract root entries
-      const opened = reactive([])
-      let open = reactive([])
+      const open = reactive([])
 
       let genResults = false
       const { loading: init, onResult } = useQuery(outlinesQuery)
@@ -120,12 +123,12 @@
       onResult(async result => {
         const { data: { outlines: { outlines } } } = result
         const items = []
+        const opened = []
         loading.children = true
         for (const outline of outlines) {
           const { rootEntry } = outline
-          const children = await getChildren({ ...rootEntry, children: [] }, false)
-          console.log(children)
-          items.push({ ...rootEntry, children })
+          const childData = await getChildren({ ...rootEntry, children: [] }, opened, false)
+          items.push({ ...rootEntry, children: childData.children })
         }
         treeViewItems.push(...items)
         loading.children = false
@@ -134,26 +137,26 @@
 
       // get children entry query
       const { refetch } = useQuery(entryQuery)
-      const getChildren = async (entry, single = true) => {
+      const getChildren = async (entry, opened, single = true) => {
         console.log('fetching children for:', entry.eid)
 
-        if (!entry.expanded && !single) return []
+        if (!entry.expanded && !single) return { children: [], opened }
         if (entry.expanded) {
           opened.push(entry.eid)
         }
 
         const entries = await Promise.all([refetch({ eid: entry.eid })])
-        if (!entries[0] || entries[0].errors) return []
+        if (!entries[0] || entries[0].errors) return { children: [], opened }
 
         const children = entries[0].data.entry.children || []
         if (children.length) {
           for ( const child of children) {
-            const subChildren = await getChildren({ ...child, children: [] }, single)
-            entry.children.push({ ...child, children: subChildren })
+            const childData = await getChildren({ ...child, children: [] }, opened, single)
+            entry.children.push({ ...child, children: childData.children })
           }
         }
         else entry.children = undefined
-        return entry.children
+        return { children: entry.children, opened }
       }
 
       let renderedContent = reactive({ content: "" });
@@ -162,12 +165,19 @@
         //selectedEntry = item;
       }
 
+      const loadChildren = async (entry) => {
+        const opened = []
+        const childData = await getChildren(entry, opened, true)
+        open.push(...opened)
+        return childData.children
+      }
+
       const menu = reactive({
         show: false,
         x: 0,
         y: 0,
         menuItem: {},
-        cutItem:{}
+        cutItem: null
       })
 
       const openMenu = (event, item) => {
@@ -244,6 +254,13 @@
         collapseEntry({ eid })
       }
 
+      // setParent entry.
+      const { mutate: setParentEntry } = useMutation(setParentMutation)
+      const setParentEntryCommand = (eid, parentEid) => {
+        console.log('SetParent', eid, parentEid);
+        setParentEntry({ eid, parentEid })
+      }
+
       const cutEntryCommand = () => {
         console.log('Cut', menu.menuItem)
         menu.cutItem = menu.menuItem
@@ -254,19 +271,30 @@
       }
 
       const pasteEntryCommand = () => {
-        console.log('Paste', menu.menuItem)
+        console.log('Paste', menu.menuItem, menu.cutItem)
+        const { eid } = menu.cutItem
+        const { eid: parentEid } = menu.menuItem
+        if (!eid || !parentEid) return
+        setParentEntryCommand(eid, parentEid)
       }
 
-      const setExpand = (val) => {
-        const diff = difference(open, val)
-        if (val.length === opened.length && !diff.length) return
-        const expanded = val.length > open.length
-        open.value = val
-        expandEntryCommand(diff[0])
-        console.log('Expand', diff, expanded)
+      const setExpanded = (val) => {
+        const expandItems = difference(val, open)
+        if (expandItems.length) {
+          for (const item of expandItems) {
+            open.push(item)
+            expandEntryCommand(item)
+          }
+        }
+        const collapseItems = difference(open, val)
+        if (collapseItems.length) {
+          for (const item of collapseItems) {
+            const ind = indexOf(open, item)
+            open.splice(ind, 1)
+            collapseEntryCommand(item)
+          }
+        }
       }
-
-
 
       return {
         active,
@@ -277,18 +305,18 @@
         deleteEntryCommand,
         editEntryCommand,
         expandEntryCommand,
+        setParentEntryCommand,
         genResults,
-        getChildren,
+        loadChildren,
         loading,
         menu,
         open,
-        opened,
         openMenu,
         pasteEntryCommand,
         renameEntryCommand,
         renderedContent,
         selectNode,
-        setExpand,
+        setExpanded,
         treeViewItems,
         treeViewLabelClick,
       };
