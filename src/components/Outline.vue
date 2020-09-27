@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="py-0 fill-height">
+  <v-container fluid class="pa-0 fill-height">
     <v-menu
       v-model="menu.show"
       :position-x="menu.x"
@@ -8,7 +8,6 @@
       offset-y
     >
       <v-list>
-
         <v-list-item @click="addEntryCommand">
           <v-list-item-title>Add</v-list-item-title>
         </v-list-item>
@@ -39,18 +38,15 @@
         >
           <v-list-item-title>Paste</v-list-item-title>
         </v-list-item>
-
       </v-list>
-
     </v-menu>
 
-    <v-row class="fill-height">
-      <v-col style="border-right: 2px solid #CCC" cols="3">
+    <splitpanes class="default-theme">
+      <pane size="15" min-size="15">
         <v-progress-linear
           :active="loading.children || loading.init"
           indeterminate
         />
-        {{open}}
         <v-treeview
             :items="treeViewItems"
             :load-children="loadChildren"
@@ -78,40 +74,53 @@
             </div>
           </template>
         </v-treeview>
-      </v-col>
-      <v-col cols="9">
-        <v-row  class="fill-height">
-          <v-col v-if="false" style="border-bottom: 2px solid #CCC; height: 50%" cols="12">
-            Entries
-          </v-col>
-          <v-col style="height: 100%" cols="12">
-            <span v-html="renderedContent.content"></span>
-            <span>{{treeViewItems}}</span>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+      </pane>
+      <pane>
+        <splitpanes horizontal>
+          <pane size="20" style="overflow-y: auto">{{treeViewItems}}</pane>
+          <pane>
+            <v-row class="fill-height">
+              <v-col style="height: 100%" cols="12">
+                <span v-html="renderedContent.content"></span>
+              </v-col>
+            </v-row>
+          </pane>
+        </splitpanes>
+      </pane>
+    </splitpanes>
   </v-container>
+  
 </template>
 
 <script>
+  // components
+  import { Pane, Splitpanes } from 'splitpanes'
+  import 'splitpanes/dist/splitpanes.css'
+
+  // utilities
   import { useQuery, useMutation } from '@vue/apollo-composable';
+  import { reactive } from '@vue/composition-api';
+  import { difference, indexOf } from 'lodash';
+  
+  // queries
   import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
   import entryQuery from '../graphql/outline/queries/entry.query.gql';
+
+  //mutations
   import { addEntry as addEntryMutation } from '../graphql/entry/mutations/addEntry.mutation.gql';
   import { deleteEntry as deleteEntryMutation } from '../graphql/entry/mutations/deleteEntry.mutation.gql';
   import { renameEntry as renameEntryMutation } from '../graphql/entry/mutations/renameEntry.mutation.gql';
   import { expandEntry as expandMutation } from '../graphql/entry/mutations/expand.mutation.gql';
   import { collapseEntry as collapseMutation } from '../graphql/entry/mutations/collapse.mutation.gql';
   import { setParentEntry as setParentMutation } from '../graphql/entry/mutations/setParentEntry.mutation.gql';
-  import { reactive } from '@vue/composition-api';
-  import { difference, indexOf } from 'lodash';
 
   export default {
     setup() {
       const treeViewItems = reactive([])
       // get initial outlines query and extract root entries
       const open = reactive([])
+      const activeOutlines = reactive([1])
+      const availableOutlines = reactive([])
 
       let genResults = false
       const { loading: init, onResult } = useQuery(outlinesQuery)
@@ -127,6 +136,10 @@
         loading.children = true
         for (const outline of outlines) {
           const { rootEntry } = outline
+          // add to list of available outlines
+          availableOutlines.push(rootEntry.eid)
+          //check if outline is active, if so continue
+          if (!activeOutlines.includes(rootEntry.eid)) continue;
           const childData = await getChildren({ ...rootEntry, children: [] }, opened, false)
           items.push({ ...rootEntry, children: childData.children })
         }
@@ -298,6 +311,8 @@
 
       return {
         active,
+        activeOutlines,
+        availableOutlines,
         addEntryCommand,
         collapseEntryCommand,
         copyEntryCommand,
@@ -322,5 +337,10 @@
       };
     },
     name: 'Outline',
+
+    components : {
+      Pane,
+      Splitpanes
+    }
   }
 </script>
