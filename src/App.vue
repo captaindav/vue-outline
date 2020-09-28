@@ -1,5 +1,14 @@
 <template>
   <v-app>
+    <v-dialog
+      v-model="dialog"
+      max-width="400px"
+    >
+      <v-card height="300px">
+        {{aboutText}}
+      </v-card>
+    </v-dialog>
+
     <v-app-bar
       app
       color="primary"
@@ -11,95 +20,46 @@
 
       <v-spacer></v-spacer>
 
-      <v-dialog
-        v-model="dialog"
-        persistent
-        max-width="500px"
-      >
+      <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-app-bar-nav-icon v-on="on">
-            <v-icon>mdi-cog</v-icon>
-          </v-app-bar-nav-icon>
-        </template>
-        <v-card>
-          <v-card-title>
-            Configure Outlines
-            <v-spacer />
-            <v-btn
-              fab
-              icon
-              @click="dialog = !dialog"
-            >
-              <v-icon>mdi-close</v-icon>
+          <v-toolbar-items> 
+            <v-btn text v-on="on">
+              <v-icon>mdi-menu</v-icon>
             </v-btn>
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-list>
-              <v-list-item-group multiple>
-                <v-list-item
-                  v-for="outline in outlines"
-                  :key="`oi-${outline.eid}`"
-                >
-                  <template v-slot:default="{ active }">
-                    <v-list-item-action>
-                      <v-checkbox
-                        :input-value="active"
-                        color="primary"
-                      ></v-checkbox>
-                    </v-list-item-action>
-
-                    <v-list-item-content>
-                      <v-list-item-title>{{outline.name}}</v-list-item-title>
-                    </v-list-item-content>
-                  </template>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+          </v-toolbar-items>
+        </template>
+        <v-list>
+          <v-list-item @click="dialog = true">
+            <v-list-item-title>About</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-main>
-      <Outline/>
+      <outline />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Outline from './components/Outline';
-import { outlinesQuery } from "./graphql/queries.js";
+  import Outline from './components/Outline';
 
-export default {
-  name: 'App',
-  components: {
-    Outline,
-  },
+  export default {
+    name: 'App',
 
-  apollo: {
-    outlines: {
-      query: outlinesQuery
-    }
-  },
+    setup () {
+      const dialog = false
+      const aboutText = 'About Text'
 
-  data: () => ({
-    dialog: false,
-    outlines: [],
-  }),
+      return {
+        dialog,
+        aboutText,
+      }
+    },
 
-  mounted () {
-    this.outlines.push(
-      {
-        eid: 1,
-        name: 'Outline 1',
-        active: true,
-      },
-      {
-        eid: 2,
-        name: 'Outline 2',
-        active: false,
-      },
-    )
-  }
-};
+    components: {
+      Outline,
+    },
+    
+  };
 </script>

@@ -28,7 +28,6 @@ cache.writeData({
     ]
   },
 });
-console.log(cache)
 
 export const apolloClient = new ApolloClient({
   link: httpLink,

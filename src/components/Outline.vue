@@ -47,6 +47,9 @@
           :active="loading.children || loading.init"
           indeterminate
         />
+        
+        <toolbar />
+        
         <v-treeview
             :items="treeViewItems"
             :load-children="loadChildren"
@@ -95,6 +98,7 @@
 <script>
   // components
   import { Pane, Splitpanes } from 'splitpanes'
+  import Toolbar from './Toolbar'
   import 'splitpanes/dist/splitpanes.css'
 
   // utilities
@@ -119,7 +123,7 @@
       const treeViewItems = reactive([])
       // get initial outlines query and extract root entries
       const open = reactive([])
-      const activeOutlines = reactive([1])
+      const activeOutlines = reactive([])
       const availableOutlines = reactive([])
 
       let genResults = false
@@ -139,7 +143,7 @@
           // add to list of available outlines
           availableOutlines.push(rootEntry.eid)
           //check if outline is active, if so continue
-          if (!activeOutlines.includes(rootEntry.eid)) continue;
+          // if (!activeOutlines.includes(rootEntry.eid)) continue;
           const childData = await getChildren({ ...rootEntry, children: [] }, opened, false)
           items.push({ ...rootEntry, children: childData.children })
         }
@@ -245,9 +249,11 @@
 
       // Delete entry.
       const { mutate: deleteEntry } = useMutation(deleteEntryMutation)
-      const deleteEntryCommand = () => {
+      const deleteEntryCommand = async () => {
         const { eid } = menu.menuItem
-        if (eid) {
+        // replace with vue/vuetify dialog
+        const confirm = window.confirm(`Are you sure you want to delete ${eid}`)
+        if (confirm && eid) {
           console.log('Delete', eid);
           deleteEntry({ eid })
         }
@@ -340,7 +346,8 @@
 
     components : {
       Pane,
-      Splitpanes
+      Splitpanes,
+      Toolbar,
     }
   }
 </script>
