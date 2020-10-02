@@ -2,10 +2,10 @@ query Outlines {
   outlines {
     outlines {
       rootEntry {
-        eid
-        name
-        expanded
         content
+        eid
+        expanded
+        name
         rendered
       }
     }

@@ -1,11 +1,5 @@
 query Entry ($eid: Int!) {
   entry(eid: $eid) {
-    content
-    eid
-    expanded
-    name
-    parentEid
-    rendered
     children {
       content
       eid
@@ -14,5 +8,11 @@ query Entry ($eid: Int!) {
       parentEid
       rendered
     }
+    content
+    eid
+    expanded
+    name
+    parentEid
+    rendered
   }
 }

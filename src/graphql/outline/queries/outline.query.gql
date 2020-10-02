@@ -3,19 +3,19 @@ query Outline ($oid: Int!) {
     name
     oid
     rootEntry {
-      eid
-      name
-      expanded
-      content
-      rendered
       children {
-        eid
-        parentEid
-        name
-        expanded
         content
+        eid
+        expanded
+        name
+        parentEid
         rendered
       }
+      content
+      eid
+      expanded
+      name
+      rendered
     }
   }
 }
