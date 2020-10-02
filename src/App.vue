@@ -15,7 +15,7 @@
       dark
     >
       <v-toolbar-title>
-        <h1>Drupal Outline Demo</h1>
+        <h1>Drupal Vue Outline Demo</h1>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
