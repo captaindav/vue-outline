@@ -22,14 +22,9 @@ proxy:
   mailhog:
     - mail.drupal-outline.lndo.site
 tooling:
-  install1:
+  install:
     service: appserver
-    description: "Install Step 1"
-    cmd:
-      - mkdir drupal && cp composer/composer.json drupal
-  install2:
-    service: appserver
-    description: "Install Step 2"
+    description: "Install Drupal Core and modules."
     cmd:
       - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
       - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
