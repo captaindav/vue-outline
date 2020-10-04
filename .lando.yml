@@ -7,11 +7,9 @@ config:
 services:
   appserver:
     run:
-      - mkdir drupal
-      - cp composer/composer.json drupal
-      - cd drupal
+      - mkdir drupal&cd drupal
+      - cp ../composer/composer.json drupal
       - composer install
-      - cd drupal
       - echo ''
       - echo ''
       - echo '#######################################################################################'
