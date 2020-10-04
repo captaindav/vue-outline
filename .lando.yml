@@ -10,7 +10,7 @@ services:
       - mkdir drupal
       - cp composer/composer.json drupal
       - cd drupal
-      - COMPOSER_MEMORY_LIMIT=-1 composer install
+      - composer install
       - cd drupal
       - echo ''
       - echo ''
