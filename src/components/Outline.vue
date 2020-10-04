@@ -51,7 +51,7 @@
         <toolbar />
         
         <v-treeview
-            :items="treeViewItems"
+            :items="treeViewItems2"
             :load-children="loadChildren"
             :open="open"
             activatable
@@ -103,8 +103,9 @@
 
   // utilities
   import { useQuery, useMutation } from '@vue/apollo-composable';
-  import { reactive } from '@vue/composition-api';
+  import { computed, reactive } from '@vue/composition-api';
   import { difference, indexOf } from 'lodash';
+  import pathify from '@/utils/pathify'
   
   // queries
   import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
@@ -119,13 +120,24 @@
   import { setParentEntry as setParentMutation } from '../graphql/entry/mutations/setParentEntry.mutation.gql';
 
   export default {
-    setup() {
+    setup(props, context) {
+      const { get } = pathify(context)
+      const configItems = get('drawer/items')
+      const selectedConfig = get('drawer/selected')
+
       const treeViewItems = reactive([])
+      // dynamic configurations
+      const treeViewItems2 = computed(() => {
+        const outlines = configItems.value[selectedConfig.value].outlines || []
+        return (!outlines.length)
+          ? treeViewItems
+          : treeViewItems.filter(item => outlines.includes(item.eid))
+      })
+
       // get initial outlines query and extract root entries
       const open = reactive([])
-      const activeOutlines = reactive([])
       const availableOutlines = reactive([])
-
+      
       let genResults = false
       const { loading: init, onResult } = useQuery(outlinesQuery)
       const loading = reactive({
@@ -140,10 +152,7 @@
         loading.children = true
         for (const outline of outlines) {
           const { rootEntry } = outline
-          // add to list of available outlines
           availableOutlines.push(rootEntry.eid)
-          //check if outline is active, if so continue
-          // if (!activeOutlines.includes(rootEntry.eid)) continue;
           const childData = await getChildren({ ...rootEntry, children: [] }, opened, false)
           items.push({ ...rootEntry, children: childData.children })
         }
@@ -317,7 +326,6 @@
 
       return {
         active,
-        activeOutlines,
         availableOutlines,
         addEntryCommand,
         collapseEntryCommand,
@@ -339,6 +347,7 @@
         selectNode,
         setExpanded,
         treeViewItems,
+        treeViewItems2,
         treeViewLabelClick,
       };
     },

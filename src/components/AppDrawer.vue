@@ -2,21 +2,26 @@
   <v-navigation-drawer
     app
     clipped
-    link
     mini-variant
     permanent
   >
-    <div class="pt-2">
-      <v-btn
-        v-for="item in items"
-        :key="item.title"
-        block
-        text
-        tile
+    <v-list>
+      <v-list-item-group
+        v-model="selected"
+        mandatory
+        color="primary"
       >
-        <v-icon v-text="item.icon" />
-      </v-btn>
-    </div>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+        >
+          <v-list-item-icon>
+            <v-icon v-text="item.icon" />
+          </v-list-item-icon>
+          <v-list-item-content />
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
   </v-navigation-drawer>
 </template>
 
@@ -29,9 +34,11 @@
     setup(props, context) {
       const { sync } = pathify(context)
       const items = sync('drawer/items')
+      const selected = sync('drawer/selected')
 
       return {
-        items
+        items,
+        selected
       }
     },
 

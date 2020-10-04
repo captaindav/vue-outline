@@ -1,10 +1,11 @@
 import { make } from 'vuex-pathify'
 
 const state = {
+  selected: 0,
   items: [
-    { title: 'Home', icon: 'mdi-home-city' },
-    { title: 'My Account', icon: 'mdi-account' },
-    { title: 'Users', icon: 'mdi-account-group-outline' }
+    { icon: 'mdi-home', outlines: [] },
+    { icon: 'mdi-account', outlines: [1] },
+    { icon: 'mdi-account', outlines: [2] },
   ],
 }
 
