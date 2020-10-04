@@ -7,10 +7,8 @@ config:
 services:
   appserver:
     run:
-      - mkdir drupal && cp composer/composer.json drupal
-      - cd drupal && composer install
-      - cd drupal && git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git
-      - cd drupal/web/modules && ln -s ../../outline outline
+      - mkdir drupal && cp composer/composer.json drupal && cd drupal && composer install
+      - cd drupal && git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
       - cd drupal && drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
       - cd drupal && drush -y en content_moderation, media, media_library, workflows
       - cd drupal && drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
