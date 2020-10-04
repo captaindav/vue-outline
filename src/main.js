@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify';
 import VueApollo from 'vue-apollo';
 import { provide } from '@vue/composition-api';
 import { DefaultApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from './graphql/client';
+import apolloClient from './graphql/client';
 
 Vue.use(VueApollo);
 

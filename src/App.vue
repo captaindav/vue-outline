@@ -9,8 +9,11 @@
       </v-card>
     </v-dialog>
 
+    <app-drawer />
+
     <v-app-bar
       app
+      clipped-left
       color="primary"
       dark
     >
@@ -42,6 +45,7 @@
 </template>
 
 <script>
+  import AppDrawer from './components/AppDrawer';
   import Outline from './components/Outline';
 
   export default {
@@ -58,8 +62,21 @@
     },
 
     components: {
+      AppDrawer,
       Outline,
     },
     
   };
 </script>
+
+<style>
+  .splitpanes--vertical > .splitpanes__splitter {
+    min-width: 4px;
+    background: rgba(0,0,0,.2);
+  }
+
+  .splitpanes--horizontal > .splitpanes__splitter {
+    min-height: 4px;
+    background: rgba(0,0,0,.2);
+  }
+</style>

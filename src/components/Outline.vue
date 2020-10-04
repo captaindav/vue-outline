@@ -41,7 +41,7 @@
       </v-list>
     </v-menu>
 
-    <splitpanes class="default-theme">
+    <splitpanes class="">
       <pane size="15" min-size="15">
         <v-progress-linear
           :active="loading.children || loading.init"
@@ -82,7 +82,7 @@
         <splitpanes horizontal>
           <pane size="20" style="overflow-y: auto">{{treeViewItems}}</pane>
           <pane>
-            <v-row class="fill-height">
+            <v-row class="fill-height ">
               <v-col style="height: 100%" cols="12">
                 <span v-html="renderedContent.content"></span>
               </v-col>
