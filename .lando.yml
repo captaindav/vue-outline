@@ -1,22 +1,10 @@
 name: drupal-outline
 recipe: drupal9
 config:
-  webroot: web
+  webroot: drupal/web
   php: '7.4'
   xdebug: true
 services:
-  appserver:
-    run:
-      - mkdir drupal && cp composer/composer.json drupal
-      - echo ''
-      - echo ''
-      - echo '#######################################################################################'
-      - echo ''
-      - echo '  Run `lando install` to complete Drupal and contrib module installation.'
-      - echo ''
-      - echo '#######################################################################################'
-      - echo ''
-      - echo ''
   node:
     type: node:10
     ssl: false
@@ -34,23 +22,17 @@ proxy:
   mailhog:
     - mail.drupal-outline.lndo.site
 tooling:
-  install:
+  install1:
     service: appserver
-    description: "Complete installation."
+    description: "Install Step 1"
     cmd:
-      - cd drupal && composer install
-      - cd drupal && git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
-      - cd drupal && drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
-      - cd drupal && drush -y en content_moderation, media, media_library, workflows
-      - cd drupal && drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
-      - cd drupal && drush -y en ctools, devel, graphql, outline, outline_graphql, paragraphs, pathauto, token
-  install-drupal-outline:
+      - mkdir drupal && cp composer/composer.json drupal
+  install2:
     service: appserver
-    description: "Clone the outline module and create a symlink in /modules directory, install Drupal and enable modules."
+    description: "Install Step 2"
     cmd:
-      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git
-      - ln -s ../../outline web/modules/outline
+      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
       - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
       - drush -y en content_moderation, media, media_library, workflows
       - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
-      - drush -y en ctools, devel, graphql, outline, outline_graphql, paragraphs, pathauto, token
+      - drush -y en ctools, devel, graphql, paragraphs, pathauto, token
