@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './store'
 import vuetify from './plugins/vuetify';
 import VueApollo from 'vue-apollo';
 import { provide } from '@vue/composition-api';
 import { DefaultApolloClient } from '@vue/apollo-composable';
-import { apolloClient } from './graphql/client';
+import apolloClient from './graphql/client';
 
 Vue.use(VueApollo);
 
@@ -14,6 +15,7 @@ new Vue({
   setup () {
     provide(DefaultApolloClient, apolloClient)
   },
+  store,
   vuetify,
   render: h => h(App)
 }).$mount('#app')

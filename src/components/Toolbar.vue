@@ -55,7 +55,6 @@
 
 <script>
   import { reactive } from '@vue/composition-api'
-  import { outlinesQuery } from "./../graphql/queries.js";
 
   export default {
     name: 'Toolbar',
@@ -78,12 +77,6 @@
       return {
         dialog,
         outlines,
-      }
-    },
-
-    apollo: {
-      outlines2: {
-        query: outlinesQuery
       }
     },
   }
