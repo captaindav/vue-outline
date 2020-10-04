@@ -1,0 +1,50 @@
+name: drupal-outline
+recipe: drupal9
+config:
+  webroot: web
+  php: '7.4'
+  xdebug: true
+services:
+  appserver:
+    run:
+      - mkdir drupal
+      - cp composer/composer.json drupal
+      - cd drupal
+      - COMPOSER_MEMORY_LIMIT=-1 composer install
+      - cd drupal
+      - echo ''
+      - echo ''
+      - echo '#######################################################################################'
+      - echo ''
+      - echo '  Run `lando install-drupal-outline` to complete Drupal and contrib module installation.'
+      - echo ''
+      - echo '#######################################################################################'
+      - echo ''
+      - echo ''
+  node:
+    type: node:10
+    ssl: false
+    command: tail -f /dev/null
+    port: 3000
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+node:
+  service: node
+npm:
+  service: node
+proxy:
+  mailhog:
+    - mail.drupal-outline.lndo.site
+tooling:
+  install-drupal-outline:
+    service: appserver
+    description: Clone the outline module and create a symlink in /modules directory, install Drupal and enable modules.
+    cmd:
+      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git
+      - ln -s ../../outline web/modules/outline
+      - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
+      - drush -y en content_moderation, media, media_library, workflows
+      - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
+      - drush -y en ctools, devel, graphql, outline, outline_graphql, paragraphs, pathauto, token
