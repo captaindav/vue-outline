@@ -21,21 +21,16 @@ cd vue-outline
 npm install
 ```
 
-### Fetch the latest Drupal 8 code
+### Initialize Drupal development server.
 
 ```bash
-COMPOSER_MEMORY_LIMIT=-1 composer create-project drupal/recommended-project drupal
+mkdir drupal
+cp composer/composer.json drupal
 cd drupal
-COMPOSER_MEMORY_LIMIT=-1 composer require drupal/admin_toolbar drupal/ctools drupal/dynamic_entity_reference drupal/graphql:"4.x-dev" drupal/outline
-COMPOSER_MEMORY_LIMIT=-1 composer require --dev drush/drush drupal/devel
-```
-
-### Initialize Lando
-
-```bash
+composer install
 lando poweroff
-lando init --source cwd --recipe drupal8 --webroot=web --name="drupal-outline"
 lando start
+lando install
 ```
 
 ### Install Drupal, set admin password, and enable Drupal contrib modules
