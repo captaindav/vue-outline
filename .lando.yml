@@ -7,17 +7,12 @@ config:
 services:
   appserver:
     run:
-      - mkdir drupal && cp composer/composer.json drupal && cd drupal && composer install
-      - cd drupal && git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
-      - cd drupal && drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
-      - cd drupal && drush -y en content_moderation, media, media_library, workflows
-      - cd drupal && drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
-      - cd drupal && drush -y en ctools, devel, graphql, outline, outline_graphql, paragraphs, pathauto, token
+      - mkdir drupal && cp composer/composer.json drupal
       - echo ''
       - echo ''
       - echo '#######################################################################################'
       - echo ''
-      - echo '  Run `lando install-drupal-outline` to complete Drupal and contrib module installation.'
+      - echo '  Run `lando install` to complete Drupal and contrib module installation.'
       - echo ''
       - echo '#######################################################################################'
       - echo ''
@@ -39,9 +34,19 @@ proxy:
   mailhog:
     - mail.drupal-outline.lndo.site
 tooling:
+  install:
+    service: appserver
+    description: "Complete installation."
+    cmd:
+      - cd drupal && composer install
+      - cd drupal && git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
+      - cd drupal && drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
+      - cd drupal && drush -y en content_moderation, media, media_library, workflows
+      - cd drupal && drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
+      - cd drupal && drush -y en ctools, devel, graphql, outline, outline_graphql, paragraphs, pathauto, token
   install-drupal-outline:
     service: appserver
-    description: Clone the outline module and create a symlink in /modules directory, install Drupal and enable modules.
+    description: "Clone the outline module and create a symlink in /modules directory, install Drupal and enable modules."
     cmd:
       - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git
       - ln -s ../../outline web/modules/outline
