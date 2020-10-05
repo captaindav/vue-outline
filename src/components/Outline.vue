@@ -121,9 +121,17 @@
 
   export default {
     setup(props, context) {
-      const { get } = pathify(context)
+      const { call, get } = pathify(context)
       const configItems = get('drawer/items')
       const selectedConfig = get('drawer/selected')
+
+      const testOut = get('graphql/outlines')
+      const test = call('graphql/fetchOutlines')
+      console.log(testOut, test)
+
+      const testEntry = get('graphql/entries')
+      const entry = call('graphql/fetchEntry', 3)
+      console.log(testEntry, entry)
 
       const treeViewItems = reactive([])
       // dynamic configurations

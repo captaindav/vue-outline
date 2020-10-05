@@ -14,8 +14,8 @@ export default context => {
       },
     })
   }
-  const dispatch = (action, data) => $store.dispatch(action, data)
+  const call = (action, data) => $store.dispatch(action, data)
   const commit = (mutation, data) => $store.dispatch(mutation, data)
 
-  return { get, set, sync, dispatch, commit }
+  return { get, set, sync, call, commit }
 }
