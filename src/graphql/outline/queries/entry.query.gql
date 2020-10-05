@@ -1,6 +1,7 @@
 query Entry ($eid: Int!) {
   entry(eid: $eid) {
     children {
+      childCount
       content
       eid
       expanded
@@ -8,6 +9,7 @@ query Entry ($eid: Int!) {
       parentEid
       rendered
     }
+    childCount
     content
     eid
     expanded

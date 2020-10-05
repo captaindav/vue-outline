@@ -3,7 +3,9 @@ query Outline ($oid: Int!) {
     name
     oid
     rootEntry {
+      childCount
       children {
+        childCount
         content
         eid
         expanded
