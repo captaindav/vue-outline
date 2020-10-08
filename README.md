@@ -33,13 +33,6 @@ lando start
 lando install
 ```
 
-### Install Drupal, set admin password, and enable Drupal contrib modules
-
-```bash
-lando drush site-install standard --account-pass admin —notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
-lando drush en -y admin_toolbar admin_toolbar_search admin_toolbar_tools ctools devel dynamic_entity_reference graphql kint outline outline_graphql
-```
-
 To view the site status:
 
 ```bash
@@ -61,8 +54,6 @@ To reinitialize Lando and reinstall Drupal:
 ```bash
 lando destroy
 lando start
-lando drush site-install standard --account-pass admin —notify global --site-name=drupal-outline --db-url='mysql://drupal8:drupal8@database/drupal8' -y
-lando drush en -y admin_toolbar admin_toolbar_search admin_toolbar_tools ctools devel dynamic_entity_reference graphql kint outline outline_graphql
 ```
 
 ## Vue app commands
