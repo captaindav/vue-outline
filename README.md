@@ -30,7 +30,8 @@ cd drupal
 composer install
 lando poweroff
 lando start
-lando install
+lando install-outline
+lando install-drupal
 ```
 
 To view the site status:
