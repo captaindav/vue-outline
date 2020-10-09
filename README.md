@@ -31,7 +31,9 @@ composer install
 lando poweroff
 lando start
 lando install-outline
-lando install-drupal
+lando install-settings
+lando install-core
+lando install-modules
 ```
 
 To view the site status:
@@ -55,6 +57,8 @@ To reinitialize Lando and reinstall Drupal:
 ```bash
 lando destroy
 lando start
+lando install-drupal-core
+lando install-drupal-modules
 ```
 
 ## Vue app commands
