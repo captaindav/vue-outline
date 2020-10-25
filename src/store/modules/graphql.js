@@ -16,8 +16,10 @@ import setParentMutation from '../../graphql/entry/mutations/setParentEntry.muta
 
 
 const state = {
-  outlines: [],
   entries: [],
+  isFetchingEntries: false,
+  isFetchingOutlines: false,
+  outlines: [],
 }
 
 const mutations = make.mutations(state)
@@ -54,6 +56,7 @@ const actions = {
     })
   },
   async fetchOutlines ({ commit }) {
+    commit('isFetchingOutlines', true)
     const response = await graphqlClient.query({ query: outlinesQuery })
     const { data: { outlines: { outlines } } } = response
     const items = []
@@ -62,14 +65,15 @@ const actions = {
       items.push({ ...rootEntry, children: [] })
     }
     commit('outlines', items)
-    // loading.children = false
+    commit('isFetchingOutlines', false)
     return items
   },
   async fetchEntry ({ commit }, id) {
+    commit('isFetchingOutlines', true)
     const response = await graphqlClient.query({ query: entryQuery, variables: { eid: id } })
     const { data: { entry } } = response
     commit('entries', entry)
-    // loading.children = false
+    commit('isFetchingOutlines', false)
     return entry
   },
   async renameEntry (store, parentEid) {

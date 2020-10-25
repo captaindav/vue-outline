@@ -5,14 +5,14 @@
     <splitpanes class="">
       <pane size="15" min-size="15">
         <v-progress-linear
-          :active="loading.children || loading.init"
+          :active="loading"
           indeterminate
         />
         
         <toolbar />
         
         <v-treeview
-          :items="treeViewItems2"
+          :items="items"
           :load-children="loadChildren"
           :open="open"
           activatable
@@ -41,7 +41,7 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane size="20" style="overflow-y: auto">{{treeViewItems}}</pane>
+          <pane size="20" style="overflow-y: auto">{{items}}</pane>
           <pane>
             <v-row class="fill-height ">
               <v-col style="height: 100%" cols="12">
@@ -63,12 +63,7 @@
   import ContextMenu from './ContextMenu'
   import 'splitpanes/dist/splitpanes.css'
 
-  // queries
-  import outlinesQuery from '../graphql/outline/queries/outlines.query.gql';
-  import entryQuery from '../graphql/outline/queries/entry.query.gql';
-
   // utilities
-  import { useQuery } from '@vue/apollo-composable';
   import { computed, reactive } from '@vue/composition-api';
   import { difference, indexOf } from 'lodash';
   import pathify from '@/utils/pathify'
@@ -77,59 +72,37 @@
   export default {
     setup(props, context) {
       const { call, get } = pathify(context)
+      // drawer getters
       const configItems = get('drawer/items')
       const selectedConfig = get('drawer/selected')
-      const test = call('graphql/fetchOutlines')
       
+      //loading getters
+      const isFetchingEntries = get('graphql/isFetchingEntries')
+      const isFetchingOutlines = get('graphql/isFetchingOutlines')
+      const loading = computed(() => {
+        return isFetchingOutlines.value || isFetchingEntries.value
+      })
+      
+      // outline getters
+      const toutlines = get('graphql/outlines')
+      
+      // actions
       const openMenu = (e, item) => {
         return call('contextMenu/openMenu', { e, item })
       }
 
-      const testOut = get('graphql/outlines')
-      console.log(testOut, test)
-
-      const testEntry = get('graphql/entries')
-      const entry = call('graphql/fetchEntry', 3)
-      console.log(testEntry, entry)
-
-      const treeViewItems = reactive([])
-      // dynamic configurations
-      const treeViewItems2 = computed(() => {
+      // init outline fetch
+      call('graphql/fetchOutlines')
+      const items = computed(() => {
         const outlines = configItems.value[selectedConfig.value].outlines || []
         return (!outlines.length)
-          ? treeViewItems
-          : treeViewItems.filter(item => outlines.includes(item.eid))
+          ? toutlines.value
+          : toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
-      // get initial outlines query and extract root entries
       const open = reactive([])
-      const availableOutlines = reactive([])
       
-      let genResults = false
-      const { loading: init, onResult } = useQuery(outlinesQuery)
-      const loading = reactive({
-        children: false,
-        init
-      })
-
-      onResult(async result => {
-        const { data: { outlines: { outlines } } } = result
-        const items = []
-        const opened = []
-        loading.children = true
-        for (const outline of outlines) {
-          const { rootEntry } = outline
-          availableOutlines.push(rootEntry.eid)
-          const childData = await getChildren({ ...rootEntry, children: [] }, opened, false)
-          items.push({ ...rootEntry, children: childData.children })
-        }
-        treeViewItems.push(...items)
-        loading.children = false
-        open.push(...opened)
-      })
-
       // get children entry query
-      const { refetch } = useQuery(entryQuery)
       const getChildren = async (entry, opened, single = true) => {
         console.log('fetching children for:', entry.eid)
 
@@ -138,7 +111,7 @@
           opened.push(entry.eid)
         }
 
-        const entries = await Promise.all([refetch({ eid: entry.eid })])
+        const entries = await call('graphql/fetchEntry', entry.eid)
         if (!entries[0] || entries[0].errors) return { children: [], opened }
 
         const children = entries[0].data.entry.children || []
@@ -155,7 +128,6 @@
       let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
-        //selectedEntry = item;
       }
 
       const loadChildren = async (entry) => {
@@ -163,11 +135,6 @@
         const childData = await getChildren(entry, opened, true)
         open.push(...opened)
         return childData.children
-      }
-
-      const selectNode = () => {
-        console.log('Selecting')
-        // treeViewLabelClick(menu.menuItem)
       }
 
       const active = reactive([])
@@ -192,17 +159,13 @@
 
       return {
         active,
-        availableOutlines,
-        genResults,
-        loadChildren,
+        items,
         loading,
+        loadChildren,
         open,
         openMenu,
         renderedContent,
-        selectNode,
         setExpanded,
-        treeViewItems,
-        treeViewItems2,
         treeViewLabelClick,
       };
     },
