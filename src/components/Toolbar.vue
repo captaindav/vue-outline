@@ -1,83 +1,81 @@
 <template>
   <v-toolbar color="transparent" dense>
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="500px"
+    <v-tooltip
+      v-for="(laItem, la) in leftActions"
+      :key="`la-${la}`"
+      bottom
     >
-      <template v-slot:activator="{ on }">
-        <v-toolbar-items>
-          <v-btn text v-on="on">
-            <v-icon>mdi-cog</v-icon>
-          </v-btn>
-        </v-toolbar-items>
+      <template #activator="{ attrs, on }">
+        <v-btn
+          v-bind="attrs"
+          v-on="{
+            ...on,
+            click: laItem.click
+          }"
+          icon
+        >
+          <v-icon v-text="laItem.icon" />
+        </v-btn>
       </template>
-      <v-card>
-        <v-card-title>
-          Configure Outlines
-          <v-spacer />
-          <v-btn
-            fab
-            icon
-            @click="dialog = !dialog"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-divider />
-        <v-card-text>
-          <v-list>
-            <v-list-item-group multiple>
-              <v-list-item
-                v-for="outline in outlines"
-                :key="`oi-${outline.eid}`"
-              >
-                <template v-slot:default="{ active }">
-                  <v-list-item-action>
-                    <v-checkbox
-                      :input-value="active"
-                      color="primary"
-                    ></v-checkbox>
-                  </v-list-item-action>
+      <span class="text-capitalize">{{la}}</span>
+    </v-tooltip>
 
-                  <v-list-item-content>
-                    <v-list-item-title>{{outline.name}}</v-list-item-title>
-                  </v-list-item-content>
-                </template>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+    <v-spacer />
+
+    <v-tooltip
+      v-for="(raItem, ra) in rightActions"
+      :key="`ra-${ra}`"
+      bottom
+    >
+      <template #activator="{ attrs, on }">
+        <v-btn
+          v-bind="attrs"
+          v-on="{
+            ...on,
+            click: raItem.click
+          }"
+          icon
+        >
+          <v-icon v-text="raItem.icon" />
+        </v-btn>
+      </template>
+      <span class="text-capitalize">{{ra}}</span>
+    </v-tooltip>
+
+    <configure-dialog />
   </v-toolbar>
 </template>
 
 <script>
   import { reactive } from '@vue/composition-api'
+  import ConfigureDialog from './ConfigureDialog';
 
   export default {
     name: 'Toolbar',
 
     setup() {
-      const dialog = false
-      const outlines = reactive([
-        {
-          eid: 1,
-          name: 'Outline 1',
-          active: true,
-        },
-        {
-          eid: 2,
-          name: 'Outline 2',
-          active: false,
-        },
-      ])
+      const leftActions = reactive({
+        add: { click: () => {console.log('add')}, disabled: false, icon: 'mdi-plus' },
+        edit: { click: () => {console.log('edit')}, disabled: false, icon: 'mdi-pencil' },
+        rename: { click: () => {console.log('rename')}, disabled: false, icon: 'mdi-form-textbox' },
+        delete: { click: () => {console.log('delete')}, disabled: false, icon: 'mdi-delete' },
+        cut: { click: () => {console.log('cut')}, disabled: false, icon: 'mdi-content-cut' },
+        copy: { click: () => {console.log('copy')}, disabled: false, icon: 'mdi-content-copy' },
+        paste: { click: () => {console.log('paste')}, disabled: false, icon: 'mdi-content-paste' },
+      })
+      const rightActions = reactive({
+        open: { click: () => {console.log('open')}, disabled: false, icon: 'mdi-folder-outline' },
+        close: { click: () => {console.log('close')}, disabled: false, icon: 'mdi-close' },
+      })
 
       return {
-        dialog,
-        outlines,
+        leftActions,
+        rightActions,
       }
+    },
+
+    components: {
+      ConfigureDialog,
     },
   }
 </script>

@@ -1,7 +1,9 @@
 <template>
-  <v-container fluid class="pa-0 fill-height">
+  <v-container fluid class="main-container">
     <context-menu />
 
+    <toolbar />
+    
     <splitpanes class="">
       <pane size="15" min-size="15">
         <v-progress-linear
@@ -9,7 +11,6 @@
           indeterminate
         />
         
-        <toolbar />
         
         <v-treeview
           :items="items"
@@ -180,3 +181,9 @@
     }
   }
 </script>
+
+<style lang="sass">
+  .main-container
+    padding: 0px
+    height: calc(100vh - 48px - 56px)
+</style>
