@@ -19,6 +19,7 @@ const state = {
   entries: [],
   isFetchingEntries: false,
   isFetchingOutlines: false,
+  opened: [],
   outlines: [],
 }
 
@@ -55,14 +56,20 @@ const actions = {
       variables: { eid } 
     })
   },
-  async fetchOutlines ({ commit }) {
+  async fetchOutlines ({ commit, dispatch, state }) {
     commit('isFetchingOutlines', true)
     const response = await graphqlClient.query({ query: outlinesQuery })
     const { data: { outlines: { outlines } } } = response
     const items = []
     for (const outline of outlines) {
       const { rootEntry } = outline
-      items.push({ ...rootEntry, children: [] })
+      let children = rootEntry.childCount > 0 ? [] : undefined
+      if (rootEntry.expanded && rootEntry.childCount > 0) {
+        const entry = await dispatch('fetchEntry', rootEntry.eid)
+        children = entry.children
+        state.opened.push(rootEntry.eid)
+      }
+      items.push({ ...rootEntry, children })
     }
     commit('outlines', items)
     commit('isFetchingOutlines', false)

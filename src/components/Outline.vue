@@ -10,8 +10,7 @@
           :active="loading"
           indeterminate
         />
-        
-        
+
         <v-treeview
           :items="items"
           :load-children="loadChildren"
@@ -42,7 +41,7 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane size="20" style="overflow-y: auto">{{items}}</pane>
+          <pane size="20" style="overflow-y: auto">{{items}} {{open}}</pane>
           <pane>
             <v-row class="fill-height ">
               <v-col style="height: 100%" cols="12">
@@ -66,7 +65,7 @@
 
   // utilities
   import { computed, reactive } from '@vue/composition-api';
-  import { difference, indexOf } from 'lodash';
+  import { difference } from 'lodash';
   import pathify from '@/utils/pathify'
   
   
@@ -76,6 +75,7 @@
       // drawer getters
       const configItems = get('drawer/items')
       const selectedConfig = get('drawer/selected')
+      const open = get('graphql/opened')
       
       //loading getters
       const isFetchingEntries = get('graphql/isFetchingEntries')
@@ -101,40 +101,16 @@
           : toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
-      const open = reactive([])
-      
-      // get children entry query
-      const getChildren = async (entry, opened, single = true) => {
-        console.log('fetching children for:', entry.eid)
-
-        if (!entry.expanded && !single) return { children: [], opened }
-        if (entry.expanded) {
-          opened.push(entry.eid)
-        }
-
-        const entries = await call('graphql/fetchEntry', entry.eid)
-        if (!entries[0] || entries[0].errors) return { children: [], opened }
-
-        const children = entries[0].data.entry.children || []
-        if (children.length) {
-          for ( const child of children) {
-            const childData = await getChildren({ ...child, children: [] }, opened, single)
-            entry.children.push({ ...child, children: childData.children })
-          }
-        }
-        else entry.children = undefined
-        return { children: entry.children, opened }
-      }
-
       let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
       }
 
       const loadChildren = async (entry) => {
-        const opened = []
-        const childData = await getChildren(entry, opened, true)
-        open.push(...opened)
+        console.log('loading children for:', entry.eid)
+        const childData = await call('graphql/fetchEntry', entry.eid)
+        console.log(childData)
+        entry.children = childData.children
         return childData.children
       }
 
@@ -144,15 +120,15 @@
         const expandItems = difference(val, open)
         if (expandItems.length) {
           for (const item of expandItems) {
-            open.push(item)
+            // open.push(item)
             call('graphql/expandEntry', item)
           }
         }
         const collapseItems = difference(open, val)
         if (collapseItems.length) {
           for (const item of collapseItems) {
-            const ind = indexOf(open, item)
-            open.splice(ind, 1)
+            // const ind = indexOf(open, item)
+            // open.splice(ind, 1)
             call('graphql/collapseEntry', item)
           }
         }
