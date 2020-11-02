@@ -11,33 +11,14 @@
           indeterminate
         />
 
-        <v-treeview
+        <treeview 
           :items="items"
           :load-children="loadChildren"
           :open="open"
-          activatable
-          item-key="eid"
-          item-text="name"
-          item-children="children"
-          open-on-click
-          transition
           @update:open="setExpanded"
-        >
-          <template v-slot:label="{ item, open }">
-            <div
-              @click="treeViewLabelClick(item)"
-              @contextmenu="openMenu($event, item)"
-            >
-              <v-icon v-if="item.parentEid">
-                {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-              </v-icon>
-              <v-icon v-else>
-                $outline
-              </v-icon>
-              <span>{{item.name}}</span>
-            </div>
-          </template>
-        </v-treeview>
+          v-bind="{ openMenu, treeViewLabelClick }"
+        />
+        
       </pane>
       <pane>
         <splitpanes horizontal>
@@ -61,6 +42,7 @@
   import { Pane, Splitpanes } from 'splitpanes'
   import Toolbar from './Toolbar'
   import ContextMenu from './ContextMenu'
+  import Treeview from './Treeview'
   import 'splitpanes/dist/splitpanes.css'
 
   // utilities
@@ -154,6 +136,7 @@
       Pane,
       Splitpanes,
       Toolbar,
+      Treeview,
     }
   }
 </script>
