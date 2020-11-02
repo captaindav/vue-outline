@@ -2,19 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import VueApollo from 'vue-apollo';
-import { provide } from '@vue/composition-api';
-import { DefaultApolloClient } from '@vue/apollo-composable';
-import apolloClient from './graphql/client';
+import VueCompositionAPI from '@vue/composition-api'
 
-Vue.use(VueApollo);
+Vue.use(VueCompositionAPI)
 
 Vue.config.productionTip = false
 
 new Vue({
-  setup () {
-    provide(DefaultApolloClient, apolloClient)
-  },
   store,
   vuetify,
   render: h => h(App)
