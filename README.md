@@ -12,6 +12,7 @@ quickly displayed using cached data rather than making a trip to the server if t
 ## Project setup
 
 These must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
+Before installation, make sure you have drupal account set up with git access, SSH Key, and your global git user/email set.
 
 ### Clone and install project
 
@@ -27,7 +28,7 @@ npm install
 mkdir drupal
 cp composer/composer.json drupal
 cd drupal
-composer install
+COMPOSER_MEMORY_LIMIT=-1 composer install
 lando poweroff
 lando start
 lando install-outline

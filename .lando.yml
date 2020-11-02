@@ -45,8 +45,8 @@ tooling:
     service: appserver
     description: "Install the Drupal Outline module for development."
     cmd:
-      - cp scripts/settings/settings.php web/sites/default
-      - cp scripts/settings/services.yml web/sites/default
+      - cp ../scripts/settings/settings.php web/sites/default
+      - cp ../scripts/settings/services.yml web/sites/default
   install-core:
     service: appserver
     description: "Install Drupal 9 Core."
