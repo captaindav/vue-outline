@@ -5,6 +5,17 @@ config:
   php: '7.4'
   xdebug: true
 services:
+  drupaltest:
+    type: mysql
+    creds:
+      user:  drupaltest
+      password: drupaltest
+      database: drupaltest
+  appserver:
+    overrides:
+      environment:
+        SIMPLETEST_BASE_URL: "http://drupal-outline.lndo.site"
+        SIMPLETEST_DB: "mysql://drupaltest:drupaltest@drupaltest:3306/drupaltest"
   node:
     type: node:10
     ssl: false
@@ -22,6 +33,9 @@ proxy:
   mailhog:
     - mail.drupal-outline.lndo.site
 tooling:
+  testEntryDelete:
+    service: appserver
+    cmd: "php /app/drupal/vendor/bin/phpunit -c /app/phpunit.xml /app/drupal/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
   install-outline:
     service: appserver
     description: "Install the Drupal Outline module for development."
