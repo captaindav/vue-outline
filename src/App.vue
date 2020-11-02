@@ -1,14 +1,5 @@
 <template>
   <v-app>
-    <v-dialog
-      v-model="dialog"
-      max-width="400px"
-    >
-      <v-card height="300px">
-        {{aboutText}}
-      </v-card>
-    </v-dialog>
-
     <app-drawer />
 
     <v-app-bar
@@ -24,22 +15,36 @@
 
       <v-spacer></v-spacer>
 
-      <v-menu offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            icon
-            left
-            v-on="on"
-          >
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+      <servers-dialog />
+
+      <v-dialog
+        v-model="dialog"
+        max-width="400px"
+      >
+        <template #activator="{ on: don, attrs: dattrs }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tton, attrs: ttattrs }">
+              <v-btn
+                icon
+                v-bind="{
+                  ...dattrs,
+                  ...ttattrs
+                }"
+                v-on="{
+                  ...don,
+                  ...tton
+                }"
+              >
+                <v-icon>mdi-information-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>About</span>
+          </v-tooltip>
         </template>
-        <v-list>
-          <v-list-item @click="dialog = true">
-            <v-list-item-title>About</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        <v-card height="300px">
+          {{aboutText}}
+        </v-card>
+      </v-dialog>
     </v-app-bar>
     <v-main>
       <outline />
@@ -50,6 +55,7 @@
 <script>
   import AppDrawer from './components/AppDrawer';
   import Outline from './components/Outline';
+  import ServersDialog from './components/ServersDialog';
 
   export default {
     name: 'App',
@@ -67,6 +73,7 @@
     components: {
       AppDrawer,
       Outline,
+      ServersDialog,
     },
     
   };
