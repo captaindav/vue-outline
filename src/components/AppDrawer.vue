@@ -22,11 +22,16 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    
+    <template #append>
+      <bookmarks-dialog />
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
   import pathify from '@/utils/pathify'
+  import BookmarksDialog from './BookmarksDialog'
 
   export default {
     name: 'AppDrawer',
@@ -42,5 +47,8 @@
       }
     },
 
+    components: {
+      BookmarksDialog,
+    },
   }
 </script>

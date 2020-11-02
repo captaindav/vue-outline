@@ -41,14 +41,11 @@
       </template>
       <span class="text-capitalize">{{ra}}</span>
     </v-tooltip>
-
-    <configure-dialog />
   </v-toolbar>
 </template>
 
 <script>
   import { reactive } from '@vue/composition-api'
-  import ConfigureDialog from './ConfigureDialog';
 
   export default {
     name: 'Toolbar',
@@ -63,19 +60,12 @@
         copy: { click: () => {console.log('copy')}, disabled: false, icon: 'mdi-content-copy' },
         paste: { click: () => {console.log('paste')}, disabled: false, icon: 'mdi-content-paste' },
       })
-      const rightActions = reactive({
-        open: { click: () => {console.log('open')}, disabled: false, icon: 'mdi-folder-outline' },
-        close: { click: () => {console.log('close')}, disabled: false, icon: 'mdi-close' },
-      })
+      const rightActions = reactive({})
 
       return {
         leftActions,
         rightActions,
       }
-    },
-
-    components: {
-      ConfigureDialog,
     },
   }
 </script>

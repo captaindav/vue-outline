@@ -5,28 +5,30 @@
     max-width="500px"
   >
     <template #activator="{ on: don, attrs: dattrs }">
-      <v-tooltip bottom>
+      <v-tooltip right>
         <template #activator="{ on: tton, attrs: ttattrs }">
-          <v-btn
-            icon
-            v-bind="{
-              ...dattrs,
-              ...ttattrs
-            }"
-            v-on="{
-              ...don,
-              ...tton
-            }"
-          >
-            <v-icon>mdi-cog</v-icon>
-          </v-btn>
+          <v-list-item>
+            <v-list-item-icon
+              v-bind="{
+                ...dattrs,
+                ...ttattrs
+              }"
+              v-on="{
+                ...don,
+                ...tton
+              }"
+            >
+              <v-icon>mdi-cogs</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content />
+          </v-list-item>
         </template>
-        <span>Configure</span>
+        <span>Configure Outline Bookmarks</span>
       </v-tooltip>
     </template>
     <v-card>
       <v-card-title>
-        Configure Outlines
+        Configure Outline Bookmarks
         <v-spacer />
         <v-btn
           fab
@@ -68,7 +70,7 @@
   import { reactive } from '@vue/composition-api'
 
   export default {
-    name: 'Configure',
+    name: 'OutlineBookmarks',
 
     setup() {
       let dialog = false
