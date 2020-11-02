@@ -37,6 +37,12 @@ lando install-core
 lando install-modules
 ```
 
+#### Post install
+
+- Generate symlink in drupal folder (on windows: `mklink /D modules\outline outline`)
+- Enable outline  module `lando drush en -y outline`
+- Enable outline_graphql module `lando drush en -y outline_graphql`
+
 To view the site status:
 
 ```bash
