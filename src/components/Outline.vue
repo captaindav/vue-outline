@@ -2,6 +2,8 @@
   <v-container fluid class="main-container">
     <context-menu />
 
+    <edit-dialog />
+
     <toolbar />
     
     <splitpanes class="">
@@ -55,6 +57,7 @@
   import { Pane, Splitpanes } from 'splitpanes'
   import Toolbar from './Toolbar'
   import ContextMenu from './ContextMenu'
+  import EditDialog from './EditDialog'
   import Treeview from './Treeview'
   import 'splitpanes/dist/splitpanes.css'
 
@@ -154,6 +157,7 @@
 
     components : {
       ContextMenu,
+      EditDialog,
       Pane,
       Splitpanes,
       Toolbar,

@@ -6,8 +6,9 @@ export function getMenuActions (context) {
   const show = sync('contextMenu/show')
   const x = get('contextMenu/x')
   const y = get('contextMenu/y')
-  let menuItem = sync('contextMenu/menuItem')
   let cutItem = sync('contextMenu/cutItem')
+  let edit = sync('contextMenu/edit')
+  let menuItem = sync('contextMenu/menuItem')
 
   const addEntry = () => {
     const { eid: parentEid } = menuItem.value
@@ -33,11 +34,7 @@ export function getMenuActions (context) {
   }
 
   const editEntry = () => {
-    const { eid } = menuItem.value
-    if (eid) {
-      const url = 'http://drupal-outline.lndo.site'
-      window.open(`${url}/outline/entry/${eid}/edit`, '_blank')
-    }
+    edit.value = true
   }
   
   const renameEntry = () => {
@@ -68,6 +65,7 @@ export function getMenuActions (context) {
     cutItem,
     cutEntry,
     deleteEntry,
+    edit,
     editEntry,
     pasteEntry,
     pasteDisabled,

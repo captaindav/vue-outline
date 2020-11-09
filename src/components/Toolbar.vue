@@ -43,7 +43,6 @@
       </template>
       <span class="text-capitalize">{{ra}}</span>
     </v-tooltip>
-    {{pasteDisabled}}
   </v-toolbar>
 </template>
 
