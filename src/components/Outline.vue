@@ -11,7 +11,7 @@
           indeterminate
         />
 
-        <treeview 
+        <treeview
           :items="items"
           :load-children="loadChildren"
           :open="open"
@@ -22,9 +22,22 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane size="20" style="overflow-y: auto">{{items}} {{open}}</pane>
+          <pane :size="lastSelectedNode.children && lastSelectedNode.children.length ? 20 : 0" style="overflow-y: auto">
+            <v-chip-group
+              class="px-2 py-1"
+              column
+            >
+              <v-chip
+                v-for="(child, ind) in lastSelectedNode.children || []"
+                :key="`node-chip-${ind}`"
+                @click="treeViewLabelClick(child)"
+              >
+                {{ child.name }}
+              </v-chip>
+            </v-chip-group>
+          </pane>
           <pane>
-            <v-row class="fill-height ">
+            <v-row class="fill-height">
               <v-col style="height: 100%" cols="12">
                 <span v-html="renderedContent.content"></span>
               </v-col>
@@ -83,9 +96,17 @@
           : toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
+      let lastSelectedNode = reactive({
+        edi: null,
+        children: []
+      })
       let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
+        if (item.children) {
+          lastSelectedNode.eid = item.eid
+          lastSelectedNode.children = item.children
+        }
       }
 
       const loadChildren = async (entry) => {
@@ -113,16 +134,19 @@
         }
       }
 
+      
+
       return {
         active,
         items,
+        lastSelectedNode,
         loading,
         loadChildren,
         open,
         openMenu,
         renderedContent,
         setExpanded,
-        treeViewLabelClick,
+        treeViewLabelClick
       };
     },
 
