@@ -19,14 +19,14 @@ Before installation, make sure you have drupal account set up with git access, S
 ```bash
 git clone git@github.com:captaindav/vue-outline
 cd vue-outline
-npm install
+npm i
 ```
 
 ### Initialize Drupal development server.
 
 ```bash
 mkdir drupal
-cp composer/composer.json drupal
+cp scripts/drupal-default/composer.json drupal
 cd drupal
 COMPOSER_MEMORY_LIMIT=-1 composer install
 lando poweroff
