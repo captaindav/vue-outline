@@ -12,6 +12,7 @@
             ...on,
             click: laItem.click
           }"
+          :disabled="laItem.disabled"
           icon
         >
           <v-icon v-text="laItem.icon" />
@@ -34,6 +35,7 @@
             ...on,
             click: raItem.click
           }"
+          :disabled="raItem.disabled"
           icon
         >
           <v-icon v-text="raItem.icon" />
@@ -41,30 +43,44 @@
       </template>
       <span class="text-capitalize">{{ra}}</span>
     </v-tooltip>
+    {{pasteDisabled}}
   </v-toolbar>
 </template>
 
 <script>
   import { reactive } from '@vue/composition-api'
+  import { getMenuActions } from '@/utils/menu-actions'
 
   export default {
     name: 'Toolbar',
 
-    setup() {
+    setup(props, context) {
+      const {
+        addEntry,
+        copyEntry,
+        cutEntry,
+        deleteEntry,
+        editEntry,
+        pasteEntry,
+        pasteDisabled,
+        renameEntry
+      } = getMenuActions(context)
+      
       const leftActions = reactive({
-        add: { click: () => {console.log('add')}, disabled: false, icon: 'mdi-plus' },
-        edit: { click: () => {console.log('edit')}, disabled: false, icon: 'mdi-pencil' },
-        rename: { click: () => {console.log('rename')}, disabled: false, icon: 'mdi-form-textbox' },
-        delete: { click: () => {console.log('delete')}, disabled: false, icon: 'mdi-delete' },
-        cut: { click: () => {console.log('cut')}, disabled: false, icon: 'mdi-content-cut' },
-        copy: { click: () => {console.log('copy')}, disabled: false, icon: 'mdi-content-copy' },
-        paste: { click: () => {console.log('paste')}, disabled: false, icon: 'mdi-content-paste' },
+        add: { click: addEntry, disabled: false, icon: 'mdi-plus' },
+        edit: { click: editEntry, disabled: false, icon: 'mdi-pencil' },
+        rename: { click: renameEntry, disabled: true, icon: 'mdi-form-textbox' },
+        delete: { click: deleteEntry, disabled: false, icon: 'mdi-delete' },
+        cut: { click: cutEntry, disabled: false, icon: 'mdi-content-cut' },
+        copy: { click: copyEntry, disabled: true, icon: 'mdi-content-copy' },
+        paste: { click: pasteEntry, disabled: pasteDisabled, icon: 'mdi-content-paste' },
       })
       const rightActions = reactive({})
 
       return {
         leftActions,
         rightActions,
+        pasteDisabled
       }
     },
   }
