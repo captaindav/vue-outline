@@ -45,8 +45,8 @@ tooling:
     service: appserver
     description: "Install the Drupal Outline module for development."
     cmd:
-      - cp ../scripts/settings/settings.php web/sites/default
-      - cp ../scripts/settings/services.yml web/sites/default
+      - cp ../scripts/drupal-default/settings.php web/sites/default
+      - cp ../scripts/drupal-default/services.yml web/sites/default
   install-core:
     service: appserver
     description: "Install Drupal 9 Core."
@@ -59,3 +59,4 @@ tooling:
       - drush -y en content_moderation, media, media_library, workflows
       - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
       - drush -y en ctools, devel, graphql, paragraphs, pathauto, token
+      - drush -y en outline, outline_graphql
