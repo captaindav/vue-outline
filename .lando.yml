@@ -14,8 +14,8 @@ services:
   appserver:
     overrides:
       environment:
-        SIMPLETEST_BASE_URL: "http://drupal-outline.lndo.site"
-        SIMPLETEST_DB: "mysql://drupaltest:drupaltest@drupaltest:3306/drupaltest"
+        NOT_USED__SIMPLETEST_BASE_URL: "http://drupal-outline.lndo.site"
+        NOT_USED__SIMPLETEST_DB: "mysql://drupaltest:drupaltest@drupaltest:3306/drupaltest"
   node:
     type: node:10
     ssl: false
@@ -35,7 +35,7 @@ proxy:
 tooling:
   testEntryDelete:
     service: appserver
-    cmd: "php /app/drupal/vendor/bin/phpunit -c /app/phpunit.xml /app/drupal/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
+    cmd: "php /app/drupal/vendor/bin/phpunit -c /app/drupal/phpunit.xml /app/drupal/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
   install-outline:
     service: appserver
     description: "Install the Drupal Outline module for development."
