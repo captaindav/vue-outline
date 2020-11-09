@@ -1,5 +1,6 @@
 import { make } from 'vuex-pathify'
 import graphqlClient from '../../graphql/client';
+import { indexOf } from 'lodash';
 // import gql from 'graphql-tag';
 
 // queries
@@ -35,12 +36,16 @@ const actions = {
     })
     return addEntry
   },
-  async collapseEntry (store, eid) {
-    console.log('Collapse', eid);
-    return await graphqlClient.mutate({
+  async collapseEntry ({ state }, eid) {
+    const collapse = await graphqlClient.mutate({
       mutation: collapseMutation,
-      variables: { eid } 
+      variables: { eid }
     })
+    console.log('Collapse', eid);
+    const ind = indexOf(state.open, eid)
+    state.opened.splice(ind, 1)
+    
+    return collapse
   },
   async deleteEntry (store, eid) {
     console.log('Delete', eid);
@@ -49,12 +54,14 @@ const actions = {
       variables: { eid } 
     })
   },
-  async expandEntry (store, eid) {
+  async expandEntry ({ state }, eid) {
     console.log('Expand', eid);
-    return await graphqlClient.mutate({
+    const expand = await graphqlClient.mutate({
       mutation: expandMutation,
       variables: { eid } 
     })
+    state.opened.push(eid)
+    return expand
   },
   async fetchOutlines ({ commit, dispatch, state }) {
     commit('isFetchingOutlines', true)

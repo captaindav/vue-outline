@@ -91,7 +91,6 @@
       const loadChildren = async (entry) => {
         console.log('loading children for:', entry.eid)
         const childData = await call('graphql/fetchEntry', entry.eid)
-        console.log(childData)
         entry.children = childData.children
         return childData.children
       }
@@ -99,18 +98,16 @@
       const active = reactive([])
 
       const setExpanded = (val) => {
-        const expandItems = difference(val, open)
+        const expandItems = difference(val, open.value)
         if (expandItems.length) {
           for (const item of expandItems) {
-            // open.push(item)
             call('graphql/expandEntry', item)
           }
         }
-        const collapseItems = difference(open, val)
+        
+        const collapseItems = difference(open.value, val)
         if (collapseItems.length) {
           for (const item of collapseItems) {
-            // const ind = indexOf(open, item)
-            // open.splice(ind, 1)
             call('graphql/collapseEntry', item)
           }
         }
