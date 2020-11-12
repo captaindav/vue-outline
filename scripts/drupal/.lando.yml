@@ -14,7 +14,7 @@ services:
     config:
       php: php.ini
     run:
-      - composer install
+      - COMPOSER_MEMORY_LIMIT=-1 composer install
       - echo ''
       - echo ''
       - echo '#######################################################################################'
@@ -49,11 +49,14 @@ tooling:
     service: appserver
     description: "Install the Drupal Vue Outline client for development."
     cmd:
-      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
-      - cp ../scripts/drupal-default/settings.php web/sites/default
-      - cp ../scripts/drupal-default/services.yml web/sites/default
+      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && ln -s outline web/modules/outline
+      - mv settings.php web/sites/default
+      - mv settings.local.php web/sites/default
+      - mv services.yml web/sites/default
       - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
       - drush -y en content_moderation, media, media_library, workflows
       - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
       - drush -y en ctools, devel, graphql, paragraphs, pathauto, token
       - drush -y en outline, outline_graphql
+      - drush cr
+      - drush status

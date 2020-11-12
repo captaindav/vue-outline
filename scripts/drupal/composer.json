@@ -25,7 +25,8 @@
         "drupal/graphql": "^4.0",
         "drupal/paragraphs": "^1.12",
         "drupal/pathauto": "^1.8",
-        "drupal/token": "^1.7"
+        "drupal/token": "^1.7",
+        "squizlabs/php_codesniffer": "*"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -94,6 +95,7 @@
         "drupal/core-dev": "^9.0",
         "drupal/devel": "^4.0",
         "drupal/devel_php": "^1.2",
-        "drush/drush": "^10.3"
+        "drush/drush": "^10.3",
+        "phpunit/phpunit": "^8"
     }
 }

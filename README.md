@@ -25,8 +25,7 @@ npm i
 ### Initialize Drupal development server.
 
 ```bash
-mkdir drupal
-cp scripts/drupal-default/.lando.yml drupal
+cp -R scripts/drupal drupal
 cd drupal
 lando poweroff
 lando start
