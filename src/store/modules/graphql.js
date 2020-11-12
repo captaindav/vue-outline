@@ -1,9 +1,10 @@
 import { make } from 'vuex-pathify'
 import graphqlClient from '../../graphql/client';
+import { indexOf } from 'lodash';
 // import gql from 'graphql-tag';
 
 // queries
-// import outlinesQuery from '../../graphql/outline/queries/outlines.query.gql';
+import outlinesQuery from '../../graphql/outline/queries/outlines.query.gql';
 import entryQuery from '../../graphql/outline/queries/entry.query.gql';
 
 //mutations
@@ -35,12 +36,16 @@ const actions = {
     })
     return addEntry
   },
-  async collapseEntry (store, eid) {
-    console.log('Collapse', eid);
-    return await graphqlClient.mutate({
+  async collapseEntry ({ state }, eid) {
+    const collapse = await graphqlClient.mutate({
       mutation: collapseMutation,
-      variables: { eid } 
+      variables: { eid }
     })
+    console.log('Collapse', eid);
+    const ind = indexOf(state.open, eid)
+    state.opened.splice(ind, 1)
+    
+    return collapse
   },
   async deleteEntry (store, eid) {
     console.log('Delete', eid);
@@ -49,18 +54,19 @@ const actions = {
       variables: { eid } 
     })
   },
-  async expandEntry (store, eid) {
+  async expandEntry ({ state }, eid) {
     console.log('Expand', eid);
-    return await graphqlClient.mutate({
+    const expand = await graphqlClient.mutate({
       mutation: expandMutation,
       variables: { eid } 
     })
+    state.opened.push(eid)
+    return expand
   },
   async fetchOutlines ({ commit, dispatch, state }) {
     commit('isFetchingOutlines', true)
-    // const response = await graphqlClient.query({ query: outlinesQuery })
-    // const { data: { outlines: { outlines } } } = response
-    const outlines = []
+    const response = await graphqlClient.query({ query: outlinesQuery })
+    const { data: { outlines: { outlines } } } = response
     const items = []
     for (const outline of outlines) {
       const { rootEntry } = outline
@@ -72,28 +78,6 @@ const actions = {
       }
       items.push({ ...rootEntry, children })
     }
-    // temp dummy outlines till fixed
-    items.push({
-      childCount: 1,
-      content: 'Outline 1',
-      eid: 1,
-      expanded: true,
-      name: 'Outline 1',
-      parentEid: null,
-      rendered: '<div><strong>Outline 1</strong></div>',
-      children: [
-        {
-          childCount: 0,
-          content: 'Entry 1',
-          eid: 2,
-          expanded: true,
-          name: 'Entry 1',
-          parentEid: 1,
-          rendered: '<div><strong>Entry 1</strong></div>',
-          children: undefined
-        }
-      ]
-    })
     
     commit('outlines', items)
     commit('isFetchingOutlines', false)

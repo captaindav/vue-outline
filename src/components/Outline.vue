@@ -2,6 +2,8 @@
   <v-container fluid class="main-container">
     <context-menu />
 
+    <edit-dialog />
+
     <toolbar />
     
     <splitpanes class="">
@@ -11,7 +13,7 @@
           indeterminate
         />
 
-        <treeview 
+        <treeview
           :items="items"
           :load-children="loadChildren"
           :open="open"
@@ -22,9 +24,22 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane size="20" style="overflow-y: auto">{{items}} {{open}}</pane>
+          <pane :size="lastSelectedNode.children && lastSelectedNode.children.length ? 20 : 0" style="overflow-y: auto">
+            <v-chip-group
+              class="px-2 py-1"
+              column
+            >
+              <v-chip
+                v-for="(child, ind) in lastSelectedNode.children || []"
+                :key="`node-chip-${ind}`"
+                @click="treeViewLabelClick(child)"
+              >
+                {{ child.name }}
+              </v-chip>
+            </v-chip-group>
+          </pane>
           <pane>
-            <v-row class="fill-height ">
+            <v-row class="fill-height">
               <v-col style="height: 100%" cols="12">
                 <span v-html="renderedContent.content"></span>
               </v-col>
@@ -42,6 +57,7 @@
   import { Pane, Splitpanes } from 'splitpanes'
   import Toolbar from './Toolbar'
   import ContextMenu from './ContextMenu'
+  import EditDialog from './EditDialog'
   import Treeview from './Treeview'
   import 'splitpanes/dist/splitpanes.css'
 
@@ -83,15 +99,22 @@
           : toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
+      let lastSelectedNode = reactive({
+        edi: null,
+        children: []
+      })
       let renderedContent = reactive({ content: "" });
       const treeViewLabelClick = (item) => {
         renderedContent.content = item.rendered;
+        if (item.children) {
+          lastSelectedNode.eid = item.eid
+          lastSelectedNode.children = item.children
+        }
       }
 
       const loadChildren = async (entry) => {
         console.log('loading children for:', entry.eid)
         const childData = await call('graphql/fetchEntry', entry.eid)
-        console.log(childData)
         entry.children = childData.children
         return childData.children
       }
@@ -99,33 +122,34 @@
       const active = reactive([])
 
       const setExpanded = (val) => {
-        const expandItems = difference(val, open)
+        const expandItems = difference(val, open.value)
         if (expandItems.length) {
           for (const item of expandItems) {
-            // open.push(item)
             call('graphql/expandEntry', item)
           }
         }
-        const collapseItems = difference(open, val)
+        
+        const collapseItems = difference(open.value, val)
         if (collapseItems.length) {
           for (const item of collapseItems) {
-            // const ind = indexOf(open, item)
-            // open.splice(ind, 1)
             call('graphql/collapseEntry', item)
           }
         }
       }
 
+      
+
       return {
         active,
         items,
+        lastSelectedNode,
         loading,
         loadChildren,
         open,
         openMenu,
         renderedContent,
         setExpanded,
-        treeViewLabelClick,
+        treeViewLabelClick
       };
     },
 
@@ -133,6 +157,7 @@
 
     components : {
       ContextMenu,
+      EditDialog,
       Pane,
       Splitpanes,
       Toolbar,

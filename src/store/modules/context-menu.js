@@ -2,6 +2,7 @@ import { make } from 'vuex-pathify'
 
 const state = {
   show: false,
+  edit: false,
   x: 0,
   y: 0,
   menuItem: {},

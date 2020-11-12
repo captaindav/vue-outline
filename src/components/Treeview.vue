@@ -4,7 +4,6 @@
     item-key="eid"
     item-text="name"
     item-children="children"
-    open-on-click
     transition
     v-bind="$attrs"
     v-on="$listeners"
