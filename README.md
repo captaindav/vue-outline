@@ -27,11 +27,10 @@ npm i
 ```bash
 cp -R scripts/drupal drupal
 cd drupal
+COMPOSER_MEMORY_LIMIT=-1 composer install
 lando poweroff
 lando start
 lando site-setup
-
-COMPOSER_MEMORY_LIMIT=-1 composer install
 ```
 
 #### Post install
