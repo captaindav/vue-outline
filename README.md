@@ -26,22 +26,18 @@ npm i
 
 ```bash
 mkdir drupal
-cp scripts/drupal-default/composer.json drupal
+cp scripts/drupal-default/.lando.yml drupal
 cd drupal
-COMPOSER_MEMORY_LIMIT=-1 composer install
 lando poweroff
 lando start
-lando install-outline
-lando install-settings
-lando install-core
-lando install-modules
+lando site-setup
+
+COMPOSER_MEMORY_LIMIT=-1 composer install
 ```
 
 #### Post install
 
-- Generate symlink in drupal folder (on windows: `mklink /D modules\outline outline`)
-- Enable outline  module `lando drush en -y outline`
-- Enable outline_graphql module `lando drush en -y outline_graphql`
+- Windows only, generate symlink in drupal folder: `mklink /D modules\outline outline`
 
 To view the site status:
 

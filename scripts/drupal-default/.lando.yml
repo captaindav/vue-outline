@@ -1,9 +1,5 @@
 name: drupal-outline
 recipe: drupal9
-config:
-  webroot: drupal/web
-  php: '7.4'
-  xdebug: true
 services:
   drupaltest:
     type: mysql
@@ -12,10 +8,23 @@ services:
       password: drupaltest
       database: drupaltest
   appserver:
-    overrides:
-      environment:
-        NOT_USED__SIMPLETEST_BASE_URL: "http://drupal-outline.lndo.site"
-        NOT_USED__SIMPLETEST_DB: "mysql://drupaltest:drupaltest@drupaltest:3306/drupaltest"
+    webroot: web
+    php: '7.4'
+    xdebug: true
+    config:
+      php: php.ini
+    run:
+      - composer install
+      - echo ''
+      - echo ''
+      - echo '#######################################################################################'
+      - echo ''
+      - echo 'One more step:'
+      - echo '  Run `lando site-setup` to initialize the Drupal database and enable required modules'
+      - echo ''
+      - echo '#######################################################################################'
+      - echo ''
+      - echo ''
   node:
     type: node:10
     ssl: false
@@ -35,27 +44,15 @@ proxy:
 tooling:
   testEntryDelete:
     service: appserver
-    cmd: "php /app/drupal/vendor/bin/phpunit -c /app/drupal/phpunit.xml /app/drupal/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
-  install-outline:
+    cmd: "php /app/vendor/bin/phpunit -c /app/phpunit.xml /app/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
+  install:
     service: appserver
-    description: "Install the Drupal Outline module for development."
+    description: "Install the Drupal Vue Outline client for development."
     cmd:
       - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && cd web/modules && ln -s ../../outline outline
-  install-settings:
-    service: appserver
-    description: "Install the Drupal Outline module for development."
-    cmd:
       - cp ../scripts/drupal-default/settings.php web/sites/default
       - cp ../scripts/drupal-default/services.yml web/sites/default
-  install-core:
-    service: appserver
-    description: "Install Drupal 9 Core."
-    cmd:
       - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
-  install-modules:
-    service: appserver
-    description: "Install Drupal 9 modules."
-    cmd:
       - drush -y en content_moderation, media, media_library, workflows
       - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
       - drush -y en ctools, devel, graphql, paragraphs, pathauto, token
