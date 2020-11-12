@@ -44,11 +44,11 @@ tooling:
   testEntryDelete:
     service: appserver
     cmd: "php /app/vendor/bin/phpunit -c /app/phpunit.xml /app/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
-  install:
+  site-setup:
     service: appserver
     description: "Install the Drupal Vue Outline client for development."
     cmd:
-      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && ln -s outline web/modules/outline
+      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && ln -s /app/outline /app/web/modules/outline
       - mv settings.php web/sites/default
       - mv settings.local.php web/sites/default
       - mv services.yml web/sites/default
