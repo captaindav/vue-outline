@@ -3,7 +3,7 @@
     v-model="edit"
     persistent
   >
-    <v-card min-height="500px">
+    <v-card height="600px">
       <v-card-title>
         {{ src }}
         <v-spacer />
@@ -17,13 +17,8 @@
 
       <v-divider />
 
-      <v-card-text class="fill-height">
-        <vue-friendly-iframe
-          v-if="edit && src"
-          :src="src"
-          @load="onLoad"
-        />
-        <iframe :src="src"></iframe>
+      <v-card-text class="pa-0 px-5 pt-5">
+        <iframe :src="src" style="width: 100%; height: 500px"></iframe>
       </v-card-text>
     </v-card>
     
@@ -33,7 +28,6 @@
 <script>
   import { computed } from '@vue/composition-api'
   import pathify from '@/utils/pathify'
-  import { VueFriendlyIframe } from 'vue-friendly-iframe'
 
   export default {
     setup(props, context) {
@@ -57,9 +51,5 @@
         src
       }
     },
-
-    components : {
-      VueFriendlyIframe
-    }
   }
 </script>
