@@ -22,7 +22,7 @@ cd vue-outline
 npm i
 ```
 
-### Initialize Drupal development server.
+### Initialize Drupal development server
 
 ```bash
 cp -R scripts/drupal drupal
@@ -35,20 +35,20 @@ lando site-setup
 
 #### Post install
 
-- Windows only, generate symlink in drupal folder: `mklink /D modules\outline outline`
-- Login at http://drupal-outline.lndo.site/user, username=admin password=admin
-- Navigate to http://drupal-outline.lndo.site/admin/config/graphql and create a GraphQL server with these settings:
+- Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
+- Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
 -- Label: Outline
 -- Schema: Outline Schema
 -- Endpoint: /outline-graphql
 -- Check 'Allow query batching' and 'Enable caching'
-- Navigate to: http://drupal-outline.lndo.site/admin/people/permissions and give the Anonymous role the permisions:
+- Navigate to: [http://drupal-outline.lndo.site/admin/people/permissions](http://drupal-outline.lndo.site/admin/people/permissions) and give the Anonymous role the permissions:
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
 
 To enable VS Code support:
 
 - In the top level vue-outline directory:
+
 ```bash
 cp -R scripts/vscode .vscode
 ```
