@@ -7,32 +7,50 @@
     offset-y
   >
     <v-list>
-      <v-list-item @click="addEntry">
+      <v-list-item
+        :disabled="disabled"
+        @click="addEntry"
+      >
         <v-list-item-title>Add</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click="editEntry">
+      <v-list-item
+        :disabled="disabled"
+        @click="editEntry"
+      >
         <v-list-item-title>Edit {{edit}}</v-list-item-title>
       </v-list-item>
 
-      <v-list-item disabled @click="renameEntry">
+      <v-list-item
+        disabled
+        @click="renameEntry"
+      >
         <v-list-item-title>Rename</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click="deleteEntry">
+      <v-list-item
+        :disabled="disabled"
+        @click="deleteEntry"
+      >
         <v-list-item-title>Delete</v-list-item-title>
       </v-list-item>
 
-      <v-list-item @click="cutEntry">
+      <v-list-item
+        :disabled="disabled"
+        @click="cutEntry"
+      >
         <v-list-item-title>Cut</v-list-item-title>
       </v-list-item>
 
-      <v-list-item disabled @click="copyEntry">
+      <v-list-item
+        disabled
+        @click="copyEntry"
+      >
         <v-list-item-title>Copy</v-list-item-title>
       </v-list-item>
 
       <v-list-item
-        :disabled="pasteDisabled"
+        :disabled="disabledPaste"
         @click="pasteEntry"
       >
         <v-list-item-title>Paste</v-list-item-title>

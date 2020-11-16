@@ -27,7 +27,7 @@ const state = {
 const mutations = make.mutations(state)
 
 const actions = {
-  ...make.mutations(state),
+  ...make.actions(state),
   async addEntry (store, parentEid) {
     console.log('Adding', parentEid);
     const { data: { addEntry } } = await graphqlClient.mutate({

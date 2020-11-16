@@ -32,11 +32,11 @@
   export default {
     setup(props, context) {
       const { get, sync } = pathify(context)
-      const menuItem = get('contextMenu/menuItem')
+      const activeItem = get('treeview/activeItem')
       const edit = sync('contextMenu/edit')
 
       const src = computed(() => {
-        const { eid } = menuItem.value
+        const eid = activeItem && activeItem.value ? activeItem.value.eid : ''
         const url = 'http://drupal-outline.lndo.site'
         return eid ? `${url}/outline/entry/${eid}/edit` : ''
       })

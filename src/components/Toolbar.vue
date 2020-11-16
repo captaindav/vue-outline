@@ -61,25 +61,27 @@
         deleteEntry,
         editEntry,
         pasteEntry,
-        pasteDisabled,
+        disabled,
+        disabledPaste,
         renameEntry
       } = getMenuActions(context)
       
       const leftActions = reactive({
-        add: { click: addEntry, disabled: false, icon: 'mdi-plus' },
-        edit: { click: editEntry, disabled: false, icon: 'mdi-pencil' },
+        add: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
+        edit: { click: editEntry, disabled: disabled, icon: 'mdi-pencil' },
         rename: { click: renameEntry, disabled: true, icon: 'mdi-form-textbox' },
-        delete: { click: deleteEntry, disabled: false, icon: 'mdi-delete' },
-        cut: { click: cutEntry, disabled: false, icon: 'mdi-content-cut' },
+        delete: { click: deleteEntry, disabled: disabled, icon: 'mdi-delete' },
+        cut: { click: cutEntry, disabled: disabled, icon: 'mdi-content-cut' },
         copy: { click: copyEntry, disabled: true, icon: 'mdi-content-copy' },
-        paste: { click: pasteEntry, disabled: pasteDisabled, icon: 'mdi-content-paste' },
+        paste: { click: pasteEntry, disabled: disabledPaste, icon: 'mdi-content-paste' },
       })
       const rightActions = reactive({})
 
       return {
+        disabled,
         leftActions,
         rightActions,
-        pasteDisabled
+        disabledPaste
       }
     },
   }

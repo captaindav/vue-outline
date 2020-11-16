@@ -5,20 +5,19 @@ const state = {
   edit: false,
   x: 0,
   y: 0,
-  menuItem: {},
-  cutItem: null
 }
 
 const mutations = make.mutations(state)
 
 const actions = {
   ...make.mutations(state),
-  async openMenu ({ commit }, data) {
+  async openMenu ({ commit, dispatch }, data) {
     data.e.preventDefault()
     commit('show', false)
     commit('x', data.e.clientX)
     commit('y', data.e.clientY)
-    commit('menuItem', data.item)
+    dispatch('treeview/setActive', [data.item.eid], { root: true })
+    dispatch('treeview/setActiveItem', data.item, { root: true })
     commit('show', true)
   }
 }

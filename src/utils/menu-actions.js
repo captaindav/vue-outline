@@ -6,27 +6,27 @@ export function getMenuActions (context) {
   const show = sync('contextMenu/show')
   const x = get('contextMenu/x')
   const y = get('contextMenu/y')
-  let cutItem = sync('contextMenu/cutItem')
+  let cutItem = sync('treeview/cutItem')
   let edit = sync('contextMenu/edit')
-  let menuItem = sync('contextMenu/menuItem')
+  let activeItem = sync('treeview/activeItem')
 
   const addEntry = () => {
-    const { eid: parentEid } = menuItem.value
+    const { eid: parentEid } = activeItem.value
     return call('graphql/addEntry', parentEid)
   }
 
   const copyEntry = () => {
-    console.log('Copy', menuItem)
+    console.log('Copy', activeItem)
   }
 
   const cutEntry = () => {
-    console.log('Cut', menuItem)
-    cutItem.value = menuItem
+    console.log('Cut', activeItem)
+    cutItem.value = activeItem
   }
 
   const deleteEntry = () => {
     // replace with vue/vuetify dialog
-    const { eid } = menuItem.value
+    const { eid } = activeItem.value
     const confirm = window.confirm(`Are you sure you want to delete ${eid}`)
     if (confirm && eid) {
       call('graphql/deleteEntry', eid)
@@ -38,14 +38,14 @@ export function getMenuActions (context) {
   }
   
   const renameEntry = () => {
-    const { eid } = menuItem.value
+    const { eid } = activeItem.value
     return call('graphql/renameEntry', eid)
   }
   
   const pasteEntry = () => {
-    console.log('Paste', menuItem.value, cutItem.value)
+    console.log('Paste', activeItem.value, cutItem.value)
     const { eid } = cutItem.value
-    const { eid: parentEid } = menuItem.value
+    const { eid: parentEid } = activeItem.value
     if (!eid || !parentEid) return
     setParentEntry(eid, parentEid)
   }
@@ -54,8 +54,11 @@ export function getMenuActions (context) {
     call('graphql/setParentEntry', { eid, parentEid })
   }
 
-  const pasteDisabled = computed(() => {
-    console.log(cutItem, !cutItem.value)
+  const disabled = computed(() => {
+    return activeItem && !activeItem.value
+  })
+
+  const disabledPaste = computed(() => {
     return cutItem && !cutItem.value
   })
   
@@ -65,10 +68,11 @@ export function getMenuActions (context) {
     cutItem,
     cutEntry,
     deleteEntry,
+    disabled,
+    disabledPaste,
     edit,
     editEntry,
     pasteEntry,
-    pasteDisabled,
     renameEntry,
     show,
     x,

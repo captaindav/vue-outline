@@ -14,6 +14,7 @@
         />
 
         <treeview
+          :active.sync="active"
           :items="items"
           :load-children="loadChildren"
           :open="open"
@@ -41,6 +42,7 @@
           <pane>
             <v-row class="fill-height">
               <v-col style="height: 100%" cols="12">
+                {{active}}
                 <span v-html="renderedContent.content"></span>
               </v-col>
             </v-row>
@@ -69,7 +71,7 @@
   
   export default {
     setup(props, context) {
-      const { call, get } = pathify(context)
+      const { call, get, sync } = pathify(context)
       // drawer getters
       const configItems = get('drawer/items')
       const selectedConfig = get('drawer/selected')
@@ -81,6 +83,9 @@
       const loading = computed(() => {
         return isFetchingOutlines.value || isFetchingEntries.value
       })
+      
+      // treeview props
+      const active = sync('treeview/active')
       
       // outline getters
       const toutlines = get('graphql/outlines')
@@ -104,8 +109,9 @@
         children: []
       })
       let renderedContent = reactive({ content: "" });
-      const treeViewLabelClick = (item) => {
+      const treeViewLabelClick = async (item) => {
         renderedContent.content = item.rendered;
+        await call('treeview/setActiveItem', item)
         if (item.children) {
           lastSelectedNode.eid = item.eid
           lastSelectedNode.children = item.children
@@ -118,8 +124,6 @@
         entry.children = childData.children
         return childData.children
       }
-
-      const active = reactive([])
 
       const setExpanded = (val) => {
         const expandItems = difference(val, open.value)
