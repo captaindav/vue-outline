@@ -59,8 +59,6 @@ To view the site status:
 lando drush status
 ```
 
-You may in to the site as user "admin" with password "admin" at <http://drupal-outline.lndo.site/user>.
-
 ## Rebuild or Reinitialize Lando / Reinstall Drupal
 
 If Lando/Drupal are not working / broken in some way try a Lando rebuild:
@@ -74,8 +72,7 @@ To reinitialize Lando and reinstall Drupal:
 ```bash
 lando destroy
 lando start
-lando install-drupal-core
-lando install-drupal-modules
+lando site-setup
 ```
 
 ## Vue app commands
