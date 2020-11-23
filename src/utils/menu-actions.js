@@ -21,7 +21,7 @@ export function getMenuActions (context) {
 
   const cutEntry = () => {
     console.log('Cut', activeItem)
-    cutItem.value = activeItem
+    cutItem.value = activeItem.value
   }
 
   const deleteEntry = () => {
@@ -43,9 +43,9 @@ export function getMenuActions (context) {
   }
   
   const pasteEntry = () => {
-    console.log('Paste', activeItem.value, cutItem.value)
     const { eid } = cutItem.value
     const { eid: parentEid } = activeItem.value
+    console.log('Paste', eid, parentEid)
     if (!eid || !parentEid) return
     setParentEntry(eid, parentEid)
   }
