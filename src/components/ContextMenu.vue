@@ -18,7 +18,7 @@
         :disabled="disabled"
         @click="editEntry"
       >
-        <v-list-item-title>Edit {{edit}}</v-list-item-title>
+        <v-list-item-title>Edit</v-list-item-title>
       </v-list-item>
 
       <v-list-item
