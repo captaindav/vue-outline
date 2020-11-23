@@ -25,15 +25,16 @@
       </pane>
       <pane>
         <splitpanes horizontal>
-          <pane :size="lastSelectedNode.children && lastSelectedNode.children.length ? 20 : 0" style="overflow-y: auto">
+          <pane :size="activeItem && activeItem.children && activeItem.children.length ? 20 : 0" style="overflow-y: auto">
             <v-chip-group
+              v-if="activeItem && activeItem.children"
               class="px-2 py-1"
               column
             >
               <v-chip
-                v-for="(child, ind) in lastSelectedNode.children || []"
+                v-for="(child, ind) in activeItem.children || []"
                 :key="`node-chip-${ind}`"
-                @click="treeViewLabelClick(child)"
+                @click="treeViewLabelClick(child, true)"
               >
                 {{ child.name }}
               </v-chip>
@@ -86,6 +87,7 @@
       
       // treeview props
       const active = sync('treeview/active')
+      const activeItem = get('treeview/activeItem')
       
       // outline getters
       const toutlines = get('graphql/outlines')
@@ -104,18 +106,13 @@
           : toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
-      let lastSelectedNode = reactive({
-        edi: null,
-        children: []
-      })
       let renderedContent = reactive({ content: "" });
-      const treeViewLabelClick = async (item) => {
+      const treeViewLabelClick = async (item, chip) => {
         renderedContent.content = item.rendered;
-        await call('treeview/setActiveItem', item)
-        if (item.children) {
-          lastSelectedNode.eid = item.eid
-          lastSelectedNode.children = item.children
+        if (chip) {
+          await call('treeview/setActive', [item.eid])
         }
+        await call('treeview/setActiveItem', item)
       }
 
       const loadChildren = async (entry) => {
@@ -141,12 +138,10 @@
         }
       }
 
-      
-
       return {
         active,
+        activeItem,
         items,
-        lastSelectedNode,
         loading,
         loadChildren,
         open,
