@@ -19,8 +19,8 @@ const io = require('socket.io')(server, options)
 io.on('connection', (socket) => {
   console.log('a user connected')
 
-  socket.on('login', async (msg) => {
-    console.log('server login', msg)
+  socket.on('get-page', async (msg) => {
+    console.log('starting puppeteer', msg)
     const data = {
       success: true,
       content: null,
@@ -34,11 +34,11 @@ io.on('connection', (socket) => {
       await page.type('input.gLFyf.gsfi', 'test')
       page.keyboard.press('Enter')
 
-      await page.waitForSelector('div#resultStats')
-      const links = await page.$$('div.r');
-      await links[0].click()
+      // await page.waitForSelector('div#resultStats')
+      // const links = await page.$$('div.r');
+      // await links[0].click()
 
-      data.content = ''
+      data.content = 'Some Page Data'
       
     } catch (e) {
       data.success = false,
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     }
     await browser.close()
     
-    io.emit('return_login', data)
+    io.emit('return_page', data)
   })
 })
 

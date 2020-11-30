@@ -15,10 +15,43 @@
 
       <v-spacer></v-spacer>
 
+      <v-dialog
+        v-model="drupalDialog"
+        max-width="400px"
+      >
+        <template #activator="{ on: don, attrs: dattrs }">
+          <v-tooltip bottom>
+            <template #activator="{ on: tton, attrs: ttattrs }">
+              <v-btn
+                icon
+                v-bind="{
+                  ...dattrs,
+                  ...ttattrs
+                }"
+                v-on="{
+                  ...don,
+                  ...tton
+                }"
+                @click="getPageData"
+              >
+                <v-icon>mdi-server</v-icon>
+              </v-btn>
+            </template>
+            <span>Get Drupal Details</span>
+          </v-tooltip>
+        </template>
+        <v-card
+          height="300px"
+          :loading="loading"
+        >
+          {{drupalText}}
+        </v-card>
+      </v-dialog>
+
       <servers-dialog />
 
       <v-dialog
-        v-model="dialog"
+        v-model="aboutDialog"
         max-width="400px"
       >
         <template #activator="{ on: don, attrs: dattrs }">
@@ -53,6 +86,8 @@
 </template>
 
 <script>
+  import pathify from '@/utils/pathify'
+
   import AppDrawer from './components/AppDrawer';
   import Outline from './components/Outline';
   import ServersDialog from './components/ServersDialog';
@@ -60,13 +95,26 @@
   export default {
     name: 'App',
 
-    setup () {
-      const dialog = false
+    setup (props, context) {
+      const { call, get } = pathify(context)
+      const aboutDialog = false
       const aboutText = 'About Text'
+      const drupalDialog = false
+      const drupalText = get('socketIo/data')
+      const loading = get('socketIo/loading')
+
+      const getPageData = async function () {
+        const page = await call('socketIo/getPage')
+        return page
+      }
 
       return {
-        dialog,
+        aboutDialog,
         aboutText,
+        drupalDialog,
+        drupalText,
+        getPageData,
+        loading,
       }
     },
 
