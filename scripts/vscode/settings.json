@@ -6,6 +6,6 @@
     "breadcrumbs.enabled": true,
     "files.autoSave": "afterDelay",
     "phpunit.paths": {
-        "${workspaceFolder}/drupal": "/app/drupal",
-    },
+        "${workspaceFolder}/packages/drupal": "/app/drupal"
+    }
 }

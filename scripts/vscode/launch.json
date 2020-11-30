@@ -10,10 +10,10 @@
             "request": "launch",
             "port": 9000,
             "pathMappings": {
-                "/app/drupal": "${workspaceRoot}/drupal",
+                "/app/drupal": "${workspaceRoot}/packages/drupal"
                 // "/app/": "${workspaceFolder}/",
             },
-            "log":true,  
+            "log":true
         }
     ]
 }

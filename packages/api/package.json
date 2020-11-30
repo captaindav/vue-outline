@@ -1,0 +1,13 @@
+{
+	"name": "api",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+    "serve": "node index.js"
+  },
+	"dependencies": {
+		"express": "^4.17.1",
+		"puppeteer": "^5.5.0",
+		"socket.io": "^3.0.1"
+	}
+}

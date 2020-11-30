@@ -25,8 +25,8 @@ npm i
 ### Initialize Drupal development server
 
 ```bash
-cp -R scripts/drupal drupal
-cd drupal
+cp -R scripts/drupal packages/drupal
+cd packages/drupal
 COMPOSER_MEMORY_LIMIT=-1 composer install
 lando poweroff
 lando start
@@ -75,22 +75,35 @@ lando start
 lando site-setup
 ```
 
-## Vue app commands
+## Packages
 
-### Compiles and hot-reloads for development
+- api
+  - Simple express api server.
+  - Can use puppeteer.
+- drupal
+  - Main dev/drupal environment
+  - Only generated when following the Initialize Drupal development server instructions above
+- outline
+  - Main vue-outline client/application
+  - Requires drupal server to function
 
-```bash
-npm run serve
-```
+## General repository commands
 
-### Compiles and minifies for production
+### root level
 
-```bash
-npm run build
-```
+- `build <package>`: runs build on all packages. Accepts `<package>` parameter to target specific packages
+- `clean`: Cleans node_modules from all packages
+- `lint`: Runs lint on all packages
+- `lint:fix`: Runs `lint --fix` on all packages
+- `serve <package>`: Runs `serve` on all packages. Accepts `<package>` parameter to target specific packages
+- `start`: Starts drupal development server. Requires lando to function
 
-### Lints and fixes files
+### api package
 
-```bash
-npm run lint
-```
+- `serve`: Starts express api server
+
+### outline package
+
+- `build`: Compiles and minifies outline client for production
+- `lint`: Lints and fixes outline client files
+- `serve`: Compiles and hot-reloads outline client for development
