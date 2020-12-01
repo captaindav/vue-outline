@@ -25,12 +25,7 @@ npm i
 ### Initialize Drupal development server
 
 ```bash
-cp -R scripts/drupal packages/drupal
-cd packages/drupal
-COMPOSER_MEMORY_LIMIT=-1 composer install
-lando poweroff
-lando start
-lando site-setup
+npm run init:drupal
 ```
 
 #### Post install
@@ -93,6 +88,7 @@ lando site-setup
 
 - `build <package>`: runs build on all packages. Accepts `<package>` parameter to target specific packages
 - `clean`: Cleans node_modules from all packages
+- `init:drupal`: Initializes Drupal development server
 - `lint`: Runs lint on all packages
 - `lint:fix`: Runs `lint --fix` on all packages
 - `serve <package>`: Runs `serve` on all packages. Accepts `<package>` parameter to target specific packages
