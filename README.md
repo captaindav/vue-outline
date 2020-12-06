@@ -24,15 +24,9 @@ npm i
 
 ### Initialize Drupal
 
-Mac OSX:
-```bash
-npm run init:drupal
-```
+Mac OSX:```bash npm run init:drupal```
 
-Windows:
-```bash
-npm run init:drupal
-```
+Windows:```bash npm run init:drupal```
 
 #### Post install
 
