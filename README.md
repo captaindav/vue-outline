@@ -25,6 +25,7 @@ npm i
 ### Step 2: Initialize Drupal
 
 Mac OSX:```bash npm run init:drupal:mac```
+(requires composer.phar in /usr/local/bin) 
 
 Windows:```bash npm run init:drupal:windows```
 
