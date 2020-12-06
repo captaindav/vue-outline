@@ -1,5 +1,6 @@
 name: drupal-outline
 recipe: drupal9
+php: '7.4'
 services:
   drupaltest:
     type: mysql
@@ -9,7 +10,6 @@ services:
       database: drupaltest
   appserver:
     webroot: web
-    php: '7.4'
     xdebug: true
     config:
       php: php.ini
@@ -48,10 +48,10 @@ tooling:
     service: appserver
     description: "Install the Drupal Vue Outline client for development."
     cmd:
-      - git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && ln -s ../../outline web/modules/outline
-      - mv settings.php web/sites/default
-      - mv settings.local.php web/sites/default
-      - mv services.yml web/sites/default
+      - if [ ! -d "outline" ]; then git clone --branch 8.x-1.x git@git.drupal.org:project/outline.git && rm -f web/modules/outline && ln -s ../../outline web/modules/outline ; fi
+      - if [ -f "settings.php" ]; mv settings.php web/sites/default ; fi
+      - if [ -f "settings.local.php" ]; mv settings.local.php web/sites/default ; fi
+      - if [ -f "services.php" ]; mv services.yml web/sites/default ; fi
       - drush -y site-install standard --account-pass admin --site-name "Drupal Outline" --db-url mysql://drupal9:drupal9@database/drupal9
       - drush -y en content_moderation, media, media_library, workflows
       - drush -y en admin_toolbar, admin_toolbar_tools, admin_toolbar_links_access_filter, admin_toolbar_search
