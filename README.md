@@ -14,7 +14,7 @@ quickly displayed using cached data rather than making a trip to the server if t
 These must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
 Before installation, make sure you have drupal account set up with git access, SSH Key, and your global git user/email set.
 
-### Clone and install the Vue project
+### Step 1: Clone and install the Vue project
 
 ```bash
 git clone git@github.com:captaindav/vue-outline
@@ -22,13 +22,15 @@ cd vue-outline
 npm i
 ```
 
-### Initialize Drupal
+### Step 2: Initialize Drupal
 
 Mac OSX:```bash npm run init:drupal:mac```
 
 Windows:```bash npm run init:drupal:windows```
 
-#### Post install
+### Step 3: Configure Drupal and VS Code
+
+#### Configure GraphQL
 
 - Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
 - Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
@@ -40,7 +42,7 @@ Windows:```bash npm run init:drupal:windows```
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
 
-To enable VS Code support:
+#### VS Code support:
 
 - In the top level vue-outline directory:
 
@@ -48,7 +50,7 @@ To enable VS Code support:
 cp -R scripts/vscode .vscode
 ```
 
-To view the site status:
+## Site status:
 
 ```bash
 lando drush status
@@ -60,6 +62,7 @@ If Lando/Drupal are not working / broken in some way try a Lando rebuild:
 
 ```bash
 lando rebuild
+lando site-setup
 ```
 
 To reinitialize Lando and reinstall Drupal:
