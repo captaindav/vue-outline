@@ -14,7 +14,7 @@ quickly displayed using cached data rather than making a trip to the server if t
 These must be installed globally prior to installation: git, node, npm, vue, composer, lando/docker.
 Before installation, make sure you have drupal account set up with git access, SSH Key, and your global git user/email set.
 
-### Clone and install project
+### Clone and install the Vue project
 
 ```bash
 git clone git@github.com:captaindav/vue-outline
@@ -22,8 +22,14 @@ cd vue-outline
 npm i
 ```
 
-### Initialize Drupal development server
+### Initialize Drupal
 
+Mac OSX:
+```bash
+npm run init:drupal
+```
+
+Windows:
 ```bash
 npm run init:drupal
 ```
