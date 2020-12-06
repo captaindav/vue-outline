@@ -29,9 +29,9 @@ Mac OSX:```bash npm run init:drupal:mac```
 
 Windows:```bash npm run init:drupal:windows```
 
-### Step 3: Configure Drupal and VS Code
+### Step 3: Configure Drupal GraphQL Server and VS Code
 
-#### Configure GraphQL
+#### Drupal GraphQL Server
 
 - Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
 - Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
@@ -43,7 +43,7 @@ Windows:```bash npm run init:drupal:windows```
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
 
-#### VS Code support:
+#### VS Code
 
 - In the top level vue-outline directory:
 
