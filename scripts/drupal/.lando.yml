@@ -1,6 +1,7 @@
 name: drupal-outline
 recipe: drupal9
-php: '7.4'
+config:
+  php: '7.4'
 services:
   drupaltest:
     type: mysql
