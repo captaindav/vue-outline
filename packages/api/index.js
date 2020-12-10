@@ -17,13 +17,11 @@ const options = {
 }
 const io = require('socket.io')(server, options)
 io.on('connection', (socket) => {
-  console.log('a user connected')
-
   socket.on('get-page', async (msg) => {
     console.log('starting puppeteer', msg)
     const data = {
       success: true,
-      content: null,
+      results: null,
     }
 
     const browser = await puppeteer.launch({ headless: false })
@@ -42,7 +40,7 @@ io.on('connection', (socket) => {
       
     } catch (e) {
       data.success = false,
-      data.content = e
+      data.results = e
     }
     await browser.close()
     
