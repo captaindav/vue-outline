@@ -21,16 +21,17 @@
             <v-icon>mdi-cog</v-icon>
           </v-btn>
         </template>
-        <span>Configure Servers</span>
+        <span>Outline Servers</span>
       </v-tooltip>
     </template>
     <v-card>
-      <v-card-title>
-        Configure Servers
+      <v-card-title class="py-2">
+        Outline Servers
         <v-spacer />
         <v-btn
           fab
           icon
+          small
           @click="dialog = !dialog"
         >
           <v-icon>mdi-close</v-icon>
@@ -39,10 +40,14 @@
       <v-divider />
       <v-card-text>
         <v-list>
-          <v-list-item-group multiple>
+          <v-list-item-group
+            v-model="active"
+            multiple
+          >
             <v-list-item
-              v-for="outline in servers"
-              :key="`oi-${outline.eid}`"
+              v-for="server in available"
+              :key="`oi-${server.sid}`"
+              :disabled="server.disabled"
             >
               <template v-slot:default="{ active }">
                 <v-list-item-action>
@@ -53,8 +58,12 @@
                 </v-list-item-action>
 
                 <v-list-item-content>
-                  <v-list-item-title>{{outline.name}}</v-list-item-title>
+                  <v-list-item-title>{{server.name}}</v-list-item-title>
                 </v-list-item-content>
+
+                <v-list-item-action v-if="server.disabled">
+                  <v-icon>mdi-cancel</v-icon>
+                </v-list-item-action>
               </template>
             </v-list-item>
           </v-list-item-group>
@@ -65,29 +74,21 @@
 </template>
 
 <script>
-  import { reactive } from '@vue/composition-api'
+  import pathify from '@/utils/pathify'
 
   export default {
     name: 'ServerDialog',
 
-    setup() {
+    setup(props, context) {
       let dialog = false
-      const servers = reactive([
-        {
-          eid: 1,
-          name: 'Server 1',
-          active: true,
-        },
-        {
-          eid: 2,
-          name: 'Server 2',
-          active: false,
-        },
-      ])
+      const { sync } = pathify(context)
+      const available = sync('auth/availableServers')
+      const active = sync('auth/activeServers')
 
       return {
+        active,
+        available,
         dialog,
-        servers,
       }
     }
   }

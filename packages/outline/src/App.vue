@@ -48,7 +48,7 @@
         </v-card>
       </v-dialog>
 
-      <servers-dialog />
+      <server-dialog />
 
       <v-dialog
         v-model="aboutDialog"
@@ -90,7 +90,7 @@
 
   import AppDrawer from './components/AppDrawer';
   import Outline from './components/Outline';
-  import ServersDialog from './components/ServersDialog';
+  import ServerDialog from './components/ServerDialog';
 
   export default {
     name: 'App',
@@ -119,9 +119,9 @@
     },
 
     components: {
-      AppDrawer,
+      BookmarkDrawer,
       Outline,
-      ServersDialog,
+      ServerDialog,
     },
     
   };
