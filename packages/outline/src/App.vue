@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <app-drawer />
+    <bookmark-drawer />
 
     <v-app-bar
       app
@@ -88,7 +88,7 @@
 <script>
   import pathify from '@/utils/pathify'
 
-  import AppDrawer from './components/AppDrawer';
+  import BookmarkDrawer from './components/BookmarkDrawer';
   import Outline from './components/Outline';
   import ServerDialog from './components/ServerDialog';
 

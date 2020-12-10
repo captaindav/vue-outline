@@ -7,17 +7,17 @@
     <template #activator="{ on: don, attrs: dattrs }">
       <v-tooltip right>
         <template #activator="{ on: tton, attrs: ttattrs }">
-          <v-list-item>
-            <v-list-item-icon
-              v-bind="{
-                ...dattrs,
-                ...ttattrs
-              }"
-              v-on="{
-                ...don,
-                ...tton
-              }"
-            >
+          <v-list-item
+            v-bind="{
+              ...dattrs,
+              ...ttattrs
+            }"
+            v-on="{
+              ...don,
+              ...tton
+            }"
+          >
+            <v-list-item-icon>
               <v-icon>mdi-cogs</v-icon>
             </v-list-item-icon>
             <v-list-item-content />

@@ -74,8 +74,8 @@
     setup(props, context) {
       const { call, get, sync } = pathify(context)
       // drawer getters
-      const configItems = get('drawer/items')
-      const selectedConfig = get('drawer/selected')
+      const configItems = get('bookmarks/items')
+      const selectedConfig = get('bookmarks/selected')
       const open = get('graphql/opened')
       
       //loading getters

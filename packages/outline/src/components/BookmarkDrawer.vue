@@ -38,8 +38,8 @@
 
     setup(props, context) {
       const { sync } = pathify(context)
-      const items = sync('drawer/items')
-      const selected = sync('drawer/selected')
+      const items = sync('bookmarks/items')
+      const selected = sync('bookmarks/selected')
 
       return {
         items,
