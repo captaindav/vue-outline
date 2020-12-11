@@ -5,23 +5,50 @@
     mini-variant
     permanent
   >
-    <v-list>
-      <v-list-item-group
-        v-model="selected"
-        mandatory
-        color="primary"
+    <v-list-item-group
+      v-model="active"
+      color="primary"
+    >
+      <v-tooltip
+        v-for="server in servers"
+        :key="server.sid"
+        right
       >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-        >
-          <v-list-item-icon>
-            <v-icon v-text="item.icon" />
-          </v-list-item-icon>
-          <v-list-item-content />
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+        <template #activator="{ on, attrs }">
+          <v-list-item
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-network-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content />
+          </v-list-item>
+        </template>
+        <span>{{server.name}}</span>
+      </v-tooltip>
+
+      <v-divider />
+
+      <v-tooltip
+        v-for="bm in bookmarks"
+        :key="bm.title"
+        right
+      >
+        <template #activator="{ on, attrs }">
+          <v-list-item
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-list-item-icon>
+              <v-icon v-text="bm.icon" />
+            </v-list-item-icon>
+            <v-list-item-content />
+          </v-list-item>
+        </template>
+        <span>{{bm.name}}</span>
+      </v-tooltip>
+    </v-list-item-group>
     
     <template #append>
       <bookmarks-dialog />
@@ -32,18 +59,42 @@
 <script>
   import pathify from '@/utils/pathify'
   import BookmarksDialog from './BookmarksDialog'
+  import { computed, watch } from '@vue/composition-api'
 
   export default {
     name: 'AppDrawer',
 
     setup(props, context) {
       const { sync } = pathify(context)
-      const items = sync('bookmarks/items')
-      const selected = sync('bookmarks/selected')
+      const active = sync('bookmarks/active')
+      const bookmarks = sync('bookmarks/bookmarks')
+      const outlines = sync('bookmarks/outlines')
+      
+      // servers
+      const activeServers = sync('auth/activeServers')
+      const availableServers = sync('auth/availableServers')
+      const servers = computed(() => {
+        return availableServers.value.filter((val, ind) => activeServers.value.includes(ind))
+      })
+
+      const offset = computed(() => {
+        return servers.value.length || 0
+      })
+
+      watch(active, (val) => {
+        const bookmarkInd = val - offset.value
+        outlines.value = (bookmarkInd >= 0)
+          ? bookmarks?.value[bookmarkInd]?.outlines || []
+          : []
+        console.log(bookmarkInd, outlines.value)
+      })
+
 
       return {
-        items,
-        selected
+        active,
+        bookmarks,
+        servers,
+        offset,
       }
     },
 

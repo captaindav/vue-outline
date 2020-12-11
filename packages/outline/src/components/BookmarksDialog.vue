@@ -23,16 +23,17 @@
             <v-list-item-content />
           </v-list-item>
         </template>
-        <span>Configure Outline Bookmarks</span>
+        <span>Bookmark Manager</span>
       </v-tooltip>
     </template>
     <v-card>
-      <v-card-title>
-        Configure Outline Bookmarks
+      <v-card-title class="py-2">
+        Bookmark Manager
         <v-spacer />
         <v-btn
           fab
           icon
+          small
           @click="dialog = !dialog"
         >
           <v-icon>mdi-close</v-icon>

@@ -5,7 +5,7 @@ const state = {
   availableServers: [
     { sid: 1, name: 'Server 1' },
     { sid: 2, name: 'Server 2', disabled: true },
-    { sid: 3, name: 'Server 3', disabled: true},
+    { sid: 3, name: 'Server 3', disabled: true },
   ],
 }
 
