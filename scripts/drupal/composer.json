@@ -94,8 +94,8 @@
         "drupal/console": "^1.9",
         "drupal/core-dev": "^9.0",
         "drupal/devel": "^4.0",
-        "drupal/devel_php": "^1.2",
+        "drupal/devel_php": "^1.3",
         "drush/drush": "^10.3",
-        "phpunit/phpunit": "^8"
+        "phpunit/phpunit": "^9.5"
     }
 }
