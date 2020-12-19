@@ -2,14 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "drupal-outline",
+            "name": "Xdebug",
             "type": "php",
             "request": "launch",
-            "port": 9009,
+            "port": 9003,
+            "log": true,
             "pathMappings": {
                 "/app/": "${workspaceRoot}/packages/drupal/",
             },
-            "log": true,
         }
     ]
 }
