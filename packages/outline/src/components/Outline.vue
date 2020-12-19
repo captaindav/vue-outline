@@ -74,8 +74,7 @@
     setup(props, context) {
       const { call, get, sync } = pathify(context)
       // drawer getters
-      const configItems = get('drawer/items')
-      const selectedConfig = get('drawer/selected')
+      const selectedOutlines = get('bookmarks/outlines')
       const open = get('graphql/opened')
       
       //loading getters
@@ -100,7 +99,7 @@
       // init outline fetch
       call('graphql/fetchOutlines')
       const items = computed(() => {
-        const outlines = configItems.value[selectedConfig.value].outlines || []
+        const outlines = selectedOutlines?.value || []
         return (!outlines.length)
           ? toutlines.value
           : toutlines.value.filter(item => outlines.includes(item.eid))

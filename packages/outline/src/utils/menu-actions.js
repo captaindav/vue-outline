@@ -15,6 +15,11 @@ export function getMenuActions (context) {
     return call('graphql/addEntry', parentEid)
   }
 
+  const addOutline = () => {
+    console.log('Add Outline')
+    return true
+  }
+
   const copyEntry = () => {
     console.log('Copy', activeItem)
   }
@@ -64,6 +69,7 @@ export function getMenuActions (context) {
   
   return {
     addEntry,
+    addOutline,
     copyEntry,
     cutItem,
     cutEntry,

@@ -1,25 +1,33 @@
 <template>
   <v-toolbar color="transparent" dense>
-    <v-tooltip
-      v-for="(laItem, la) in leftActions"
-      :key="`la-${la}`"
-      bottom
-    >
-      <template #activator="{ attrs, on }">
-        <v-btn
-          v-bind="attrs"
-          v-on="{
-            ...on,
-            click: laItem.click
-          }"
-          :disabled="laItem.disabled"
-          icon
-        >
-          <v-icon v-text="laItem.icon" />
-        </v-btn>
-      </template>
-      <span class="text-capitalize">{{la}}</span>
-    </v-tooltip>
+    <template v-for="(laItem, la) in leftActions">
+      <v-divider
+        v-if="laItem === 'divider'"
+        :key="`ld-${la}`"
+        vertical
+      />
+      
+      <v-tooltip
+       v-else
+       :key="`la-${la}`"
+        bottom
+      >
+        <template #activator="{ attrs, on }">
+          <v-btn
+            v-bind="attrs"
+            v-on="{
+              ...on,
+              click: laItem.click
+            }"
+            :disabled="laItem.disabled"
+            icon
+          >
+            <v-icon v-text="laItem.icon" />
+          </v-btn>
+        </template>
+        <span class="text-capitalize">{{la}}</span>
+      </v-tooltip>
+    </template>
 
     <v-spacer />
 
@@ -56,18 +64,21 @@
     setup(props, context) {
       const {
         addEntry,
+        addOutline,
         copyEntry,
         cutEntry,
         deleteEntry,
-        editEntry,
-        pasteEntry,
         disabled,
         disabledPaste,
+        editEntry,
+        pasteEntry,
         renameEntry
       } = getMenuActions(context)
       
       const leftActions = reactive({
-        add: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
+        addOutline: { click: addOutline, disabled: false, icon: 'mdi-book-plus' },
+        d1: 'divider', 
+        addEntry: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
         edit: { click: editEntry, disabled: disabled, icon: 'mdi-pencil' },
         rename: { click: renameEntry, disabled: true, icon: 'mdi-form-textbox' },
         delete: { click: deleteEntry, disabled: disabled, icon: 'mdi-delete' },

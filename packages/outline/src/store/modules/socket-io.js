@@ -14,10 +14,10 @@ const actions = {
     commit('data', null);
     this._vm.$socket.client.emit('get-page', data)
   },
-  socket_returnPage ({ commit }, results) {
+  socket_returnPage ({ commit }, data) {
     commit('loading', false);
-    commit('data', results.content);
-    return results
+    commit('data', data.results);
+    return data
   }
 }
 

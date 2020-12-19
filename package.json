@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "cross-env": "^7.0.2",
-    "cross-spawn": "^6.0.5",
-    "eslint": "^7.14.0",
+    "cross-env": "^7.0.3",
+    "cross-spawn": "^7.0.3",
+    "eslint": "^7.15.0",
     "lerna": "^3.22.1",
     "lodash": "^4.17.20"
   }
