@@ -103,8 +103,8 @@
     setup(props, context) {
       let dialog = false
       const { sync } = pathify(context)
-      const selected = sync('auth/selected')
-      const servers = sync('auth/servers')
+      const selected = sync('servers/selected')
+      const servers = sync('servers/servers')
 
       const addServer = () => {
         servers.value.push({ name: 'Server 1', uri: '', disabled: false })

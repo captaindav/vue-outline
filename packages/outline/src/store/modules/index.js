@@ -1,6 +1,6 @@
-export { default as auth } from './auth'
 export { default as bookmarks } from './bookmarks'
 export { default as contextMenu } from './context-menu'
 export { default as graphql } from './graphql'
 export { default as treeview } from './treeview'
+export { default as servers } from './servers'
 export { default as socketIo } from './socket-io'
