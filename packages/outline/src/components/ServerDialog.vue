@@ -37,34 +37,55 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-card-title>
+
       <v-divider />
-      <v-card-text>
-        <v-list>
-          <v-list-item-group
-            v-model="active"
-            multiple
+
+      <v-card-text class="pa-0">
+        <v-toolbar dense>
+          <v-tooltip
+            v-for="(action, sa) in actions"
+            :key="`sa-${sa}`"
+            bottom
           >
+            <template #activator="{ attrs, on }">
+              <v-btn
+                v-bind="attrs"
+                v-on="{
+                  ...on,
+                  click: action.click
+                }"
+                :disabled="sa !== 'add' && !(selected >= 0)"
+                icon
+                fab
+                small
+              >
+                <v-icon v-text="action.icon" />
+              </v-btn>
+            </template>
+            <span class="text-capitalize">{{sa}} Server</span>
+          </v-tooltip>
+        </v-toolbar>
+        
+        <v-list>
+          <v-list-item-group v-model="selected">
             <v-list-item
-              v-for="server in available"
-              :key="`oi-${server.sid}`"
-              :disabled="server.disabled"
+              v-for="(server, si) in servers"
+              :key="`oi-${si}`"
             >
-              <template v-slot:default="{ active }">
-                <v-list-item-action>
-                  <v-checkbox
-                    :input-value="active"
-                    color="primary"
-                  ></v-checkbox>
-                </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{server.name}}</v-list-item-title>
+              </v-list-item-content>
 
-                <v-list-item-content>
-                  <v-list-item-title>{{server.name}}</v-list-item-title>
-                </v-list-item-content>
-
-                <v-list-item-action v-if="server.disabled">
-                  <v-icon>mdi-cancel</v-icon>
-                </v-list-item-action>
-              </template>
+              <v-list-item-action>
+                <v-icon
+                  v-if="server.disabled"
+                  color="error"
+                >mdi-cancel</v-icon>
+                <v-icon
+                  v-if="!server.disabled"
+                  color="success"
+                >mdi-check</v-icon>
+              </v-list-item-action>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -82,12 +103,39 @@
     setup(props, context) {
       let dialog = false
       const { sync } = pathify(context)
-      const available = sync('auth/availableServers')
-      const active = sync('auth/activeServers')
+      const selected = sync('auth/selected')
+      const servers = sync('auth/servers')
+
+      const addServer = () => {
+        servers.value.push({ name: 'Server 1', uri: '', disabled: false })
+        selected.value = undefined
+      }
+
+      const deleteServer = () => {
+        servers.value.splice(selected.value, 1)
+        selected.value = undefined
+      }
+
+      const disableServer = () => {
+        servers.value[selected.value].disabled = true
+      }
+
+      const enableServer = () => {
+        servers.value[selected.value].disabled = false
+      }
+
+      const actions = {
+        add: { click: addServer, icon: 'mdi-plus' },
+        edit: { click: () => {}, icon: 'mdi-pencil' },
+        delete: { click: deleteServer, icon: 'mdi-delete' },
+        disable: { click: disableServer, icon: 'mdi-cancel' },
+        enable: { click: enableServer, icon: 'mdi-check' },
+      }
 
       return {
-        active,
-        available,
+        actions,
+        servers,
+        selected,
         dialog,
       }
     }

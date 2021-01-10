@@ -1,11 +1,9 @@
 import { make } from 'vuex-pathify'
 
 const state = {
-  activeServers: [0],
-  availableServers: [
-    { sid: 1, name: 'Server 1' },
-    { sid: 2, name: 'Server 2', disabled: true },
-    { sid: 3, name: 'Server 3', disabled: true },
+  selected: null,
+  servers: [
+    { name: 'Server 1', uri: 'http://drupal-outline.lndo.site/outline-graphql', disabled: false },
   ],
 }
 
