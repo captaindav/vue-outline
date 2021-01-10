@@ -9,11 +9,7 @@
       v-model="active"
       color="primary"
     >
-      <v-tooltip
-        v-for="server in servers"
-        :key="server.sid"
-        right
-      >
+      <v-tooltip right>
         <template #activator="{ on, attrs }">
           <v-list-item
             v-bind="attrs"
@@ -25,7 +21,7 @@
             <v-list-item-content />
           </v-list-item>
         </template>
-        <span>{{server.name}}</span>
+        <span>Outlines</span>
       </v-tooltip>
 
       <v-divider />
@@ -51,6 +47,8 @@
     </v-list-item-group>
     
     <template #append>
+      <v-divider />
+      
       <bookmarks-dialog />
     </template>
   </v-navigation-drawer>
@@ -59,7 +57,7 @@
 <script>
   import pathify from '@/utils/pathify'
   import BookmarksDialog from './BookmarksDialog'
-  import { computed, watch } from '@vue/composition-api'
+  import { watch } from '@vue/composition-api'
 
   export default {
     name: 'AppDrawer',
@@ -70,31 +68,15 @@
       const bookmarks = sync('bookmarks/bookmarks')
       const outlines = sync('bookmarks/outlines')
       
-      // servers
-      const activeServers = sync('auth/activeServers')
-      const availableServers = sync('auth/availableServers')
-      const servers = computed(() => {
-        return availableServers.value.filter((val, ind) => activeServers.value.includes(ind))
-      })
-
-      const offset = computed(() => {
-        return servers.value.length || 0
-      })
-
       watch(active, (val) => {
-        const bookmarkInd = val - offset.value
-        outlines.value = (bookmarkInd >= 0)
-          ? bookmarks?.value[bookmarkInd]?.outlines || []
-          : []
-        console.log(bookmarkInd, outlines.value)
+        const bookmarkInd = val - 1
+        outlines.value = bookmarks?.value[bookmarkInd]?.outlines || []
       })
 
 
       return {
         active,
         bookmarks,
-        servers,
-        offset,
       }
     },
 
