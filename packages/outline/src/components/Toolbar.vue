@@ -7,6 +7,12 @@
         vertical
       />
       
+
+      <outline-dialog
+        v-else-if="laItem === 'outline-dialog'"
+        :key="`ld-${la}`"
+      />
+
       <v-tooltip
        v-else
        :key="`la-${la}`"
@@ -57,9 +63,14 @@
 <script>
   import { reactive } from '@vue/composition-api'
   import { getMenuActions } from '@/utils/menu-actions'
-
+  import OutlineDialog from './OutlineDialog'
+  
   export default {
     name: 'Toolbar',
+
+    components: {
+      OutlineDialog,
+    },
 
     setup(props, context) {
       const {
@@ -71,13 +82,12 @@
         disabled,
         disabledPaste,
         editEntry,
-        openOutline,
         pasteEntry,
         renameEntry
       } = getMenuActions(context)
       
       const leftActions = reactive({
-        open: { click: openOutline, disabled: false, icon: 'mdi-book-plus' },
+        open: 'outline-dialog',
         close: { click: closeOutline, disabled: disabled, icon: 'mdi-book-remove' },
         d1: 'divider', 
         addEntry: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
