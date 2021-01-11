@@ -64,19 +64,21 @@
     setup(props, context) {
       const {
         addEntry,
-        addOutline,
+        closeOutline,
         copyEntry,
         cutEntry,
         deleteEntry,
         disabled,
         disabledPaste,
         editEntry,
+        openOutline,
         pasteEntry,
         renameEntry
       } = getMenuActions(context)
       
       const leftActions = reactive({
-        addOutline: { click: addOutline, disabled: false, icon: 'mdi-book-plus' },
+        open: { click: openOutline, disabled: false, icon: 'mdi-book-plus' },
+        close: { click: closeOutline, disabled: disabled, icon: 'mdi-book-remove' },
         d1: 'divider', 
         addEntry: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
         edit: { click: editEntry, disabled: disabled, icon: 'mdi-pencil' },
