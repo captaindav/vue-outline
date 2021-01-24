@@ -24,7 +24,8 @@
         <span>Outline Servers</span>
       </v-tooltip>
     </template>
-    <v-card>
+    
+    <v-card height="400px">
       <v-card-title class="py-2">
         Outline Servers
         <v-spacer />
@@ -32,7 +33,7 @@
           fab
           icon
           small
-          @click="dialog = !dialog"
+          @click="close"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -40,10 +41,13 @@
 
       <v-divider />
 
-      <v-card-text class="pa-0">
-        <v-toolbar dense>
+      <v-card-text class="pa-0" v-if="!edit">
+        <v-toolbar
+          class="px-2"
+          dense
+        >
           <v-tooltip
-            v-for="(action, sa) in actions"
+            v-for="(sAction, sa) in serverActions"
             :key="`sa-${sa}`"
             bottom
           >
@@ -52,21 +56,25 @@
                 v-bind="attrs"
                 v-on="{
                   ...on,
-                  click: action.click
+                  click: sAction.click
                 }"
-                :disabled="sa !== 'add' && !(selected >= 0)"
+                :disabled="sa !== 'add' && selected === undefined"
                 icon
                 fab
                 small
               >
-                <v-icon v-text="action.icon" />
+                <v-icon v-text="sAction.icon" />
               </v-btn>
             </template>
             <span class="text-capitalize">{{sa}} Server</span>
           </v-tooltip>
         </v-toolbar>
         
-        <v-list>
+        <v-list
+          v-if="!edit"
+          height="294px"
+          style="overflow-y: auto"
+        >
           <v-list-item-group v-model="selected">
             <v-list-item
               v-for="(server, si) in servers"
@@ -90,32 +98,114 @@
           </v-list-item-group>
         </v-list>
       </v-card-text>
+      
+      <v-card-text
+        v-if="edit"
+        class="pa-0"
+      >
+        <v-toolbar
+          class="px-2"
+          dense
+        >
+          <v-tooltip
+            v-for="(eAction, ea) in editActions"
+            :key="`ea-${ea}`"
+            bottom
+          >
+            <template #activator="{ attrs, on }">
+              <v-btn
+                v-bind="attrs"
+                v-on="{
+                  ...on,
+                  click: eAction.click
+                }"
+                icon
+                fab
+                small
+              >
+                <v-icon v-text="eAction.icon" />
+              </v-btn>
+            </template>
+            <span class="text-capitalize">{{ea}}</span>
+          </v-tooltip>
+        </v-toolbar>
+
+        <v-form v-if="edit" class="pa-6">
+          <v-text-field
+            v-model="editItem.name"
+            label="Name"
+            outlined
+          />
+          <v-text-field
+            v-model="editItem.uri"
+            label="Uri"
+            outlined
+          />
+          <v-checkbox
+            v-model="editItem.disabled"
+            label="Disabled"
+          />
+        </v-form>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
   import pathify from '@/utils/pathify'
+  import { reactive, ref } from '@vue/composition-api'
 
   export default {
     name: 'ServerDialog',
 
     setup(props, context) {
-      let dialog = false
+      const dialog = ref(false)
+      const edit = ref(false)
+      const isNew = ref(false)
       const { sync } = pathify(context)
       const selected = sync('servers/selected')
       const servers = sync('servers/servers')
+      
+      const editDefault = {
+        name: '',
+        uri: '',
+        disabled: false,
+      }
+      
+      let editItem = reactive({
+        name: '',
+        uri: '',
+        disabled: false,
+      })
 
       const addServer = () => {
-        servers.value.push({ name: 'Server 1', uri: '', disabled: false })
+        isNew.value = true
+        edit.value = true
+      }
+
+      const cancel = () => {
+        edit.value = false
+        editItem = Object.assign(editItem, editDefault)
+        console.log(editItem)
+      }
+
+      const close = () => {
+        edit.value = false
+        dialog.value = false
         selected.value = undefined
+      }
+
+      const editServer = () => {
+        const server = servers.value[selected.value]
+        editItem = Object.assign(editItem, server)
+        edit.value = true
       }
 
       const deleteServer = () => {
         servers.value.splice(selected.value, 1)
         selected.value = undefined
       }
-
+      
       const disableServer = () => {
         servers.value[selected.value].disabled = true
       }
@@ -124,19 +214,40 @@
         servers.value[selected.value].disabled = false
       }
 
-      const actions = {
+      const save = () => {
+        const saveItem = Object.assign({}, editItem)
+        if (isNew.value) {
+          servers.value.push(saveItem)
+          isNew.value = false
+        } else {
+          servers.value.splice(selected.value, 1, saveItem)
+        }
+        cancel()
+      }
+
+      const editActions = {
+        save: { click: save, icon: 'mdi-content-save' },
+        cancel: { click: cancel, icon: 'mdi-cancel' },
+      }
+
+      const serverActions = {
         add: { click: addServer, icon: 'mdi-plus' },
-        edit: { click: () => {}, icon: 'mdi-pencil' },
+        edit: { click: editServer, icon: 'mdi-pencil' },
         delete: { click: deleteServer, icon: 'mdi-delete' },
         disable: { click: disableServer, icon: 'mdi-cancel' },
         enable: { click: enableServer, icon: 'mdi-check' },
       }
 
       return {
-        actions,
+        close,
+        dialog,
+        edit,
+        editActions,
+        editItem,
+        isNew,
+        serverActions,
         servers,
         selected,
-        dialog,
       }
     }
   }

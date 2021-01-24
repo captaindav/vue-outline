@@ -1,7 +1,7 @@
 import { make } from 'vuex-pathify'
 
 const state = {
-  selected: null,
+  selected: undefined,
   servers: [
     { name: 'Server 1', uri: 'http://drupal-outline.lndo.site/outline-graphql', disabled: false },
   ],
