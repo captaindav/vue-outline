@@ -3,6 +3,7 @@ import { make } from 'vuex-pathify'
 const state = {
   active: 0,
   outlines: [],
+  selected: undefined,
   bookmarks: [
     { icon: 'mdi-file', name: 'Bookmark 1', outlines: [1] },
     { icon: 'mdi-file-alert', name: 'Bookmark 2', outlines: [2] },
