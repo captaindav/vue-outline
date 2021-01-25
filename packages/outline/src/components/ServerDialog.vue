@@ -185,7 +185,6 @@
       const cancel = () => {
         edit.value = false
         editItem = Object.assign(editItem, editDefault)
-        console.log(editItem)
       }
 
       const close = () => {
@@ -218,6 +217,7 @@
         if (isNew.value) {
           servers.value.push(saveItem)
           isNew.value = false
+          selected.value = undefined
         } else {
           servers.value.splice(selected.value, 1, saveItem)
         }
