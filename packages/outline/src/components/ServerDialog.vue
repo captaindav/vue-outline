@@ -71,7 +71,6 @@
         </v-toolbar>
         
         <v-list
-          v-if="!edit"
           height="294px"
           style="overflow-y: auto"
         >
@@ -130,7 +129,7 @@
           </v-tooltip>
         </v-toolbar>
 
-        <v-form v-if="edit" class="pa-6">
+        <v-form class="pa-6">
           <v-text-field
             v-model="editItem.name"
             label="Name"
