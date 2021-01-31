@@ -114,8 +114,9 @@
       }
 
       const loadChildren = async (entry) => {
-        console.log('loading children for:', entry.eid)
-        const childData = await call('graphql/fetchEntry', entry.eid)
+        const { eid, server } = entry
+        console.log('loading children for:', eid, 'server', server)
+        const childData = await call('graphql/fetchEntry', { eid, server })
         entry.children = childData.children
         return childData.children
       }
@@ -124,14 +125,16 @@
         const expandItems = difference(val, open.value)
         if (expandItems.length) {
           for (const item of expandItems) {
-            call('graphql/expandEntry', item)
+            console.log('open', item)
+            // call('graphql/expandEntry', item)
           }
         }
         
         const collapseItems = difference(open.value, val)
         if (collapseItems.length) {
           for (const item of collapseItems) {
-            call('graphql/collapseEntry', item)
+            console.log('close', item)
+            // call('graphql/collapseEntry', item)
           }
         }
       }

@@ -84,12 +84,14 @@ const actions = {
     commit('isFetchingOutlines', false)
     return items
   },
-  async fetchEntry ({ commit }, id) {
+  async fetchEntry ({ commit, state }, { eid, server }) {
     commit('isFetchingOutlines', true)
-    const response = await graphqlClient.query({ query: entryQuery, variables: { eid: id } })
+    const client = state.clients[server]
+    const response = await client.query({ query: entryQuery, variables: { eid } })
     const { data: { entry } } = response
     
-    commit('entries', entry)
+    state.entries.push({ ...entry, server })
+    // commit('entries', entry)
     commit('isFetchingOutlines', false)
     return entry
   },
