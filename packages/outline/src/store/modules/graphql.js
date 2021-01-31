@@ -17,6 +17,7 @@ import setParentMutation from '../../graphql/entry/mutations/setParentEntry.muta
 
 
 const state = {
+  clients: {},
   entries: [],
   isFetchingEntries: false,
   isFetchingOutlines: false,
@@ -63,9 +64,10 @@ const actions = {
     state.opened.push(eid)
     return expand
   },
-  async fetchOutlines ({ commit, dispatch, state }) {
+  async fetchOutlines ({ commit, dispatch, state }, server) {
     commit('isFetchingOutlines', true)
-    const response = await graphqlClient.query({ query: outlinesQuery })
+    const client = state.clients[server]
+    const response = await client.query({ query: outlinesQuery })
     const { data: { outlines: { outlines } } } = response
     const items = []
     for (const outline of outlines) {
@@ -76,10 +78,9 @@ const actions = {
         children = entry.children
         state.opened.push(rootEntry.eid)
       }
-      items.push({ ...rootEntry, children })
+      items.push({ ...rootEntry, children, server })
     }
-    
-    commit('outlines', items)
+    state.outlines.push(...items)
     commit('isFetchingOutlines', false)
     return items
   },
@@ -87,9 +88,15 @@ const actions = {
     commit('isFetchingOutlines', true)
     const response = await graphqlClient.query({ query: entryQuery, variables: { eid: id } })
     const { data: { entry } } = response
+    
     commit('entries', entry)
     commit('isFetchingOutlines', false)
     return entry
+  },
+  async generateClient ({ state }, server) {
+    const { id, uri } = server
+    state.clients[id] = graphqlClient(uri)
+    return state.clients[id]
   },
   async renameEntry (store, parentEid) {
     console.log('Rename', parentEid);

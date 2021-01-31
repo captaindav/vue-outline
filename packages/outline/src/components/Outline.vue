@@ -97,7 +97,6 @@
       }
 
       // init outline fetch
-      call('graphql/fetchOutlines')
       const items = computed(() => {
         const outlines = selectedOutlines?.value || []
         return (!outlines.length)

@@ -102,11 +102,14 @@
       const drupalDialog = false
       const drupalText = get('socketIo/data')
       const loading = get('socketIo/loading')
-
+      
       const getPageData = async function () {
         const page = await call('socketIo/getPage')
         return page
       }
+
+      // initialize server outlines
+      call('servers/init')
 
       return {
         aboutDialog,
