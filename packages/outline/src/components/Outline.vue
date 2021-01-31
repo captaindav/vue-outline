@@ -116,9 +116,12 @@
       const loadChildren = async (entry) => {
         const { eid, server } = entry
         console.log('loading children for:', eid, 'server', server)
-        const childData = await call('graphql/fetchEntry', { eid, server })
-        entry.children = childData.children
-        return childData.children
+        const { children } = await call('graphql/fetchEntry', { eid, server })
+        children.forEach(child => {
+          child.server = server
+        })
+        entry.children = children
+        return children
       }
 
       const setExpanded = (val) => {

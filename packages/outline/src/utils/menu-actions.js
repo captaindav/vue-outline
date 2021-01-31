@@ -32,7 +32,7 @@ export function getMenuActions (context) {
   const deleteEntry = () => {
     // replace with vue/vuetify dialog
     const { eid, server } = activeItem.value
-    const confirm = window.confirm(`Are you sure you want to delete ${eid}`)
+    const confirm = window.confirm(`Are you sure you want to delete ${eid} on server ${server}`)
     if (confirm && eid) {
       call('graphql/deleteEntry', { eid, server })
     }
