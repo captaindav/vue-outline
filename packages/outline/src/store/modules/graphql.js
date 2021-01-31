@@ -29,35 +29,39 @@ const mutations = make.mutations(state)
 
 const actions = {
   ...make.actions(state),
-  async addEntry (store, parentEid) {
-    console.log('Adding', parentEid);
-    const { data: { addEntry } } = await graphqlClient.mutate({
+  async addEntry (store, { parentEid, server }) {
+    console.log('Adding', parentEid, 'server:', server);
+    const client = state.clients[server]
+    const { data: { addEntry } } = await client.mutate({
       mutation: addEntryMutation,
       variables: { parentEid }
     })
     return addEntry
   },
-  async collapseEntry ({ state }, eid) {
-    const collapse = await graphqlClient.mutate({
+  async collapseEntry ({ state }, { eid, server }) {
+    console.log('Collapse', eid);
+    const client = state.clients[server]
+    const collapse = await client.mutate({
       mutation: collapseMutation,
       variables: { eid }
     })
-    console.log('Collapse', eid);
     const ind = indexOf(state.open, eid)
     state.opened.splice(ind, 1)
     
     return collapse
   },
-  async deleteEntry (store, eid) {
-    console.log('Delete', eid);
-    return await graphqlClient.mutate({
+  async deleteEntry (store, { eid, server }) {
+    console.log('Delete:', eid, 'server:', server);
+    const client = state.clients[server]
+    return await client.mutate({
       mutation: deleteEntryMutation,
       variables: { eid } 
     })
   },
-  async expandEntry ({ state }, eid) {
-    console.log('Expand', eid);
-    const expand = await graphqlClient.mutate({
+  async expandEntry ({ state }, { eid, server }) {
+    console.log('Expand:', eid, 'server:', server);
+    const client = state.clients[server]
+    const expand = await client.mutate({
       mutation: expandMutation,
       variables: { eid } 
     })
@@ -100,16 +104,18 @@ const actions = {
     state.clients[id] = graphqlClient(uri)
     return state.clients[id]
   },
-  async renameEntry (store, parentEid) {
-    console.log('Rename', parentEid);
-    return await graphqlClient.mutate({
+  async renameEntry (store, { parentEid, server }) {
+    console.log('Rename:', parentEid, 'server:', server);
+    const client = state.clients[server]
+    return await client.mutate({
       mutation: renameEntryMutation,
       variables: { parentEid }
     })
   },
-  async setParentEntry (store, { eid, parentEid }) {
-    console.log('SetParent', eid, parentEid);
-    return await graphqlClient.mutate({
+  async setParentEntry (store, { eid, parentEid, server }) {
+    console.log('SetParent:', eid, parentEid, 'server:', server);
+    const client = state.clients[server]
+    return await client.mutate({
       mutation: setParentMutation,
       variables: { eid, parentEid }
     })

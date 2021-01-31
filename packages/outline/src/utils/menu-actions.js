@@ -11,8 +11,8 @@ export function getMenuActions (context) {
   let activeItem = sync('treeview/activeItem')
 
   const addEntry = () => {
-    const { eid: parentEid } = activeItem.value
-    return call('graphql/addEntry', parentEid)
+    const { eid: parentEid, server } = activeItem.value
+    return call('graphql/addEntry', { parentEid, server })
   }
 
   const closeOutline = () => {
@@ -31,10 +31,10 @@ export function getMenuActions (context) {
 
   const deleteEntry = () => {
     // replace with vue/vuetify dialog
-    const { eid } = activeItem.value
+    const { eid, server } = activeItem.value
     const confirm = window.confirm(`Are you sure you want to delete ${eid}`)
     if (confirm && eid) {
-      call('graphql/deleteEntry', eid)
+      call('graphql/deleteEntry', { eid, server })
     }
   }
 
@@ -43,20 +43,20 @@ export function getMenuActions (context) {
   }
   
   const renameEntry = () => {
-    const { eid } = activeItem.value
-    return call('graphql/renameEntry', eid)
+    const { eid, server } = activeItem.value
+    return call('graphql/renameEntry', { eid, server })
   }
   
   const pasteEntry = () => {
     const { eid } = cutItem.value
-    const { eid: parentEid } = activeItem.value
+    const { eid: parentEid, server } = activeItem.value
     console.log('Paste', eid, parentEid)
     if (!eid || !parentEid) return
-    setParentEntry(eid, parentEid)
+    setParentEntry(eid, parentEid, server)
   }
   
-  const setParentEntry = (eid, parentEid) => {
-    call('graphql/setParentEntry', { eid, parentEid })
+  const setParentEntry = (eid, parentEid, server) => {
+    call('graphql/setParentEntry', { eid, parentEid, server })
   }
 
   const disabled = computed(() => {
