@@ -17,6 +17,7 @@ import setParentMutation from '../../graphql/entry/mutations/setParentEntry.muta
 
 
 const state = {
+  activeOutlines: [],
   clients: {},
   commands: {
     query: {
@@ -83,7 +84,6 @@ const actions = {
       [type === 'mutate' ? 'mutation' : type]: action,
       variables
     })
-    console.log(data)
     return data
   },
   async expandEntry ({ dispatch, state }, { eid, server }) {

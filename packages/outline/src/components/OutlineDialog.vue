@@ -41,12 +41,12 @@
       <v-divider />
 
       <v-card-text class="pa-0">
-        <treeview
+        <v-treeview
+          v-model="activeOutlines"
+          item-key="id"
+          :items="items"
+          selectable
           open-all
-          :items="[
-            { eid: 1, name: 'Server 1', children: [{ eid: 3, name: 'Outline 1' }] },
-            { eid: 2, name: 'Server 2', children: [{ eid: 4, name: 'Outline 2' }] },
-          ]"
         />
        
       </v-card-text>
@@ -56,20 +56,22 @@
 
 <script>
   import pathify from '@/utils/pathify'
-  import Treeview from './Treeview'
+  // import Treeview from './Treeview'
+  import { computed } from '@vue/composition-api'
 
   export default {
     name: 'OutlineDialog',
 
-    components: {
-      Treeview
-    },
+    // components: { Treeview },
 
     setup(props, context) {
       let dialog = false
-      const { sync } = pathify(context)
+      const { get, sync } = pathify(context)
       const selected = sync('servers/selected')
       const servers = sync('servers/servers')
+      const activeOutlines = sync('graphql/activeOutlines')
+      const outlines = get('graphql/outlines')
+      const serverOutlines = get('servers/outlines')
 
       const addServer = () => {
         servers.value.push({ name: 'Server 1', uri: '', disabled: false })
@@ -89,6 +91,29 @@
         servers.value[selected.value].disabled = false
       }
 
+      const items = computed(() => {
+        const treeItems = []
+        for (const server of servers.value) {
+         if(!serverOutlines.value[server.id]) return
+          treeItems.push({
+            ...server,
+            children: [
+              ...outlines.value.reduce((acc, val) => {
+                console.log(serverOutlines.value[server.id], val.eid)
+                if (serverOutlines.value[server.id].includes(val.eid.toString())) {
+                  acc.push({
+                    id: val.eid,
+                    name: val.name,
+                  })
+                }
+                return acc
+              }, [])
+            ]
+          })
+        }
+        return treeItems
+      })
+
       const actions = {
         add: { click: addServer, icon: 'mdi-plus' },
         edit: { click: () => {}, icon: 'mdi-pencil' },
@@ -99,9 +124,11 @@
 
       return {
         actions,
+        activeOutlines,
+        dialog,
+        items,
         servers,
         selected,
-        dialog,
       }
     }
   }
