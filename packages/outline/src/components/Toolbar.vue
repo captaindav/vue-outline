@@ -80,6 +80,7 @@
         cutEntry,
         deleteEntry,
         disabled,
+        disabledClose,
         disabledPaste,
         editEntry,
         pasteEntry,
@@ -88,7 +89,7 @@
       
       const leftActions = reactive({
         open: 'outline-dialog',
-        close: { click: closeOutline, disabled: disabled, icon: 'mdi-book-remove' },
+        close: { click: closeOutline, disabled: disabledClose, icon: 'mdi-book-remove' },
         d1: 'divider', 
         addEntry: { click: addEntry, disabled: disabled, icon: 'mdi-plus' },
         edit: { click: editEntry, disabled: disabled, icon: 'mdi-pencil' },

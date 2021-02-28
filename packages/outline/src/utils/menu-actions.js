@@ -3,6 +3,7 @@ import pathify from '@/utils/pathify'
 
 export function getMenuActions (context) {
   const { call, get, sync } = pathify(context)
+  const activeOutlines = sync('graphql/activeOutlines')
   const show = sync('contextMenu/show')
   const x = get('contextMenu/x')
   const y = get('contextMenu/y')
@@ -16,7 +17,14 @@ export function getMenuActions (context) {
   }
 
   const closeOutline = () => {
-    console.log('Close Outline')
+    const aOutlines = activeOutlines?.value || []
+    const eid = activeItem?.value?.eid || null
+    const index = aOutlines.indexOf(eid);
+    if (index > -1) {
+      aOutlines.splice(index, 1);
+    }
+    activeItem.value = null
+    
     return true
   }
 
@@ -63,8 +71,12 @@ export function getMenuActions (context) {
     return activeItem && !activeItem.value
   })
 
+  const disabledClose = computed(() => {
+    return !activeItem?.value?.isOutline
+  })
+
   const disabledPaste = computed(() => {
-    return cutItem && !cutItem.value
+    return !cutItem?.value
   })
   
   return {
@@ -75,6 +87,7 @@ export function getMenuActions (context) {
     cutEntry,
     deleteEntry,
     disabled,
+    disabledClose,
     disabledPaste,
     edit,
     editEntry,

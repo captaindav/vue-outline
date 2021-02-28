@@ -113,7 +113,7 @@ const actions = {
         children = entry.children
         state.opened.push(rootEntry.eid)
       }
-      items.push({ ...rootEntry, children, server })
+      items.push({ ...rootEntry, children, server, isOutline: true })
     }
     state.outlines.push(...items)
     commit('isFetchingOutlines', false)
@@ -127,7 +127,7 @@ const actions = {
       type: 'query',
       variables: { eid, server },
     })
-    state.entries.push({ ...entry, server })
+    state.entries.push({ ...entry, server, isOutline: false })
     commit('isFetchingOutlines', false)
     return entry
   },
