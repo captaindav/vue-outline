@@ -17,7 +17,7 @@ import setParentMutation from '../../graphql/entry/mutations/setParentEntry.muta
 
 
 const state = {
-  activeOutlines: [],
+  activeOutlines: [1,12],
   clients: {},
   commands: {
     query: {
@@ -127,9 +127,10 @@ const actions = {
       type: 'query',
       variables: { eid, server },
     })
-    state.entries.push({ ...entry, server, isOutline: false })
+    const newEntry = { ...entry, server, isOutline: false }
+    state.entries.push(newEntry)
     commit('isFetchingOutlines', false)
-    return entry
+    return newEntry
   },
   async generateClient ({ state }, server) {
     const { id, uri } = server
