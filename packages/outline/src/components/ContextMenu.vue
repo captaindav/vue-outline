@@ -8,6 +8,15 @@
   >
     <v-list>
       <v-list-item
+        :disabled="disabledClose"
+        @click="closeOutline"
+      >
+        <v-list-item-title>Close</v-list-item-title>
+      </v-list-item>
+
+      <v-divider />
+
+      <v-list-item
         :disabled="disabled"
         @click="addEntry"
       >
