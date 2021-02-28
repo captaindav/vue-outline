@@ -73,8 +73,10 @@
   export default {
     setup(props, context) {
       const { call, get, sync } = pathify(context)
+      
       // drawer getters
       const selectedOutlines = get('bookmarks/outlines')
+      const isBookmark = get('bookmarks/active')
       const open = get('graphql/opened')
       
       //loading getters
@@ -90,6 +92,7 @@
       
       // outline getters
       const toutlines = get('graphql/outlines')
+      const aOutlines = get('graphql/activeOutlines')
       
       // actions
       const openMenu = (e, item) => {
@@ -98,10 +101,12 @@
 
       // init outline fetch
       const items = computed(() => {
-        const outlines = selectedOutlines?.value || []
-        return (!outlines.length)
-          ? toutlines.value
-          : toutlines.value.filter(item => outlines.includes(item.eid))
+        const bookmark = !!isBookmark?.value || 0
+        const outlines = bookmark
+          ? selectedOutlines?.value || []
+          : aOutlines?.value || []
+          
+        return toutlines.value.filter(item => outlines.includes(item.eid))
       })
 
       let renderedContent = reactive({ content: "" });
