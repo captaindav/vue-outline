@@ -99,7 +99,6 @@
             ...server,
             children: [
               ...outlines.value.reduce((acc, val) => {
-                console.log(serverOutlines.value[server.id], val.eid)
                 if (serverOutlines.value[server.id].includes(val.eid.toString())) {
                   acc.push({
                     id: val.eid,

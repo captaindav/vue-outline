@@ -7,6 +7,7 @@
   >
     <v-list-item-group
       v-model="active"
+      mandatory
       color="primary"
     >
       <v-tooltip right>

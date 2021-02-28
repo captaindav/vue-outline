@@ -162,7 +162,7 @@
 
         <v-treeview
           v-model="editItem.outlines"
-          :items="outlines"
+          :items="items"
           open-all
           selectable
         />
@@ -173,7 +173,7 @@
 
 <script>
   import pathify from '@/utils/pathify'
-  import { reactive, ref } from '@vue/composition-api'
+  import { computed, reactive, ref } from '@vue/composition-api'
 
   export default {
     name: 'OutlineBookmarks',
@@ -182,9 +182,14 @@
       const dialog = ref(false)
       const edit = ref(false)
       const isNew = ref(false)
-      const { sync } = pathify(context)
+      const { get, sync } = pathify(context)
+      const active = sync('bookmarks/active')
       const bookmarks = sync('bookmarks/bookmarks')
+      const bookmarkOutlines = sync('bookmarks/outlines')
+      const outlines = sync('graphql/outlines')
       const selected = sync('bookmarks/selected')
+      const servers = get('servers/servers')
+      const serverOutlines = get('servers/outlines')
 
       const addBookmark = () => {
         isNew.value = true
@@ -231,16 +236,27 @@
         'mdi-file-chart',
       ]
 
-      const outlines = [
-        {
-          id: 's1',
-          name: 'Server 1',
-          children: [
-            { id: 1, name: 'Outline 1' },
-            { id: 3, name: 'Outline 2' },
-          ],
+      const items = computed(() => {
+        const treeItems = []
+        for (const server of servers.value) {
+         if(!serverOutlines.value[server.id]) return
+          treeItems.push({
+            ...server,
+            children: [
+              ...outlines.value.reduce((acc, val) => {
+                if (serverOutlines.value[server.id].includes(val.eid.toString())) {
+                  acc.push({
+                    id: val.eid,
+                    name: val.name,
+                  })
+                }
+                return acc
+              }, [])
+            ]
+          })
         }
-      ]
+        return treeItems
+      })
 
       const save = () => {
         const saveItem = Object.assign({}, editItem)
@@ -250,6 +266,9 @@
           selected.value = undefined
         } else {
           bookmarks.value.splice(selected.value, 1, saveItem)
+          if (active.value - 1 === selected.value) {
+            bookmarkOutlines.value = saveItem.outlines
+          }
         }
         cancel()
       }
@@ -275,7 +294,7 @@
         dialog,
         icons,
         isNew,
-        outlines,
+        items,
         selected,
       }
     }

@@ -105,6 +105,8 @@
         const outlines = bookmark
           ? selectedOutlines?.value || []
           : aOutlines?.value || []
+        
+        console.log('items', selectedOutlines.value)
           
         return toutlines.value.filter(item => outlines.includes(item.eid))
       })
