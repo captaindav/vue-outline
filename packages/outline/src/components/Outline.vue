@@ -6,8 +6,8 @@
 
     <toolbar />
     
-    <splitpanes class="">
-      <pane size="15" min-size="15">
+    <splitpanes>
+      <pane size="15" min-size="15" style="overflow-y: auto;">
         <v-progress-linear
           :active="loading"
           indeterminate
