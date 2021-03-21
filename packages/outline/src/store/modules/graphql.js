@@ -1,6 +1,6 @@
 import { make } from 'vuex-pathify'
 import graphqlClient from '../../graphql/client';
-import { indexOf } from 'lodash';
+// import { indexOf } from 'lodash';
 // import gql from 'graphql-tag';
 
 // queries
@@ -17,7 +17,7 @@ import setParentMutation from '../../graphql/entry/mutations/setParentEntry.muta
 
 
 const state = {
-  activeOutlines: [1,12],
+  activeOutlines: [1,5014],
   clients: {},
   commands: {
     query: {
@@ -34,10 +34,12 @@ const state = {
     },
   },
   entries: [],
+  entryIds: [],
   isFetchingEntries: false,
   isFetchingOutlines: false,
   opened: [],
   outlines: [],
+  outlineIds: [],
 }
 
 const mutations = make.mutations(state)
@@ -53,7 +55,7 @@ const actions = {
       variables: { parentEid },
     })
   },
-  async collapseEntry ({ dispatch, state }, { eid, server }) {
+  async collapseEntry ({ dispatch }, { eid, server }) {
     console.log('Collapse', eid);
     const collapse = await dispatch('executeGraphql', {
       command: 'collapseMutation',
@@ -61,9 +63,6 @@ const actions = {
       type: 'mutate',
       variables: { eid },
     })
-    const ind = indexOf(state.open, eid)
-    state.opened.splice(ind, 1)
-    
     return collapse
   },
   async deleteEntry ({ dispatch }, { eid, server }) {
@@ -86,7 +85,7 @@ const actions = {
     })
     return data
   },
-  async expandEntry ({ dispatch, state }, { eid, server }) {
+  async expandEntry ({ dispatch }, { eid, server }) {
     console.log('Expand:', eid, 'server:', server);
     const expand = await dispatch('executeGraphql', {
       command: 'expandMutation',
@@ -94,7 +93,6 @@ const actions = {
       type: 'mutate',
       variables: { eid },
     })
-    state.opened.push(eid)
     return expand
   },
   async fetchOutlines ({ commit, dispatch, state }, server) {
@@ -104,17 +102,22 @@ const actions = {
       server,
       type: 'query',
     })
+    const ids = []
     const items = []
+    const openIds = []
     for (const outline of outlines) {
       const { rootEntry } = outline
       let children = rootEntry.childCount > 0 ? [] : undefined
       if (rootEntry.expanded && rootEntry.childCount > 0) {
         const entry = await dispatch('fetchEntry', { eid: rootEntry.eid, server })
         children = entry.children
-        state.opened.push(rootEntry.eid)
+        openIds.push(rootEntry.eid)
       }
+      ids.push(rootEntry.eid)
       items.push({ ...rootEntry, children, server, isOutline: true })
     }
+    state.opened.push(...openIds)
+    state.outlineIds.push(...ids)
     state.outlines.push(...items)
     commit('isFetchingOutlines', false)
     return items
@@ -128,6 +131,7 @@ const actions = {
       variables: { eid, server },
     })
     const newEntry = { ...entry, server, isOutline: false }
+    state.entryIds.push(eid)
     state.entries.push(newEntry)
     commit('isFetchingOutlines', false)
     return newEntry

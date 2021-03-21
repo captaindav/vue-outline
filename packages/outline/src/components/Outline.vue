@@ -17,8 +17,7 @@
           :active.sync="active"
           :items="items"
           :load-children="loadChildren"
-          :open="open"
-          @update:open="setExpanded"
+          :open.sync="open"
           v-bind="{ openMenu, treeViewLabelClick }"
         />
         
@@ -65,8 +64,8 @@
   import 'splitpanes/dist/splitpanes.css'
 
   // utilities
-  import { computed, reactive } from '@vue/composition-api';
-  import { difference } from 'lodash';
+  import { computed, reactive, watch } from '@vue/composition-api';
+  import { difference, find } from 'lodash';
   import pathify from '@/utils/pathify'
   
   
@@ -77,7 +76,7 @@
       // drawer getters
       const selectedOutlines = get('bookmarks/outlines')
       const isBookmark = get('bookmarks/active')
-      const open = get('graphql/opened')
+      const open = sync('graphql/opened')
       
       //loading getters
       const isFetchingEntries = get('graphql/isFetchingEntries')
@@ -93,6 +92,7 @@
       // outline getters
       const toutlines = get('graphql/outlines')
       const aOutlines = get('graphql/activeOutlines')
+      const entries = get('graphql/entries')
       
       // actions
       const openMenu = (e, item) => {
@@ -129,23 +129,31 @@
         return children
       }
 
-      const setExpanded = (val) => {
-        const expandItems = difference(val, open.value)
+      watch(open, (val, prevVal) => {
+        // may need to add debounce
+        const expandItems = difference(val, prevVal)
+        const collapseItems = difference(prevVal, val)
+        console.log('diff', expandItems, collapseItems)
         if (expandItems.length) {
           for (const item of expandItems) {
-            console.log('open', item)
-            // call('graphql/expandEntry', item)
+            const entry = find(entries.value, { eid: item })
+            if (entry) {
+              console.log('open', entry)
+              call('graphql/expandEntry', entry)
+            }
           }
         }
         
-        const collapseItems = difference(open.value, val)
         if (collapseItems.length) {
           for (const item of collapseItems) {
-            console.log('close', item)
-            // call('graphql/collapseEntry', item)
+            const entry = find(entries.value, { eid: item })
+            if (entry) {
+              console.log('close', entry)
+              call('graphql/collapseEntry', entry)
+            }
           }
         }
-      }
+      })
 
       return {
         active,
@@ -156,7 +164,6 @@
         open,
         openMenu,
         renderedContent,
-        setExpanded,
         treeViewLabelClick
       };
     },
