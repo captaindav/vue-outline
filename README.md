@@ -39,7 +39,7 @@ Windows:```bash npm run init:drupal:windows```
 -- Schema: Outline Schema
 -- Endpoint: /outline-graphql
 -- Check 'Allow query batching' and 'Enable caching'
-- Navigate to: [http://drupal-outline.lndo.site/admin/people/permissions](http://drupal-outline.lndo.site/admin/people/permissions) and give the Anonymous role the permissions:
+- Navigate to: [http://drupal-outline.lndo.site/admin/people/permissions](http://drupal-outline.lndo.site/admin/people/permissions) and give the Anonymous role the GraphQL permissions:
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
 
