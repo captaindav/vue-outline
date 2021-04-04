@@ -2,12 +2,10 @@
 
 ## Introduction
 
-## Hierarchical Data Display
+The Vue Outline project serves as a front end for Drupal sites running the Outline module [https://www.drupal.org/project/outline] (https://www.drupal.org/project/outline).  Communication with the Drupal site is done using GraphQL. A number of capabilities are provided:
 
-One of the advantages of organizing data in a hierarchy is the ability to collapse portions of the data so
-that initially only entries contained within an expanded entry display in the outline tree.
-Once the visible entries are loaded, then a background task fetches the hidden entries, so they may be
-quickly displayed using cached data rather than making a trip to the server if their parent becomes expanded.
+### Book 
+
 
 ## Project setup
 
