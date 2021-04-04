@@ -5,7 +5,7 @@ const alias = {}
 target = alias[target] || target
 
 if (!target) {
-  spawn('yarn', ['lerna', 'run', 'serve', '--stream'], { stdio: 'inherit' })
+  spawn('lerna', ['run', 'serve', '--stream'], { stdio: 'inherit' })
 } else {
-  spawn('yarn', ['lerna', 'run', 'serve', '--scope', target, '--stream'], { stdio: 'inherit' })
+  spawn('lerna', ['run', 'serve', '--scope', target, '--stream'], { stdio: 'inherit' })
 }
