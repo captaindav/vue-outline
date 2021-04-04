@@ -2,10 +2,11 @@
 
 ## Introduction
 
-The Vue Outline project serves as a front end for Drupal sites running the Outline module [https://www.drupal.org/project/outline] (https://www.drupal.org/project/outline).  Communication with the Drupal site is done using GraphQL. A number of capabilities are provided:
+The Vue Outline project serves as a front end for Drupal sites running the Outline module [https://www.drupal.org/project/outline] (https://www.drupal.org/project/outline).  Communication with the Drupal site is done using GraphQL. A number of capabilities are supported:
 
-### Book 
-
+- A way to publish a "book" of content.
+- An administrative interface for Drupal.
+- A better interface for Drupal content editing.
 
 ## Project setup
 
