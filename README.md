@@ -36,6 +36,11 @@ Windows:```bash npm run init:drupal:windows```
 
 #### Drupal GraphQL Server
 
+Start Lando:
+```bash
+lando start
+```
+
 - Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
 - Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
 -- Label: Outline
@@ -46,7 +51,7 @@ Windows:```bash npm run init:drupal:windows```
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
 
-#### VS Code
+### Step 4: VS Code Configuraton
 
 - In the top level vue-outline directory:
 
@@ -54,10 +59,24 @@ Windows:```bash npm run init:drupal:windows```
 cp -R scripts/vscode .vscode
 ```
 
-## Site status:
+### Step 5: Runing the App
 
+First start Drupal by going to the Drupal directory (../vue-outline/packages/drupal) and running:
 ```bash
+cd <Drupal directory>
+lando start
+```
+
+Check Drupal status:
+```bash
+cd <Drupal directory>
 lando drush status
+```
+
+Run the Vue app:
+```bash
+cd <top level directory>
+npm run serve
 ```
 
 ## Rebuild or Reinitialize Lando / Reinstall Drupal
