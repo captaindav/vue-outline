@@ -2,11 +2,15 @@
 
 ## Introduction
 
-The Vue Outline project serves as a front end for Drupal sites running the Outline module [https://www.drupal.org/project/outline] (https://www.drupal.org/project/outline).  Communication with the Drupal site is done using GraphQL. A number of capabilities are supported:
+The Vue Outline project (https://github.com/captaindav/vue-outline) is a Vuetify based single page app that uses a Drupal instance running the Drupal Outline module as a backend.  Vue Outline provides an improved interface for Drupal content editors, using the Material Design Component library, drag and drop functionality, workflow integration, etc.  The Drupal GraphQL module combined with a node.js server is used for communication between the Vue app and the Drupal back end. 
 
+Primary capabilities supported:
+
+- A better interface for Drupal content editing.
 - A way to publish a "book" of content.
 - An administrative interface for Drupal.
-- A better interface for Drupal content editing.
+
+A Drupal Outline is conceptually similar to a Drupal Book, except that an outline may contain any entity type, not just nodes.  Vue Outline will support editing of Drupal entities using Pupetteer for screen scraping of Drupal node editing pages, which means that a custom GraphQL configuration is not required for editing of custom content types.  The screen scaping technology is also usefull for providing administrative functionality, for example the screen scraper can execute the Drupal Admin UI Site Status page periodically and cache the output so that the current status information is instantly available. 
 
 ## Project setup
 
