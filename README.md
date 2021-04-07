@@ -64,7 +64,6 @@ lando start
 
 Check Drupal status:
 ```bash
-cd <Drupal directory>
 lando drush status
 ```
 
