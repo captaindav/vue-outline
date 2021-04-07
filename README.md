@@ -36,11 +36,6 @@ Windows:```bash npm run init:drupal:windows```
 
 #### Drupal GraphQL Server
 
-Start Lando:
-```bash
-lando start
-```
-
 - Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
 - Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
 -- Label: Outline
