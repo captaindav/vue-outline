@@ -127,12 +127,12 @@ lando site-setup
 ## Roadmap
 
 ### Planned Features
-Pupeteer
-Dynamic Loading of Children
+#### Pupeteer
+#### Dynamic Loading of Children
 
 ### Long Term
-Undo/Redo
-Forward/Back
-Taxonomy Editing
-Admin UI functionality
-Migrate module support for migrating Books to Outline
+#### Undo/Redo
+#### Forward/Back
+#### Taxonomy Editing
+#### Admin UI functionality
+#### Migrate module support for migrating Books to Outline
