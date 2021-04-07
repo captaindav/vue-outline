@@ -54,7 +54,7 @@ Windows:```bash npm run init:drupal:windows```
 cp -R scripts/vscode .vscode
 ```
 
-### Step 5: Runing the App
+## Runing the App
 
 First start Drupal by going to the Drupal directory (../vue-outline/packages/drupal) and running:
 ```bash
