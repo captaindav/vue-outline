@@ -123,3 +123,18 @@ lando site-setup
 - `build`: Compiles and minifies outline client for production
 - `lint`: Lints and fixes outline client files
 - `serve`: Compiles and hot-reloads outline client for development
+
+## Roadmap
+
+### Planned Features
+Pupeteer
+Dynamic loading of children
+
+### Long Term
+
+Undo/Redo
+Forward/Backward
+Taxonomy Editing
+Admin UI functionality
+Migrate Book to Outline
+
