@@ -128,13 +128,18 @@ lando site-setup
 
 ### Planned Features
 
-- Pupeteer
-- Dynamic Loading of Children
+- Drag and Drop
+- Undo/Redo
+- Forward/Back
+- Pupeteer for scraping node edit forms.
 
 ### Long Term Features
 
-- Undo/Redo
-- Forward/Back
 - Taxonomy Editing
-- Admin UI functionality
+- Menu Editing
 - Migrate module support for migrating Books to Outline
+- Dynamic loading of children
+
+See the ROADMAP.md file for a more complete roadmap.
+
+
