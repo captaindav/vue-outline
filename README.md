@@ -75,7 +75,7 @@ npm run serve
 
 ## Rebuild or Reinitialize Lando / Reinstall Drupal
 
-If Lando/Drupal are not working / broken in some way try a Lando rebuild:
+If Lando/Drupal are not working / broken in some way, go to the ../packages/drupal directory try a Lando rebuild:
 
 ```bash
 lando rebuild
