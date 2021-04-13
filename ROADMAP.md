@@ -1,28 +1,28 @@
 # Vue Outline Roadmap
 
-## Content
-## Views
-  - Views / outline entry type plugin
-  - Entry View
-## Taxonomy
-## Menu Builder
-## Drag and Drop
-## Puppeteer
-### Content Editing
-### Reports
-### Views
-### Admin
-## Paragraphs?
-## Media?
-## Migrate?
-## Token Support
-## Language Support
+## Content Editing Features
+### Puppeteer
+### Drag and Drop
+### Paragraphs support
+### Workflow
+### Undo/Redo
+### Forward/Back
+## Administrative Interface
+### Menu Builder
 
+### Taxonomy Editor
+### Views
+  - Views / outline entry type plugin
+  - Outline/Entry default views
+
+### Reports
 ## Miscl
 ### Tie entry name to referenced entity name
 ### Revisions
+### Token Support
+### Language Support
+### Dynamic loading of entries
+## Migrate Books to Outline
 ### Weight/Sorting
-### Icon for Outlines
-### Custom Entry types?
-
+### Custom Icons for Outlines/Entries
 ```
