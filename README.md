@@ -79,13 +79,13 @@ If Lando/Drupal are not working / broken in some way try a Lando rebuild:
 
 ```bash
 lando rebuild
-lando site-setup
 ```
 
 To reinitialize Lando and reinstall Drupal:
 
 ```bash
 lando destroy
+lando poweroff
 lando start
 lando site-setup
 ```
