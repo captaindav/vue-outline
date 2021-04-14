@@ -7,7 +7,7 @@ The Vue Outline project is a Vuetify based single page app that uses a Drupal in
 Primary capabilities supported:
 
 - An app based interface for Drupal content editing.
-- A more efficient way to publish a "book" of content
+- A more efficient way to publish a "book" of content.
 - An administrative interface for Drupal.
 
 A Drupal Outline is conceptually similar to a Drupal Book, except that an outline may contain any entity type, not just nodes.  Vue Outline will support editing of Drupal entities using Pupetteer for screen scraping of Drupal node editing pages, which means that a custom GraphQL configuration is not required for editing of custom content types.  The screen scaping technology is also usefull for providing administrative functionality, for example the screen scraper can execute the Drupal Admin UI Site Status page periodically and cache the output so that the current status information is instantly available. 
