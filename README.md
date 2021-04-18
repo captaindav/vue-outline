@@ -32,16 +32,9 @@ Mac OSX:```bash npm run init:drupal:mac```
 
 Windows:```bash npm run init:drupal:windows```
 
-### Step 3: Configure Drupal GraphQL Server and VS Code
-
-#### Drupal GraphQL Server
+### Step 3: Set Drupal GraphQL Permissions
 
 - Login at [http://drupal-outline.lndo.site/user](http://drupal-outline.lndo.site/user), username=admin password=admin
-- Navigate to [http://drupal-outline.lndo.site/admin/config/graphql](http://drupal-outline.lndo.site/admin/config/graphql) and create a GraphQL server with these settings:
--- Label: Outline
--- Schema: Outline Schema
--- Endpoint: /outline-graphql
--- Check 'Allow query batching' and 'Enable caching'
 - Navigate to: [http://drupal-outline.lndo.site/admin/people/permissions](http://drupal-outline.lndo.site/admin/people/permissions) and give the Anonymous role the GraphQL permissions:
 -- Outline: Execute arbitrary requests
 -- Outline: Execute persisted requests
