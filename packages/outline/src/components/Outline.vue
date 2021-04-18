@@ -13,6 +13,12 @@
           indeterminate
         />
 
+        <!-- gwc-menu
+          branding = "Decoupled Menu Test"
+          baseUrl = "http://decoupled-menus.jsonapi.dev"
+          menuId = "account"
+          ></gwc-menu -->
+          
         <treeview
           :active.sync="active"
           :items="items"
@@ -67,7 +73,7 @@
   import { computed, reactive, watch } from '@vue/composition-api';
   import { difference, find } from 'lodash';
   import pathify from '@/utils/pathify'
-  
+  //import { GdwcMenu } from '@gdwc/components/menu';
   
   export default {
     setup(props, context) {
