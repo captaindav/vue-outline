@@ -44,7 +44,8 @@ Windows:```bash npm run init:drupal:windows```
 - In the top level vue-outline directory:
 
 ```bash
-cp -R scripts/vscode .vscode
+mkdir .vscode
+cp scripts/vscode/launch.json .vscode
 ```
 
 ## Runing the App
