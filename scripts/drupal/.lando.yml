@@ -43,6 +43,9 @@ proxy:
   mailhog:
     - mail.drupal-outline.lndo.site
 tooling:
+  phpunitdebug:
+    service: appserver
+    cmd: php -d xdebug.remote_port=9003 /app/vendor/bin/phpunit -c /app/phpunit.xml /app/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'
   testEntryDelete:
     service: appserver
     cmd: "php /app/vendor/bin/phpunit -c /app/phpunit.xml /app/web/modules/outline/tests/src/Kernel/EntryKernelTest.php --filter='testEntryDelete'"
