@@ -11,7 +11,8 @@
     "lint:fix": "lerna run lint:fix --parallel",
     "postinstall": "lerna bootstrap",
     "serve": "node scripts/serve.js",
-    "start": "cd packages/drupal && lando start"
+    "start": "cd packages/drupal && lando start",
+    "clean": "rm -f package-lock.json && rm -f packages/api/package-lock.json && rm -f packages/outline/package-lock.json && rm -rf node_modules && rm -rf packages/api/node_modules && rm -rf packages/outline/node_modules"
   },
   "engines": {
     "node": ">= 12"
