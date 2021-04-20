@@ -1,0 +1,19 @@
+{
+  "name": "outline-nuxt",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "nuxt",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start"
+  },
+  "dependencies": {
+    "druxt": "^0.5.1",
+    "nuxt": "^2.15.4",
+    "vuetify": "^2.4.10"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.3"
+  }
+}

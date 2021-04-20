@@ -1,7 +1,8 @@
 {
   "packages": [
     "packages/api",
-    "packages/outline"
+    "packages/outline",
+    "packages/outline-nuxt"
   ],
   "version": "0.1.0"
 }
