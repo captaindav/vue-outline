@@ -10,7 +10,7 @@
       dark
     >
       <v-toolbar-title>
-        <h1 class="text-h6">Drupal Vue Outline Demo</h1>
+        <h1 class="text-h6">Vue Outline</h1>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
