@@ -4,7 +4,7 @@ export default {
     'druxt'
   ],
   druxt: {
-    baseUrl: 'http://drupal-outline.lndo.site/outline-graphql'
+    baseUrl: 'http://drupal-outline.lndo.site/'
   },
   vuetify: {},
 }
