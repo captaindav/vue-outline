@@ -9,11 +9,18 @@
     "start": "nuxt start"
   },
   "dependencies": {
+    "@nuxtjs/apollo": "^4.0.1-rc.5",
+    "@nuxtjs/composition-api": "^0.23.4",
     "druxt": "^0.5.1",
     "nuxt": "^2.15.5",
+    "socket.io-client": "^4.0.2",
+    "vue-socket.io-extended": "^4.2.0",
     "vuetify": "^2.4.11"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.11.3"
+    "@nuxtjs/vuetify": "^1.11.3",
+    "lodash": "^4.17.21",
+    "splitpanes": "^2.3.6",
+    "vuex-pathify": "^1.4.5"
   }
 }
