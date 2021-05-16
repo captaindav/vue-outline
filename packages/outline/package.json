@@ -14,10 +14,10 @@
     "apollo-link-http": "^1.5.17",
     "core-js": "^3.12.1",
     "graphql": "^15.5.0",
-    "socket.io-client": "^4.0.2",
+    "socket.io-client": "^4.1.1",
     "vue": "^2.6.12",
     "vue-socket.io-extended": "^4.2.0",
-    "vuetify": "^2.4.11",
+    "vuetify": "^2.5.0",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "eslint-plugin-vue": "^7.9.0",
     "graphql-tag": "^2.12.4",
     "lodash": "^4.17.21",
-    "sass": "^1.32.12",
+    "sass": "^1.32.13",
     "sass-loader": "^10.1.1",
     "splitpanes": "^2.3.6",
     "vue-cli-plugin-apollo": "^0.22.2",
