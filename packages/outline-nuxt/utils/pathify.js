@@ -1,15 +1,15 @@
 // https://github.com/davestewart/vuex-pathify/issues/95
 import { computed } from '@nuxtjs/composition-api'
-export default context => {
+export default (context) => {
   const { $store } = context.root
   const get = path => computed(() => $store.get(path))
   const set = (path, data) => $store.set(path, data)
-  const sync = path => {
+  const sync = (path) => {
     return computed({
-      get() {
+      get () {
         return $store.get(path)
       },
-      set(val) {
+      set (val) {
         return $store.set(path, val)
       },
     })

@@ -4,7 +4,7 @@ import VueSocketIO from 'vue-socket.io-extended'
 
 const host = 'http://localhost:8090'
 const socket = io(host, {
-  reconnection: false
+  reconnection: false,
 })
 
 export default ({ store }) => {

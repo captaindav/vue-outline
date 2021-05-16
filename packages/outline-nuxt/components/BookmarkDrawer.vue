@@ -43,46 +43,45 @@
             <v-list-item-content />
           </v-list-item>
         </template>
-        <span>{{bm.name}}</span>
+        <span>{{ bm.name }}</span>
       </v-tooltip>
     </v-list-item-group>
-    
+
     <template #append>
       <v-divider />
-      
+
       <bookmarks-dialog />
     </template>
   </v-navigation-drawer>
 </template>
 
 <script>
-  import pathify from '@/utils/pathify'
-  import BookmarksDialog from './BookmarksDialog'
-  import { watch } from '@nuxtjs/composition-api'
+import pathify from '@/utils/pathify'
+import { watch } from '@nuxtjs/composition-api'
+import BookmarksDialog from './BookmarksDialog'
 
-  export default {
-    name: 'AppDrawer',
+export default {
+  name: 'AppDrawer',
 
-    setup(props, context) {
-      const { sync } = pathify(context)
-      const active = sync('bookmarks/active')
-      const bookmarks = sync('bookmarks/bookmarks')
-      const outlines = sync('bookmarks/outlines')
-      
-      watch(active, (val) => {
-        const bookmarkInd = val - 1
-        outlines.value = bookmarks?.value[bookmarkInd]?.outlines || []
-      })
+  components: {
+    BookmarksDialog,
+  },
 
+  setup (props, context) {
+    const { sync } = pathify(context)
+    const active = sync('bookmarks/active')
+    const bookmarks = sync('bookmarks/bookmarks')
+    const outlines = sync('bookmarks/outlines')
 
-      return {
-        active,
-        bookmarks,
-      }
-    },
+    watch(active, (val) => {
+      const bookmarkInd = val - 1
+      outlines.value = bookmarks?.value[bookmarkInd]?.outlines || []
+    })
 
-    components: {
-      BookmarksDialog,
-    },
-  }
+    return {
+      active,
+      bookmarks,
+    }
+  },
+}
 </script>

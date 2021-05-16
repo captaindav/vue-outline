@@ -7,9 +7,9 @@ export function getMenuActions (context) {
   const show = sync('context-menu/show')
   const x = get('context-menu/x')
   const y = get('context-menu/y')
-  let cutItem = sync('treeview/cutItem')
-  let edit = sync('context-menu/edit')
-  let activeItem = sync('treeview/activeItem')
+  const cutItem = sync('treeview/cutItem')
+  const edit = sync('context-menu/edit')
+  const activeItem = sync('treeview/activeItem')
 
   const addEntry = () => {
     const { eid: parentEid, server } = activeItem.value
@@ -19,12 +19,12 @@ export function getMenuActions (context) {
   const closeOutline = () => {
     const aOutlines = activeOutlines?.value || []
     const eid = activeItem?.value?.eid || null
-    const index = aOutlines.indexOf(eid);
+    const index = aOutlines.indexOf(eid)
     if (index > -1) {
-      aOutlines.splice(index, 1);
+      aOutlines.splice(index, 1)
     }
     activeItem.value = null
-    
+
     return true
   }
 
@@ -49,20 +49,20 @@ export function getMenuActions (context) {
   const editEntry = () => {
     edit.value = true
   }
-  
+
   const renameEntry = () => {
     const { eid, server } = activeItem.value
     return call('graphql/renameEntry', { eid, server })
   }
-  
+
   const pasteEntry = () => {
     const { eid } = cutItem.value
     const { eid: parentEid, server } = activeItem.value
     console.log('Paste', eid, parentEid)
-    if (!eid || !parentEid) return
+    if (!eid || !parentEid) { return }
     setParentEntry(eid, parentEid, server)
   }
-  
+
   const setParentEntry = (eid, parentEid, server) => {
     call('graphql/setParentEntry', { eid, parentEid, server })
   }
@@ -78,7 +78,7 @@ export function getMenuActions (context) {
   const disabledPaste = computed(() => {
     return !cutItem?.value
   })
-  
+
   return {
     addEntry,
     closeOutline,

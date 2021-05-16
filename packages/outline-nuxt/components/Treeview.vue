@@ -8,7 +8,7 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
-    <template v-slot:label="{ item, open }">
+    <template #label="{ item, open }">
       <div
         @click="treeViewLabelClick(item)"
         @contextmenu="openMenu($event, item)"
@@ -19,24 +19,24 @@
         <v-icon v-else>
           $outline
         </v-icon>
-        <span>{{item.name}}</span>
+        <span>{{ item.name }}</span>
       </div>
     </template>
   </v-treeview>
 </template>
 <script>
-  export default {
-    props: {
-      openMenu: {
-        type: Function,
-        default: () => {}
-      },
-      treeViewLabelClick: {
-        type: Function,
-        default: () => {}
-      }
-    },
+export default {
 
-    name: 'Treeview',
-  }
+  name: 'Treeview',
+  props: {
+    openMenu: {
+      type: Function,
+      default: () => {},
+    },
+    treeViewLabelClick: {
+      type: Function,
+      default: () => {},
+    },
+  },
+}
 </script>

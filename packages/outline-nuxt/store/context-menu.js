@@ -11,7 +11,7 @@ export const mutations = make.mutations(state())
 
 export const actions = {
   ...make.mutations(state()),
-  async openMenu ({ commit, dispatch }, data) {
+  openMenu ({ commit, dispatch }, data) {
     data.e.preventDefault()
     commit('show', false)
     commit('x', data.e.clientX)
@@ -19,7 +19,7 @@ export const actions = {
     dispatch('treeview/setActive', [data.item.eid], { root: true })
     dispatch('treeview/setActiveItem', data.item, { root: true })
     commit('show', true)
-  }
+  },
 }
 
 export const getters = make.getters(state())

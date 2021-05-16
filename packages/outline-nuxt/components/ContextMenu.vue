@@ -69,14 +69,13 @@
 </template>
 
 <script>
-  import { getMenuActions } from '@/utils/menu-actions'
-  
-  export default {
-    setup(props, context) {
-      
-      return {
-        ...getMenuActions(context)
-      }
+import { getMenuActions } from '@/utils/menu-actions'
+
+export default {
+  setup (props, context) {
+    return {
+      ...getMenuActions(context),
     }
-  }
+  },
+}
 </script>

@@ -10,10 +10,12 @@
       dark
     >
       <v-toolbar-title>
-        <h1 class="text-h6">Vue Outline</h1>
+        <h1 class="text-h6">
+          Vue Outline
+        </h1>
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
+      <v-spacer />
 
       <v-dialog
         v-model="drupalDialog"
@@ -44,7 +46,7 @@
           height="300px"
           :loading="loading"
         >
-          {{drupalText}}
+          {{ drupalText }}
         </v-card>
       </v-dialog>
 
@@ -75,7 +77,7 @@
           </v-tooltip>
         </template>
         <v-card height="300px">
-          {{aboutText}}
+          {{ aboutText }}
         </v-card>
       </v-dialog>
     </v-app-bar>
@@ -86,48 +88,48 @@
 </template>
 
 <script>
-  import pathify from '@/utils/pathify'
+import pathify from '@/utils/pathify'
 
-  import BookmarkDrawer from '@/components/BookmarkDrawer';
-  import Outline from '@/components/Outline';
-  import ServerDialog from '@/components/ServerDialog';
+import BookmarkDrawer from '@/components/BookmarkDrawer'
+import Outline from '@/components/Outline'
+import ServerDialog from '@/components/ServerDialog'
 
-  export default {
-    name: 'App',
+export default {
+  name: 'App',
 
-    setup (props, context) {
-      const { call, get } = pathify(context)
-      const aboutDialog = false
-      const aboutText = 'About Text'
-      const drupalDialog = false
-      const drupalText = get('socket-io/data')
-      const loading = get('socket-io/loading')
-      
-      const getPageData = async function () {
-        const page = await call('socket-io/getPage')
-        return page
-      }
+  components: {
+    BookmarkDrawer,
+    Outline,
+    ServerDialog,
+  },
 
-      // initialize server outlines
-      call('servers/init')
+  setup (props, context) {
+    const { call, get } = pathify(context)
+    const aboutDialog = false
+    const aboutText = 'About Text'
+    const drupalDialog = false
+    const drupalText = get('socket-io/data')
+    const loading = get('socket-io/loading')
 
-      return {
-        aboutDialog,
-        aboutText,
-        drupalDialog,
-        drupalText,
-        getPageData,
-        loading,
-      }
-    },
+    const getPageData = async function () {
+      const page = await call('socket-io/getPage')
+      return page
+    }
 
-    components: {
-      BookmarkDrawer,
-      Outline,
-      ServerDialog,
-    },
-    
-  };
+    // initialize server outlines
+    call('servers/init')
+
+    return {
+      aboutDialog,
+      aboutText,
+      drupalDialog,
+      drupalText,
+      getPageData,
+      loading,
+    }
+  },
+
+}
 </script>
 
 <style lang="sass">

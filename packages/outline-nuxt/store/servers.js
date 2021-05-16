@@ -6,19 +6,19 @@ export const state = () => ({
   servers: [
     { id: '1234', name: 'Server 1', uri: 'http://drupal-outline.lndo.site/outline-graphql', disabled: false },
   ],
-  outlines: {}
+  outlines: {},
 })
 
 export const mutations = make.mutations(state())
 
 export const actions = {
   ...make.actions(state()),
-  async genServer ({ dispatch }, server) {
-    const { id, uri } = server 
+  async genServer ({ commit, dispatch }, server) {
+    const { id, uri } = server
     await dispatch('graphql/generateClient', { id, uri }, { root: true })
     const outlines = await dispatch('graphql/fetchOutlines', id, { root: true })
-    // state.outlines[id] = Object.keys(keyBy(outlines, 'eid'))
-    state.outlines = Object.assign({}, { ...state.outlines, [id]: Object.keys(keyBy(outlines, 'eid')) })
+    const combinedOutlines = Object.assign({}, { ...state.outlines, [id]: Object.keys(keyBy(outlines, 'eid')) })
+    commit('outlines', combinedOutlines)
   },
   async init ({ dispatch, state }) {
     for (const server of state.servers) {

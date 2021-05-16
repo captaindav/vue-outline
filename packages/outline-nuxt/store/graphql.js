@@ -1,23 +1,20 @@
 import { make } from 'vuex-pathify'
-import graphqlClient from '../apollo/client';
-// import { indexOf } from 'lodash';
-// import gql from 'graphql-tag';
+import graphqlClient from '../apollo/client'
 
 // queries
-import outlinesQuery from '../apollo/queries/outlines.query.gql';
-import entryQuery from '../apollo/queries/entry.query.gql';
+import outlinesQuery from '../apollo/queries/outlines.query.gql'
+import entryQuery from '../apollo/queries/entry.query.gql'
 
-//mutations
-import addEntryMutation from '../apollo/mutations/addEntry.mutation.gql';
-import collapseMutation from '../apollo/mutations/collapse.mutation.gql';
-import deleteEntryMutation from '../apollo/mutations/deleteEntry.mutation.gql';
-import expandMutation from '../apollo/mutations/expand.mutation.gql';
-import renameEntryMutation from '../apollo/mutations/renameEntry.mutation.gql';
-import setParentMutation from '../apollo/mutations/setParentEntry.mutation.gql';
-
+// mutations
+import addEntryMutation from '../apollo/mutations/addEntry.mutation.gql'
+import collapseMutation from '../apollo/mutations/collapse.mutation.gql'
+import deleteEntryMutation from '../apollo/mutations/deleteEntry.mutation.gql'
+import expandMutation from '../apollo/mutations/expand.mutation.gql'
+import renameEntryMutation from '../apollo/mutations/renameEntry.mutation.gql'
+import setParentMutation from '../apollo/mutations/setParentEntry.mutation.gql'
 
 export const state = () => ({
-  activeOutlines: [1,5014],
+  activeOutlines: [1, 5014],
   clients: {},
   commands: {
     query: {
@@ -47,7 +44,7 @@ export const mutations = make.mutations(state())
 export const actions = {
   ...make.actions(state()),
   async addEntry ({ dispatch }, { parentEid, server }) {
-    console.log('Adding', parentEid, 'server:', server);
+    console.log('Adding', parentEid, 'server:', server)
     return await dispatch('executeGraphql', {
       command: 'addEntryMutation',
       server,
@@ -56,7 +53,7 @@ export const actions = {
     })
   },
   async collapseEntry ({ dispatch }, { eid, server }) {
-    console.log('Collapse', eid);
+    console.log('Collapse', eid)
     const collapse = await dispatch('executeGraphql', {
       command: 'collapseMutation',
       server,
@@ -66,7 +63,7 @@ export const actions = {
     return collapse
   },
   async deleteEntry ({ dispatch }, { eid, server }) {
-    console.log('Delete:', eid, 'server:', server);
+    console.log('Delete:', eid, 'server:', server)
     return await dispatch('executeGraphql', {
       command: 'deleteEntryMutation',
       server,
@@ -76,17 +73,17 @@ export const actions = {
   },
   async executeGraphql ({ state }, { command, server, type, variables }) {
     console.log('execute:', type, command, server)
-    const client = state.clients[server]
+    const client = this.app.apolloProvider.clients[server] || this.app.apolloProvider.defaultClient
     const action = state.commands[type][command]
-    
+
     const { data } = await client[type]({
       [type === 'mutate' ? 'mutation' : type]: action,
-      variables
+      variables,
     })
     return data
   },
   async expandEntry ({ dispatch }, { eid, server }) {
-    console.log('Expand:', eid, 'server:', server);
+    console.log('Expand:', eid, 'server:', server)
     const expand = await dispatch('executeGraphql', {
       command: 'expandMutation',
       server,
@@ -116,9 +113,9 @@ export const actions = {
       ids.push(rootEntry.eid)
       items.push({ ...rootEntry, children, server, isOutline: true })
     }
-    state.opened.push(...openIds)
-    state.outlineIds.push(...ids)
-    state.outlines.push(...items)
+    commit('opened', [...state.opened, ...openIds])
+    commit('outlineIds', [...state.outlineIds, ...ids])
+    commit('outlines', [...state.outlines, ...items])
     commit('isFetchingOutlines', false)
     return items
   },
@@ -131,18 +128,19 @@ export const actions = {
       variables: { eid, server },
     })
     const newEntry = { ...entry, server, isOutline: false }
-    state.entryIds.push(eid)
-    state.entries.push(newEntry)
+    commit('entryIds', [...state.entryIds, eid])
+    commit('entries', [...state.entries, newEntry])
     commit('isFetchingOutlines', false)
     return newEntry
   },
-  async generateClient ({ state }, server) {
+  generateClient ({ commit, state }, server) {
     const { id, uri } = server
-    state.clients[id] = graphqlClient(uri)
+    this.app.apolloProvider.clients[id] = graphqlClient(uri)
+    commit('clients', Object.assign(state.clients, { [id]: uri }))
     return state.clients[id]
   },
   async renameEntry ({ dispatch }, { parentEid, server }) {
-    console.log('Rename:', parentEid, 'server:', server);
+    console.log('Rename:', parentEid, 'server:', server)
     return await dispatch('executeGraphql', {
       command: 'renameEntryMutation',
       server,
@@ -151,7 +149,7 @@ export const actions = {
     })
   },
   async setParentEntry ({ dispatch }, { eid, parentEid, server }) {
-    console.log('SetParent:', eid, parentEid, 'server:', server);
+    console.log('SetParent:', eid, parentEid, 'server:', server)
     return await dispatch('executeGraphql', {
       command: 'setParentMutation',
       server,

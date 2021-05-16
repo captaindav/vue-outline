@@ -22,7 +22,6 @@
             </v-list-item-icon>
 
             <v-list-item-content />
-
           </v-list-item>
         </template>
 
@@ -64,22 +63,22 @@
             <template #activator="{ attrs, on }">
               <v-btn
                 v-bind="attrs"
-                v-on="{
-                  ...on,
-                  click: bAction.click
-                }"
                 :disabled="ba !== 'add' && selected === undefined"
                 icon
                 fab
                 small
+                v-on="{
+                  ...on,
+                  click: bAction.click
+                }"
               >
                 <v-icon v-text="bAction.icon" />
               </v-btn>
             </template>
-            <span class="text-capitalize">{{ba}} Bookmark</span>
+            <span class="text-capitalize">{{ ba }} Bookmark</span>
           </v-tooltip>
         </v-toolbar>
-        
+
         <v-list
           height="594px"
           style="overflow-y: auto"
@@ -90,11 +89,11 @@
               :key="`oi-${bi}`"
             >
               <v-list-item-icon>
-                <v-icon>{{bookmark.icon}}</v-icon>
+                <v-icon>{{ bookmark.icon }}</v-icon>
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title>{{bookmark.name}}</v-list-item-title>
+                <v-list-item-title>{{ bookmark.name }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -117,18 +116,18 @@
             <template #activator="{ attrs, on }">
               <v-btn
                 v-bind="attrs"
+                icon
+                fab
+                small
                 v-on="{
                   ...on,
                   click: eAction.click
                 }"
-                icon
-                fab
-                small
               >
                 <v-icon v-text="eAction.icon" />
               </v-btn>
             </template>
-            <span class="text-capitalize">{{ea}} Bookmark</span>
+            <span class="text-capitalize">{{ ea }} Bookmark</span>
           </v-tooltip>
         </v-toolbar>
 
@@ -172,131 +171,131 @@
 </template>
 
 <script>
-  import pathify from '@/utils/pathify'
-  import { computed, reactive, ref } from '@nuxtjs/composition-api'
+import pathify from '@/utils/pathify'
+import { computed, reactive, ref } from '@nuxtjs/composition-api'
 
-  export default {
-    name: 'OutlineBookmarks',
+export default {
+  name: 'OutlineBookmarks',
 
-    setup(props, context) {
-      const dialog = ref(false)
-      const edit = ref(false)
-      const isNew = ref(false)
-      const { get, sync } = pathify(context)
-      const active = sync('bookmarks/active')
-      const bookmarks = sync('bookmarks/bookmarks')
-      const bookmarkOutlines = sync('bookmarks/outlines')
-      const outlines = sync('graphql/outlines')
-      const selected = sync('bookmarks/selected')
-      const servers = get('servers/servers')
-      const serverOutlines = get('servers/outlines')
+  setup (props, context) {
+    const dialog = ref(false)
+    const edit = ref(false)
+    const isNew = ref(false)
+    const { get, sync } = pathify(context)
+    const active = sync('bookmarks/active')
+    const bookmarks = sync('bookmarks/bookmarks')
+    const bookmarkOutlines = sync('bookmarks/outlines')
+    const outlines = sync('graphql/outlines')
+    const selected = sync('bookmarks/selected')
+    const servers = get('servers/servers')
+    const serverOutlines = get('servers/outlines')
 
-      const addBookmark = () => {
-        isNew.value = true
-        edit.value = true
-      }
-
-      const cancel = () => {
-        edit.value = false
-        editItem = Object.assign(editItem, editDefault)
-      }
-
-      const close = () => {
-        edit.value = false
-        dialog.value = false
-        selected.value = undefined
-      }
-
-      const deleteBookmark = () => {
-        bookmarks.value.splice(bookmarks.value, 1)
-        selected.value = undefined
-      }
-
-      const editBookmark = () => {
-        const bookmark = bookmarks.value[selected.value]
-        editItem = Object.assign(editItem, bookmark)
-        edit.value = true
-      }
-
-      const editDefault = {
-        icon: '',
-        name: '',
-        outlines: [],
-      }
-
-      let editItem = reactive({
-        icon: '',
-        name: '',
-        outlines: [],
-      })
-
-      const icons = [
-        'mdi-file',
-        'mdi-file-alert',
-        'mdi-file-chart',
-      ]
-
-      const items = computed(() => {
-        const treeItems = []
-        for (const server of servers.value) {
-         if(!serverOutlines.value[server.id]) return
-          treeItems.push({
-            ...server,
-            children: [
-              ...outlines.value.reduce((acc, val) => {
-                if (serverOutlines.value[server.id].includes(val.eid.toString())) {
-                  acc.push({
-                    id: val.eid,
-                    name: val.name,
-                  })
-                }
-                return acc
-              }, [])
-            ]
-          })
-        }
-        return treeItems
-      })
-
-      const save = () => {
-        const saveItem = Object.assign({}, editItem)
-        if (isNew.value) {
-          bookmarks.value.push(saveItem)
-          isNew.value = false
-          selected.value = undefined
-        } else {
-          bookmarks.value.splice(selected.value, 1, saveItem)
-          if (active.value - 1 === selected.value) {
-            bookmarkOutlines.value = saveItem.outlines
-          }
-        }
-        cancel()
-      }
-
-      const bookmarkActions = {
-        add: { click: addBookmark, icon: 'mdi-plus' },
-        edit: { click: editBookmark, icon: 'mdi-pencil' },
-        delete: { click: deleteBookmark, icon: 'mdi-delete' },
-      }
-
-      const editActions = {
-        save: { click: save, icon: 'mdi-content-save' },
-        cancel: { click: cancel, icon: 'mdi-cancel' },
-      }
-      
-      return {
-        bookmarkActions,
-        bookmarks,
-        close,
-        edit,
-        editActions,
-        editItem,
-        dialog,
-        icons,
-        isNew,
-        items,
-        selected,
-      }
+    const addBookmark = () => {
+      isNew.value = true
+      edit.value = true
     }
-  }
+
+    const cancel = () => {
+      edit.value = false
+      editItem = Object.assign(editItem, editDefault)
+    }
+
+    const close = () => {
+      edit.value = false
+      dialog.value = false
+      selected.value = undefined
+    }
+
+    const deleteBookmark = () => {
+      bookmarks.value.splice(bookmarks.value, 1)
+      selected.value = undefined
+    }
+
+    const editBookmark = () => {
+      const bookmark = bookmarks.value[selected.value]
+      editItem = Object.assign(editItem, bookmark)
+      edit.value = true
+    }
+
+    const editDefault = {
+      icon: '',
+      name: '',
+      outlines: [],
+    }
+
+    let editItem = reactive({
+      icon: '',
+      name: '',
+      outlines: [],
+    })
+
+    const icons = [
+      'mdi-file',
+      'mdi-file-alert',
+      'mdi-file-chart',
+    ]
+
+    const items = computed(() => {
+      const treeItems = []
+      for (const server of servers.value) {
+        if (!serverOutlines.value[server.id]) { return }
+        treeItems.push({
+          ...server,
+          children: [
+            ...outlines.value.reduce((acc, val) => {
+              if (serverOutlines.value[server.id].includes(val.eid.toString())) {
+                acc.push({
+                  id: val.eid,
+                  name: val.name,
+                })
+              }
+              return acc
+            }, []),
+          ],
+        })
+      }
+      return treeItems
+    })
+
+    const save = () => {
+      const saveItem = Object.assign({}, editItem)
+      if (isNew.value) {
+        bookmarks.value.push(saveItem)
+        isNew.value = false
+        selected.value = undefined
+      } else {
+        bookmarks.value.splice(selected.value, 1, saveItem)
+        if (active.value - 1 === selected.value) {
+          bookmarkOutlines.value = saveItem.outlines
+        }
+      }
+      cancel()
+    }
+
+    const bookmarkActions = {
+      add: { click: addBookmark, icon: 'mdi-plus' },
+      edit: { click: editBookmark, icon: 'mdi-pencil' },
+      delete: { click: deleteBookmark, icon: 'mdi-delete' },
+    }
+
+    const editActions = {
+      save: { click: save, icon: 'mdi-content-save' },
+      cancel: { click: cancel, icon: 'mdi-cancel' },
+    }
+
+    return {
+      bookmarkActions,
+      bookmarks,
+      close,
+      edit,
+      editActions,
+      editItem,
+      dialog,
+      icons,
+      isNew,
+      items,
+      selected,
+    }
+  },
+}
 </script>
