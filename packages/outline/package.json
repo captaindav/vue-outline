@@ -3,40 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext \".js,.vue\" --ignore-path .gitignore . --fix"
   },
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-beta.19",
-    "apollo-cache-inmemory": "^1.6.6",
-    "apollo-client": "^2.6.10",
-    "apollo-link-http": "^1.5.17",
-    "core-js": "^3.12.1",
-    "graphql": "^15.5.0",
+    "@nuxtjs/apollo": "^4.0.1-rc.5",
+    "@nuxtjs/composition-api": "^0.23.4",
+    "core-js": "^3.9.1",
+    "druxt": "^0.5.1",
+    "druxt-entity": "^0.14.0",
+    "nuxt": "^2.15.3",
     "socket.io-client": "^4.1.1",
-    "vue": "^2.6.12",
-    "vue-socket.io-extended": "^4.2.0",
-    "vuetify": "^2.5.0",
-    "vuex": "^3.6.2"
+    "vue-socket.io-extended": "^4.2.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-eslint": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
+    "@nuxtjs/eslint-config": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/vuetify": "^1.11.3",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-graphql-tag": "^3.2.0",
-    "eslint": "^7.26.0",
+    "eslint": "^7.22.0",
+    "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.9.0",
-    "graphql-tag": "^2.12.4",
     "lodash": "^4.17.21",
-    "sass": "^1.32.13",
-    "sass-loader": "^10.1.1",
     "splitpanes": "^2.3.6",
-    "vue-cli-plugin-apollo": "^0.22.2",
-    "vue-cli-plugin-vuetify": "^2.4.0",
-    "vue-template-compiler": "^2.6.12",
-    "vuetify-loader": "^1.7.2",
-    "vuex-pathify": "^1.4.5"
+    "vuex-pathify": "^1.4.5",
+    "webpack": "^4.46.0"
   }
 }

@@ -1,3 +1,0 @@
-mutation expandEntry($eid: Int!) {
-  expandEntry (eid: $eid)
-}

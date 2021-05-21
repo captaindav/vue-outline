@@ -1,3 +1,0 @@
-mutation deleteEntry($eid: Int!) {
-  deleteEntry (eid: $eid)
-}

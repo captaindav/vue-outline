@@ -1,3 +1,0 @@
-mutation setParentEntry($eid: Int!, $parentEid: Int!) {
-  setParentEntry (eid: $eid, parentEid: $parentEid)
-}
