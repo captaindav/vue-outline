@@ -21,6 +21,7 @@
         "drupal/core-project-message": "^9",
         "drupal/core-recommended": "^9",
         "drupal/ctools": "^3.4",
+        "drupal/druxt": "^0.4.1",
         "drupal/dynamic_entity_reference": "^1.10",
         "drupal/graphql": "^4.0",
         "drupal/paragraphs": "^1.12",
@@ -96,6 +97,7 @@
         "drupal/devel": "^4.0",
         "drupal/devel_php": "^1.3",
         "drush/drush": "^10.3",
+        "phpspec/prophecy-phpunit": "^2",
         "phpunit/phpunit": "^9.5"
     }
 }
