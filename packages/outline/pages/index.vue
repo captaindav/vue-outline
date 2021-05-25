@@ -14,13 +14,15 @@
           Vue Outline
         </h1>
       </v-toolbar-title>
-
+      <v-spacer />
+      
+      <DruxtEntity :type="node" :uuid="6349bd8d-d9ba-4be4-905e-34dba81287e5" mode="node.full" />
       <v-spacer />
 
       <v-dialog
         v-model="drupalDialog"
         max-width="400px"
-      >
+      >   
         <template #activator="{ on: don, attrs: dattrs }">
           <v-tooltip bottom>
             <template #activator="{ on: tton, attrs: ttattrs }">
@@ -90,6 +92,7 @@
 <script>
 import pathify from '@/utils/pathify'
 
+import { DrupalEntityMixin } from 'druxt-entity'
 import BookmarkDrawer from '@/components/BookmarkDrawer'
 import Outline from '@/components/Outline'
 import ServerDialog from '@/components/ServerDialog'
@@ -102,7 +105,7 @@ export default {
     Outline,
     ServerDialog,
   },
-
+  mixins: [DrupalEntityMixin],
   setup (props, context) {
     const { call, get } = pathify(context)
     const aboutDialog = false
