@@ -50,25 +50,25 @@ cp scripts/vscode/launch.json .vscode
 
 ## Running the App
 
-First start Drupal by going to the Drupal directory (../vue-outline/packages/drupal) and running:
+Start Drupal:
 
 ```bash
-cd <Drupal directory>
-lando start
+npm run start
+```
+
+Run the app:
+
+```bash
+npm run serve
 ```
 
 Check Drupal status:
 
 ```bash
+cd packages/drupal
 lando drush status
 ```
 
-Run the Vue app:
-
-```bash
-cd <top level directory>
-npm run serve
-```
 
 ## Rebuild or Reinitialize Lando / Reinstall Drupal
 
