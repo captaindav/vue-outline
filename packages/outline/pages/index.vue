@@ -16,7 +16,10 @@
       </v-toolbar-title>
       <v-spacer />
       
+      <!--
       <DruxtEntity type="node--article" uuid="6349bd8d-d9ba-4be4-905e-34dba81287e5" mode="node.full" />
+      -->
+      
       <v-spacer />
 
       <v-dialog
@@ -92,7 +95,7 @@
 <script>
 import pathify from '@/utils/pathify'
 
-import { DrupalEntityMixin } from 'druxt-entity'
+// import { DrupalEntityMixin } from 'druxt-entity'
 import BookmarkDrawer from '@/components/BookmarkDrawer'
 import Outline from '@/components/Outline'
 import ServerDialog from '@/components/ServerDialog'
@@ -105,7 +108,9 @@ export default {
     Outline,
     ServerDialog,
   },
-  mixins: [DrupalEntityMixin],
+
+  //mixins: [DrupalEntityMixin],
+
   setup (props, context) {
     const { call, get } = pathify(context)
     const aboutDialog = false
