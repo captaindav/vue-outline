@@ -1,6 +1,6 @@
 # Vue Outline Roadmap
 
-## Content Editing Features
+## Content Editing
 
 ### Puppeteer
 
