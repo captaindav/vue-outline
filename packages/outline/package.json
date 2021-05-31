@@ -15,6 +15,8 @@
     "core-js": "^3.13.1",
     "druxt": "^0.6.0",
     "druxt-entity": "^0.14.0",
+    "druxt-schema": "^0.7.6",
+    "druxt-menu": "^0.10.1",
     "nuxt": "^2.15.3",
     "socket.io-client": "^4.1.2",
     "vue-socket.io-extended": "^4.2.0"

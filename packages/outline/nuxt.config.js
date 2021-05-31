@@ -40,12 +40,16 @@ export default {
     '@nuxtjs/apollo',
     // https://composition-api.nuxtjs.org/
     '@nuxtjs/composition-api/module',
+  ],
+  
+  // Modules: https://go.nuxtjs.dev/config-modules
+  modules: [
     // https://druxtjs.org/
     'druxt',
+    'druxt-entity',
+    'druxt-menu',
+    'druxt-schema',
   ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
 
   apollo: {
     tokenName: 'nuxt-apollo', // specify token name
@@ -69,6 +73,9 @@ export default {
 
   druxt: {
     baseUrl: 'http://drupal-outline.lndo.site/',
+    schema: {
+      filter: ['node--.*?--view'],
+    },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

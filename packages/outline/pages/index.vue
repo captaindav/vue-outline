@@ -16,9 +16,7 @@
       </v-toolbar-title>
       <v-spacer />
       
-      <!--
-      <DruxtEntity type="node--article" uuid="6349bd8d-d9ba-4be4-905e-34dba81287e5" mode="node.full" />
-      -->
+      <DruxtEntity type="node--article" uuid="2df755ce-a8a1-4df7-882e-cf1e36b5b610" />
       
       <v-spacer />
 
@@ -95,7 +93,6 @@
 <script>
 import pathify from '@/utils/pathify'
 
-// import { DrupalEntityMixin } from 'druxt-entity'
 import BookmarkDrawer from '@/components/BookmarkDrawer'
 import Outline from '@/components/Outline'
 import ServerDialog from '@/components/ServerDialog'
@@ -109,8 +106,6 @@ export default {
     ServerDialog,
   },
 
-  //mixins: [DrupalEntityMixin],
-
   setup (props, context) {
     const { call, get } = pathify(context)
     const aboutDialog = false
@@ -123,6 +118,13 @@ export default {
       const page = await call('socket-io/getPage')
       return page
     }
+
+    /*
+    const { DruxtClient } = require('druxt')
+    const druxt = new DruxtClient('http://drupal-outline.lndo.site/')
+    const collection = druxt.getCollection('node--article')
+    console.log('test', collection)
+    */
 
     // initialize server outlines
     call('servers/init')
