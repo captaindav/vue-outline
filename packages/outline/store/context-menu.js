@@ -10,7 +10,7 @@ export const state = () => ({
 export const mutations = make.mutations(state())
 
 export const actions = {
-  ...make.mutations(state()),
+  ...make.actions(state()),
   openMenu ({ commit, dispatch }, data) {
     data.e.preventDefault()
     commit('show', false)

@@ -111,7 +111,7 @@ export default {
 
     // actions
     const openMenu = (e, item) => {
-      return call('contextMenu/openMenu', { e, item })
+      return call('context-menu/openMenu', { e, item })
     }
 
     // init outline fetch
