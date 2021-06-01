@@ -16,7 +16,7 @@
       </v-toolbar-title>
       <v-spacer />
       
-      <DruxtEntity type="node--article" uuid="2df755ce-a8a1-4df7-882e-cf1e36b5b610" />
+      <!-- <DruxtEntity type="node--article" uuid="2df755ce-a8a1-4df7-882e-cf1e36b5b610" /> -->
       
       <v-spacer />
 
